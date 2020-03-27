@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>show</title>
+</head>
+<body>
+<h1>111</h1>
+					<table>
+                           <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th class="span3">
+                                        <input type="checkbox" />
+                                        Product
+                                    </th>
+                                    <th class="span3">
+                                        <span class="line"></span>Description
+                                    </th>
+                                    <th class="span3">
+                                        <span class="line"></span>Operate
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- row -->
+                                <tr class="first" th:each="table,tableStat:${model.tablelist}">
+                                    <td class="description" th:text="${tableStat.index}+1" >
+                                    </td>
+                                    <td class="description" th:text="${table}">
+                                    </td>
+                                    <td class="description">
+                                        
+                                            <li class="last"><a th:href="#">Show</a></li>
+                                       
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+					</table>
+</body>
+</html>

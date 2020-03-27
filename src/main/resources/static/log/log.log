@@ -1,0 +1,1125 @@
+
+DataX (DATAX-OPENSOURCE-3.0), From Alibaba !
+Copyright (C) 2010-2017, Alibaba Group. All Rights Reserved.
+
+
+2020-01-07 13:39:29.037 [main] INFO  VMInfo - VMInfo# operatingSystem class => sun.management.OperatingSystemImpl
+2020-01-07 13:39:29.057 [main] INFO  Engine - the machine info  => 
+
+	osInfo:	Oracle Corporation 1.8 25.60-b23
+	jvmInfo:	Linux amd64 2.6.32-696.16.1.el6.x86_64
+	cpu num:	1
+
+	totalPhysicalMemory:	-0.00G
+	freePhysicalMemory:	-0.00G
+	maxFileDescriptorCount:	-1
+	currentOpenFileDescriptorCount:	-1
+
+	GC Names	[Copy, MarkSweepCompact]
+
+	MEMORY_NAME                    | allocation_size                | init_size                      
+	Eden Space                     | 273.06MB                       | 273.06MB                       
+	Code Cache                     | 240.00MB                       | 2.44MB                         
+	Survivor Space                 | 34.13MB                        | 34.13MB                        
+	Compressed Class Space         | 1,024.00MB                     | 0.00MB                         
+	Metaspace                      | -0.00MB                        | 0.00MB                         
+	Tenured Gen                    | 682.69MB                       | 682.69MB                       
+
+
+2020-01-07 13:39:29.091 [main] INFO  Engine - 
+{
+	"content":[
+		{
+			"reader":{
+				"name":"mysqlreader",
+				"parameter":{
+					"column":[
+						"id",
+						"name",
+						"pass"
+					],
+					"connection":[
+						{
+							"jdbcUrl":[
+								"jdbc:mysql://39.97.255.156:3307/lp_test?useUnicode=true&characterEncoding=utf8"
+							],
+							"table":[
+								"haha"
+							]
+						}
+					],
+					"password":"**********",
+					"splitPk":"id",
+					"username":"root"
+				}
+			},
+			"writer":{
+				"name":"mysqlwriter",
+				"parameter":{
+					"column":[
+						"id",
+						"name",
+						"pass"
+					],
+					"connection":[
+						{
+							"jdbcUrl":"jdbc:mysql://127.0.0.1:3306/test?useSSL=false&serverTimezone=Asia/Shanghai",
+							"table":[
+								"haha"
+							]
+						}
+					],
+					"password":"******",
+					"preSql":[
+						"truncate haha"
+					],
+					"session":[
+						"set session sql_mode='ANSI'"
+					],
+					"username":"root",
+					"writeMode":"insert"
+				}
+			}
+		}
+	],
+	"setting":{
+		"speed":{
+			"channel":5
+		}
+	}
+}
+
+2020-01-07 13:39:29.123 [main] WARN  Engine - prioriy set to 0, because NumberFormatException, the value is: null
+2020-01-07 13:39:29.125 [main] INFO  PerfTrace - PerfTrace traceId=job_-1, isEnable=false, priority=0
+2020-01-07 13:39:29.126 [main] INFO  JobContainer - DataX jobContainer starts job.
+2020-01-07 13:39:29.137 [main] INFO  JobContainer - Set jobId = 0
+2020-01-07 13:39:29.933 [job-0] INFO  OriginalConfPretreatmentUtil - Available jdbcUrl:jdbc:mysql://39.97.255.156:3307/lp_test?useUnicode=true&characterEncoding=utf8&yearIsDateType=false&zeroDateTimeBehavior=convertToNull&tinyInt1isBit=false&rewriteBatchedStatements=true.
+2020-01-07 13:39:30.132 [job-0] INFO  OriginalConfPretreatmentUtil - table:[haha] has columns:[id,name,pass].
+2020-01-07 13:39:30.581 [job-0] INFO  OriginalConfPretreatmentUtil - table:[haha] all columns:[
+id,name,pass
+].
+2020-01-07 13:39:30.593 [job-0] INFO  OriginalConfPretreatmentUtil - Write data [
+insert INTO %s (id,name,pass) VALUES(?,?,?)
+], which jdbcUrl like:[jdbc:mysql://127.0.0.1:3306/test?useSSL=false&serverTimezone=Asia/Shanghai&yearIsDateType=false&zeroDateTimeBehavior=convertToNull&tinyInt1isBit=false&rewriteBatchedStatements=true]
+2020-01-07 13:39:30.594 [job-0] INFO  JobContainer - jobContainer starts to do prepare ...
+2020-01-07 13:39:30.595 [job-0] INFO  JobContainer - DataX Reader.Job [mysqlreader] do prepare work .
+2020-01-07 13:39:30.598 [job-0] INFO  JobContainer - DataX Writer.Job [mysqlwriter] do prepare work .
+2020-01-07 13:39:30.609 [job-0] INFO  CommonRdbmsWriter$Job - Begin to execute preSqls:[truncate haha]. context info:jdbc:mysql://127.0.0.1:3306/test?useSSL=false&serverTimezone=Asia/Shanghai&yearIsDateType=false&zeroDateTimeBehavior=convertToNull&tinyInt1isBit=false&rewriteBatchedStatements=true.
+2020-01-07 13:39:30.653 [job-0] INFO  JobContainer - jobContainer starts to do split ...
+2020-01-07 13:39:30.654 [job-0] INFO  JobContainer - Job set Channel-Number to 5 channels.
+2020-01-07 13:39:30.815 [job-0] INFO  SingleTableSplitUtil - split pk [sql=SELECT MIN(id),MAX(id) FROM haha] is running... 
+2020-01-07 13:39:30.931 [job-0] INFO  SingleTableSplitUtil - After split(), allQuerySql=[
+select id,name,pass from haha  where  (1 <= id AND id < 2) 
+select id,name,pass from haha  where  (2 <= id AND id < 3) 
+select id,name,pass from haha  where  (3 <= id AND id < 4) 
+select id,name,pass from haha  where  (4 <= id AND id < 5) 
+select id,name,pass from haha  where  (5 <= id AND id < 6) 
+select id,name,pass from haha  where  (6 <= id AND id < 7) 
+select id,name,pass from haha  where  (7 <= id AND id < 8) 
+select id,name,pass from haha  where  (8 <= id AND id < 9) 
+select id,name,pass from haha  where  (9 <= id AND id < 10) 
+select id,name,pass from haha  where  (10 <= id AND id <= 11) 
+select id,name,pass from haha  where  id IS NULL
+].
+2020-01-07 13:39:30.936 [job-0] INFO  JobContainer - DataX Reader.Job [mysqlreader] splits to [11] tasks.
+2020-01-07 13:39:30.944 [job-0] INFO  JobContainer - DataX Writer.Job [mysqlwriter] splits to [11] tasks.
+2020-01-07 13:39:31.001 [job-0] INFO  JobContainer - jobContainer starts to do schedule ...
+2020-01-07 13:39:31.031 [job-0] INFO  JobContainer - Scheduler starts [1] taskGroups.
+2020-01-07 13:39:31.040 [job-0] INFO  JobContainer - Running by standalone Mode.
+2020-01-07 13:39:31.073 [taskGroup-0] INFO  TaskGroupContainer - taskGroupId=[0] start [5] channels for [11] tasks.
+2020-01-07 13:39:31.088 [taskGroup-0] INFO  Channel - Channel set byte_speed_limit to -1, No bps activated.
+2020-01-07 13:39:31.091 [taskGroup-0] INFO  Channel - Channel set record_speed_limit to -1, No tps activated.
+2020-01-07 13:39:31.115 [taskGroup-0] INFO  TaskGroupContainer - taskGroup[0] taskId[0] attemptCount[1] is started
+2020-01-07 13:39:31.121 [0-0-0-reader] INFO  CommonRdbmsReader$Task - Begin to read record by Sql: [select id,name,pass from haha  where  (1 <= id AND id < 2) 
+] jdbcUrl:[jdbc:mysql://39.97.255.156:3307/lp_test?useUnicode=true&characterEncoding=utf8&yearIsDateType=false&zeroDateTimeBehavior=convertToNull&tinyInt1isBit=false&rewriteBatchedStatements=true].
+2020-01-07 13:39:31.128 [0-0-1-reader] INFO  CommonRdbmsReader$Task - Begin to read record by Sql: [select id,name,pass from haha  where  (2 <= id AND id < 3) 
+] jdbcUrl:[jdbc:mysql://39.97.255.156:3307/lp_test?useUnicode=true&characterEncoding=utf8&yearIsDateType=false&zeroDateTimeBehavior=convertToNull&tinyInt1isBit=false&rewriteBatchedStatements=true].
+2020-01-07 13:39:31.127 [taskGroup-0] INFO  TaskGroupContainer - taskGroup[0] taskId[1] attemptCount[1] is started
+2020-01-07 13:39:31.144 [0-0-0-writer] INFO  DBUtil - execute sql:[set session sql_mode='ANSI']
+2020-01-07 13:39:31.148 [taskGroup-0] INFO  TaskGroupContainer - taskGroup[0] taskId[2] attemptCount[1] is started
+2020-01-07 13:39:31.150 [0-0-2-reader] INFO  CommonRdbmsReader$Task - Begin to read record by Sql: [select id,name,pass from haha  where  (3 <= id AND id < 4) 
+] jdbcUrl:[jdbc:mysql://39.97.255.156:3307/lp_test?useUnicode=true&characterEncoding=utf8&yearIsDateType=false&zeroDateTimeBehavior=convertToNull&tinyInt1isBit=false&rewriteBatchedStatements=true].
+2020-01-07 13:39:31.154 [0-0-1-writer] INFO  DBUtil - execute sql:[set session sql_mode='ANSI']
+2020-01-07 13:39:31.171 [0-0-0-writer] INFO  DBUtil - execute sql:[set session sql_mode='ANSI']
+2020-01-07 13:39:31.177 [0-0-1-writer] INFO  DBUtil - execute sql:[set session sql_mode='ANSI']
+2020-01-07 13:39:31.180 [taskGroup-0] INFO  TaskGroupContainer - taskGroup[0] taskId[3] attemptCount[1] is started
+2020-01-07 13:39:31.182 [0-0-3-reader] INFO  CommonRdbmsReader$Task - Begin to read record by Sql: [select id,name,pass from haha  where  (4 <= id AND id < 5) 
+] jdbcUrl:[jdbc:mysql://39.97.255.156:3307/lp_test?useUnicode=true&characterEncoding=utf8&yearIsDateType=false&zeroDateTimeBehavior=convertToNull&tinyInt1isBit=false&rewriteBatchedStatements=true].
+2020-01-07 13:39:31.188 [taskGroup-0] INFO  TaskGroupContainer - taskGroup[0] taskId[4] attemptCount[1] is started
+2020-01-07 13:39:31.190 [0-0-4-reader] INFO  CommonRdbmsReader$Task - Begin to read record by Sql: [select id,name,pass from haha  where  (5 <= id AND id < 6) 
+] jdbcUrl:[jdbc:mysql://39.97.255.156:3307/lp_test?useUnicode=true&characterEncoding=utf8&yearIsDateType=false&zeroDateTimeBehavior=convertToNull&tinyInt1isBit=false&rewriteBatchedStatements=true].
+2020-01-07 13:39:31.197 [0-0-2-writer] INFO  DBUtil - execute sql:[set session sql_mode='ANSI']
+2020-01-07 13:39:31.210 [0-0-4-writer] INFO  DBUtil - execute sql:[set session sql_mode='ANSI']
+2020-01-07 13:39:31.222 [0-0-3-writer] INFO  DBUtil - execute sql:[set session sql_mode='ANSI']
+2020-01-07 13:39:31.233 [0-0-4-writer] INFO  DBUtil - execute sql:[set session sql_mode='ANSI']
+2020-01-07 13:39:31.236 [0-0-2-writer] INFO  DBUtil - execute sql:[set session sql_mode='ANSI']
+2020-01-07 13:39:31.243 [0-0-3-writer] INFO  DBUtil - execute sql:[set session sql_mode='ANSI']
+2020-01-07 13:39:31.360 [0-0-0-reader] INFO  CommonRdbmsReader$Task - Finished read record by Sql: [select id,name,pass from haha  where  (1 <= id AND id < 2) 
+] jdbcUrl:[jdbc:mysql://39.97.255.156:3307/lp_test?useUnicode=true&characterEncoding=utf8&yearIsDateType=false&zeroDateTimeBehavior=convertToNull&tinyInt1isBit=false&rewriteBatchedStatements=true].
+2020-01-07 13:39:31.498 [0-0-4-reader] INFO  CommonRdbmsReader$Task - Finished read record by Sql: [select id,name,pass from haha  where  (5 <= id AND id < 6) 
+] jdbcUrl:[jdbc:mysql://39.97.255.156:3307/lp_test?useUnicode=true&characterEncoding=utf8&yearIsDateType=false&zeroDateTimeBehavior=convertToNull&tinyInt1isBit=false&rewriteBatchedStatements=true].
+2020-01-07 13:39:31.590 [taskGroup-0] INFO  TaskGroupContainer - taskGroup[0] taskId[4] is successed, used[409]ms
+2020-01-07 13:39:31.611 [taskGroup-0] INFO  TaskGroupContainer - taskGroup[0] taskId[5] attemptCount[1] is started
+2020-01-07 13:39:31.612 [0-0-5-reader] INFO  CommonRdbmsReader$Task - Begin to read record by Sql: [select id,name,pass from haha  where  (6 <= id AND id < 7) 
+] jdbcUrl:[jdbc:mysql://39.97.255.156:3307/lp_test?useUnicode=true&characterEncoding=utf8&yearIsDateType=false&zeroDateTimeBehavior=convertToNull&tinyInt1isBit=false&rewriteBatchedStatements=true].
+2020-01-07 13:39:31.618 [0-0-5-writer] INFO  DBUtil - execute sql:[set session sql_mode='ANSI']
+2020-01-07 13:39:31.642 [0-0-5-writer] INFO  DBUtil - execute sql:[set session sql_mode='ANSI']
+2020-01-07 13:39:31.661 [0-0-3-reader] INFO  CommonRdbmsReader$Task - Finished read record by Sql: [select id,name,pass from haha  where  (4 <= id AND id < 5) 
+] jdbcUrl:[jdbc:mysql://39.97.255.156:3307/lp_test?useUnicode=true&characterEncoding=utf8&yearIsDateType=false&zeroDateTimeBehavior=convertToNull&tinyInt1isBit=false&rewriteBatchedStatements=true].
+2020-01-07 13:39:31.712 [taskGroup-0] INFO  TaskGroupContainer - taskGroup[0] taskId[0] is successed, used[603]ms
+2020-01-07 13:39:31.723 [taskGroup-0] INFO  TaskGroupContainer - taskGroup[0] taskId[6] attemptCount[1] is started
+2020-01-07 13:39:31.723 [0-0-6-reader] INFO  CommonRdbmsReader$Task - Begin to read record by Sql: [select id,name,pass from haha  where  (7 <= id AND id < 8) 
+] jdbcUrl:[jdbc:mysql://39.97.255.156:3307/lp_test?useUnicode=true&characterEncoding=utf8&yearIsDateType=false&zeroDateTimeBehavior=convertToNull&tinyInt1isBit=false&rewriteBatchedStatements=true].
+2020-01-07 13:39:31.731 [0-0-6-writer] INFO  DBUtil - execute sql:[set session sql_mode='ANSI']
+2020-01-07 13:39:31.738 [0-0-6-writer] INFO  DBUtil - execute sql:[set session sql_mode='ANSI']
+2020-01-07 13:39:31.813 [0-0-2-reader] INFO  CommonRdbmsReader$Task - Finished read record by Sql: [select id,name,pass from haha  where  (3 <= id AND id < 4) 
+] jdbcUrl:[jdbc:mysql://39.97.255.156:3307/lp_test?useUnicode=true&characterEncoding=utf8&yearIsDateType=false&zeroDateTimeBehavior=convertToNull&tinyInt1isBit=false&rewriteBatchedStatements=true].
+2020-01-07 13:39:31.823 [taskGroup-0] INFO  TaskGroupContainer - taskGroup[0] taskId[3] is successed, used[671]ms
+2020-01-07 13:39:31.840 [taskGroup-0] INFO  TaskGroupContainer - taskGroup[0] taskId[7] attemptCount[1] is started
+2020-01-07 13:39:31.841 [0-0-7-reader] INFO  CommonRdbmsReader$Task - Begin to read record by Sql: [select id,name,pass from haha  where  (8 <= id AND id < 9) 
+] jdbcUrl:[jdbc:mysql://39.97.255.156:3307/lp_test?useUnicode=true&characterEncoding=utf8&yearIsDateType=false&zeroDateTimeBehavior=convertToNull&tinyInt1isBit=false&rewriteBatchedStatements=true].
+2020-01-07 13:39:31.845 [0-0-7-writer] INFO  DBUtil - execute sql:[set session sql_mode='ANSI']
+2020-01-07 13:39:31.858 [0-0-7-writer] INFO  DBUtil - execute sql:[set session sql_mode='ANSI']
+2020-01-07 13:39:31.941 [taskGroup-0] INFO  TaskGroupContainer - taskGroup[0] taskId[2] is successed, used[807]ms
+2020-01-07 13:39:31.952 [taskGroup-0] INFO  TaskGroupContainer - taskGroup[0] taskId[8] attemptCount[1] is started
+2020-01-07 13:39:31.953 [0-0-8-reader] INFO  CommonRdbmsReader$Task - Begin to read record by Sql: [select id,name,pass from haha  where  (9 <= id AND id < 10) 
+] jdbcUrl:[jdbc:mysql://39.97.255.156:3307/lp_test?useUnicode=true&characterEncoding=utf8&yearIsDateType=false&zeroDateTimeBehavior=convertToNull&tinyInt1isBit=false&rewriteBatchedStatements=true].
+2020-01-07 13:39:31.962 [0-0-8-writer] INFO  DBUtil - execute sql:[set session sql_mode='ANSI']
+2020-01-07 13:39:31.974 [0-0-8-writer] INFO  DBUtil - execute sql:[set session sql_mode='ANSI']
+2020-01-07 13:39:31.975 [0-0-1-reader] INFO  CommonRdbmsReader$Task - Finished read record by Sql: [select id,name,pass from haha  where  (2 <= id AND id < 3) 
+] jdbcUrl:[jdbc:mysql://39.97.255.156:3307/lp_test?useUnicode=true&characterEncoding=utf8&yearIsDateType=false&zeroDateTimeBehavior=convertToNull&tinyInt1isBit=false&rewriteBatchedStatements=true].
+2020-01-07 13:39:32.052 [taskGroup-0] INFO  TaskGroupContainer - taskGroup[0] taskId[1] is successed, used[935]ms
+2020-01-07 13:39:32.064 [taskGroup-0] INFO  TaskGroupContainer - taskGroup[0] taskId[9] attemptCount[1] is started
+2020-01-07 13:39:32.065 [0-0-9-reader] INFO  CommonRdbmsReader$Task - Begin to read record by Sql: [select id,name,pass from haha  where  (10 <= id AND id <= 11) 
+] jdbcUrl:[jdbc:mysql://39.97.255.156:3307/lp_test?useUnicode=true&characterEncoding=utf8&yearIsDateType=false&zeroDateTimeBehavior=convertToNull&tinyInt1isBit=false&rewriteBatchedStatements=true].
+2020-01-07 13:39:32.069 [0-0-9-writer] INFO  DBUtil - execute sql:[set session sql_mode='ANSI']
+2020-01-07 13:39:32.080 [0-0-9-writer] INFO  DBUtil - execute sql:[set session sql_mode='ANSI']
+2020-01-07 13:39:32.108 [0-0-7-reader] INFO  CommonRdbmsReader$Task - Finished read record by Sql: [select id,name,pass from haha  where  (8 <= id AND id < 9) 
+] jdbcUrl:[jdbc:mysql://39.97.255.156:3307/lp_test?useUnicode=true&characterEncoding=utf8&yearIsDateType=false&zeroDateTimeBehavior=convertToNull&tinyInt1isBit=false&rewriteBatchedStatements=true].
+2020-01-07 13:39:32.165 [taskGroup-0] INFO  TaskGroupContainer - taskGroup[0] taskId[7] is successed, used[329]ms
+2020-01-07 13:39:32.178 [taskGroup-0] INFO  TaskGroupContainer - taskGroup[0] taskId[10] attemptCount[1] is started
+2020-01-07 13:39:32.179 [0-0-10-reader] INFO  CommonRdbmsReader$Task - Begin to read record by Sql: [select id,name,pass from haha  where  id IS NULL
+] jdbcUrl:[jdbc:mysql://39.97.255.156:3307/lp_test?useUnicode=true&characterEncoding=utf8&yearIsDateType=false&zeroDateTimeBehavior=convertToNull&tinyInt1isBit=false&rewriteBatchedStatements=true].
+2020-01-07 13:39:32.185 [0-0-10-writer] INFO  DBUtil - execute sql:[set session sql_mode='ANSI']
+2020-01-07 13:39:32.198 [0-0-10-writer] INFO  DBUtil - execute sql:[set session sql_mode='ANSI']
+2020-01-07 13:39:32.270 [0-0-6-reader] INFO  CommonRdbmsReader$Task - Finished read record by Sql: [select id,name,pass from haha  where  (7 <= id AND id < 8) 
+] jdbcUrl:[jdbc:mysql://39.97.255.156:3307/lp_test?useUnicode=true&characterEncoding=utf8&yearIsDateType=false&zeroDateTimeBehavior=convertToNull&tinyInt1isBit=false&rewriteBatchedStatements=true].
+2020-01-07 13:39:32.380 [taskGroup-0] INFO  TaskGroupContainer - taskGroup[0] taskId[6] is successed, used[666]ms
+2020-01-07 13:39:32.420 [0-0-5-reader] INFO  CommonRdbmsReader$Task - Finished read record by Sql: [select id,name,pass from haha  where  (6 <= id AND id < 7) 
+] jdbcUrl:[jdbc:mysql://39.97.255.156:3307/lp_test?useUnicode=true&characterEncoding=utf8&yearIsDateType=false&zeroDateTimeBehavior=convertToNull&tinyInt1isBit=false&rewriteBatchedStatements=true].
+2020-01-07 13:39:32.480 [taskGroup-0] INFO  TaskGroupContainer - taskGroup[0] taskId[5] is successed, used[883]ms
+2020-01-07 13:39:32.558 [0-0-10-reader] INFO  CommonRdbmsReader$Task - Finished read record by Sql: [select id,name,pass from haha  where  id IS NULL
+] jdbcUrl:[jdbc:mysql://39.97.255.156:3307/lp_test?useUnicode=true&characterEncoding=utf8&yearIsDateType=false&zeroDateTimeBehavior=convertToNull&tinyInt1isBit=false&rewriteBatchedStatements=true].
+2020-01-07 13:39:32.681 [taskGroup-0] INFO  TaskGroupContainer - taskGroup[0] taskId[10] is successed, used[514]ms
+2020-01-07 13:39:32.718 [0-0-9-reader] INFO  CommonRdbmsReader$Task - Finished read record by Sql: [select id,name,pass from haha  where  (10 <= id AND id <= 11) 
+] jdbcUrl:[jdbc:mysql://39.97.255.156:3307/lp_test?useUnicode=true&characterEncoding=utf8&yearIsDateType=false&zeroDateTimeBehavior=convertToNull&tinyInt1isBit=false&rewriteBatchedStatements=true].
+2020-01-07 13:39:32.857 [0-0-8-reader] INFO  CommonRdbmsReader$Task - Finished read record by Sql: [select id,name,pass from haha  where  (9 <= id AND id < 10) 
+] jdbcUrl:[jdbc:mysql://39.97.255.156:3307/lp_test?useUnicode=true&characterEncoding=utf8&yearIsDateType=false&zeroDateTimeBehavior=convertToNull&tinyInt1isBit=false&rewriteBatchedStatements=true].
+2020-01-07 13:39:32.982 [taskGroup-0] INFO  TaskGroupContainer - taskGroup[0] taskId[9] is successed, used[926]ms
+2020-01-07 13:39:33.183 [taskGroup-0] INFO  TaskGroupContainer - taskGroup[0] taskId[8] is successed, used[1239]ms
+2020-01-07 13:39:33.184 [taskGroup-0] INFO  TaskGroupContainer - taskGroup[0] completed it's tasks.
+2020-01-07 13:39:41.100 [job-0] INFO  StandAloneJobContainerCommunicator - Total 11 records, 92 bytes | Speed 9B/s, 1 records/s | Error 0 records, 0 bytes |  All Task WaitWriterTime 0.000s |  All Task WaitReaderTime 1.803s | Percentage 100.00%
+2020-01-07 13:39:41.101 [job-0] INFO  AbstractScheduler - Scheduler accomplished all tasks.
+2020-01-07 13:39:41.103 [job-0] INFO  JobContainer - DataX Writer.Job [mysqlwriter] do post work.
+2020-01-07 13:39:41.105 [job-0] INFO  JobContainer - DataX Reader.Job [mysqlreader] do post work.
+2020-01-07 13:39:41.106 [job-0] INFO  JobContainer - DataX jobId [0] completed successfully.
+2020-01-07 13:39:41.108 [job-0] INFO  HookInvoker - No hook invoked, because base dir not exists or is a file: /root/dataX/datax/hook
+2020-01-07 13:39:41.111 [job-0] INFO  JobContainer - 
+	 [total cpu info] => 
+		averageCpu                     | maxDeltaCpu                    | minDeltaCpu                    
+		-1.00%                         | -1.00%                         | -1.00%
+                        
+
+	 [total gc info] => 
+		 NAME                 | totalGCCount       | maxDeltaGCCount    | minDeltaGCCount    | totalGCTime        | maxDeltaGCTime     | minDeltaGCTime     
+		 Copy                 | 0                  | 0                  | 0                  | 0.000s             | 0.000s             | 0.000s             
+		 MarkSweepCompact     | 0                  | 0                  | 0                  | 0.000s             | 0.000s             | 0.000s             
+
+2020-01-07 13:39:41.112 [job-0] INFO  JobContainer - PerfTrace not enable!
+2020-01-07 13:39:41.113 [job-0] INFO  StandAloneJobContainerCommunicator - Total 11 records, 92 bytes | Speed 9B/s, 1 records/s | Error 0 records, 0 bytes |  All Task WaitWriterTime 0.000s |  All Task WaitReaderTime 1.803s | Percentage 100.00%
+2020-01-07 13:39:41.115 [job-0] INFO  JobContainer - 
+任务启动时刻                    : 2020-01-07 13:39:29
+任务结束时刻                    : 2020-01-07 13:39:41
+任务总计耗时                    :                 11s
+任务平均流量                    :                9B/s
+记录写入速度                    :              1rec/s
+读出记录总数                    :                  11
+读写失败总数                    :                   0
+
+
+DataX (DATAX-OPENSOURCE-3.0), From Alibaba !
+Copyright (C) 2010-2017, Alibaba Group. All Rights Reserved.
+
+
+2020-01-09 13:35:01.221 [main] INFO  VMInfo - VMInfo# operatingSystem class => sun.management.OperatingSystemImpl
+2020-01-09 13:35:01.236 [main] INFO  Engine - the machine info  => 
+
+	osInfo:	Oracle Corporation 1.8 25.60-b23
+	jvmInfo:	Linux amd64 2.6.32-696.16.1.el6.x86_64
+	cpu num:	1
+
+	totalPhysicalMemory:	-0.00G
+	freePhysicalMemory:	-0.00G
+	maxFileDescriptorCount:	-1
+	currentOpenFileDescriptorCount:	-1
+
+	GC Names	[Copy, MarkSweepCompact]
+
+	MEMORY_NAME                    | allocation_size                | init_size                      
+	Eden Space                     | 273.06MB                       | 273.06MB                       
+	Code Cache                     | 240.00MB                       | 2.44MB                         
+	Survivor Space                 | 34.13MB                        | 34.13MB                        
+	Compressed Class Space         | 1,024.00MB                     | 0.00MB                         
+	Metaspace                      | -0.00MB                        | 0.00MB                         
+	Tenured Gen                    | 682.69MB                       | 682.69MB                       
+
+
+2020-01-09 13:35:01.266 [main] INFO  Engine - 
+{
+	"content":[
+		{
+			"reader":{
+				"name":"mysqlreader",
+				"parameter":{
+					"column":[
+						"id",
+						"name",
+						"pass"
+					],
+					"connection":[
+						{
+							"jdbcUrl":[
+								"jdbc:mysql://39.97.255.156:3307/lp_test?useUnicode=true&characterEncoding=utf8"
+							],
+							"table":[
+								"haha"
+							]
+						}
+					],
+					"password":"**********",
+					"splitPk":"id",
+					"username":"root"
+				}
+			},
+			"writer":{
+				"name":"mysqlwriter",
+				"parameter":{
+					"column":[
+						"id",
+						"name",
+						"pass"
+					],
+					"connection":[
+						{
+							"jdbcUrl":"jdbc:mysql://127.0.0.1:3306/test?useSSL=false&serverTimezone=Asia/Shanghai",
+							"table":[
+								"haha"
+							]
+						}
+					],
+					"password":"******",
+					"preSql":[
+						"truncate haha"
+					],
+					"session":[
+						"set session sql_mode='ANSI'"
+					],
+					"username":"root",
+					"writeMode":"insert"
+				}
+			}
+		}
+	],
+	"setting":{
+		"speed":{
+			"channel":5
+		}
+	}
+}
+
+2020-01-09 13:35:01.292 [main] WARN  Engine - prioriy set to 0, because NumberFormatException, the value is: null
+2020-01-09 13:35:01.294 [main] INFO  PerfTrace - PerfTrace traceId=job_-1, isEnable=false, priority=0
+2020-01-09 13:35:01.294 [main] INFO  JobContainer - DataX jobContainer starts job.
+2020-01-09 13:35:01.302 [main] INFO  JobContainer - Set jobId = 0
+2020-01-09 13:35:02.145 [job-0] INFO  OriginalConfPretreatmentUtil - Available jdbcUrl:jdbc:mysql://39.97.255.156:3307/lp_test?useUnicode=true&characterEncoding=utf8&yearIsDateType=false&zeroDateTimeBehavior=convertToNull&tinyInt1isBit=false&rewriteBatchedStatements=true.
+2020-01-09 13:35:02.457 [job-0] INFO  OriginalConfPretreatmentUtil - table:[haha] has columns:[id,name,pass].
+2020-01-09 13:35:02.916 [job-0] INFO  OriginalConfPretreatmentUtil - table:[haha] all columns:[
+id,name,pass
+].
+2020-01-09 13:35:02.928 [job-0] INFO  OriginalConfPretreatmentUtil - Write data [
+insert INTO %s (id,name,pass) VALUES(?,?,?)
+], which jdbcUrl like:[jdbc:mysql://127.0.0.1:3306/test?useSSL=false&serverTimezone=Asia/Shanghai&yearIsDateType=false&zeroDateTimeBehavior=convertToNull&tinyInt1isBit=false&rewriteBatchedStatements=true]
+2020-01-09 13:35:02.929 [job-0] INFO  JobContainer - jobContainer starts to do prepare ...
+2020-01-09 13:35:02.930 [job-0] INFO  JobContainer - DataX Reader.Job [mysqlreader] do prepare work .
+2020-01-09 13:35:02.932 [job-0] INFO  JobContainer - DataX Writer.Job [mysqlwriter] do prepare work .
+2020-01-09 13:35:02.943 [job-0] INFO  CommonRdbmsWriter$Job - Begin to execute preSqls:[truncate haha]. context info:jdbc:mysql://127.0.0.1:3306/test?useSSL=false&serverTimezone=Asia/Shanghai&yearIsDateType=false&zeroDateTimeBehavior=convertToNull&tinyInt1isBit=false&rewriteBatchedStatements=true.
+2020-01-09 13:35:02.990 [job-0] INFO  JobContainer - jobContainer starts to do split ...
+2020-01-09 13:35:02.992 [job-0] INFO  JobContainer - Job set Channel-Number to 5 channels.
+2020-01-09 13:35:03.278 [job-0] INFO  SingleTableSplitUtil - split pk [sql=SELECT MIN(id),MAX(id) FROM haha] is running... 
+2020-01-09 13:35:03.466 [job-0] INFO  SingleTableSplitUtil - After split(), allQuerySql=[
+select id,name,pass from haha  where  (1 <= id AND id < 2) 
+select id,name,pass from haha  where  (2 <= id AND id < 3) 
+select id,name,pass from haha  where  (3 <= id AND id < 4) 
+select id,name,pass from haha  where  (4 <= id AND id < 5) 
+select id,name,pass from haha  where  (5 <= id AND id < 6) 
+select id,name,pass from haha  where  (6 <= id AND id < 7) 
+select id,name,pass from haha  where  (7 <= id AND id < 8) 
+select id,name,pass from haha  where  (8 <= id AND id < 9) 
+select id,name,pass from haha  where  (9 <= id AND id < 10) 
+select id,name,pass from haha  where  (10 <= id AND id <= 11) 
+select id,name,pass from haha  where  id IS NULL
+].
+2020-01-09 13:35:03.471 [job-0] INFO  JobContainer - DataX Reader.Job [mysqlreader] splits to [11] tasks.
+2020-01-09 13:35:03.478 [job-0] INFO  JobContainer - DataX Writer.Job [mysqlwriter] splits to [11] tasks.
+2020-01-09 13:35:03.549 [job-0] INFO  JobContainer - jobContainer starts to do schedule ...
+2020-01-09 13:35:03.598 [job-0] INFO  JobContainer - Scheduler starts [1] taskGroups.
+2020-01-09 13:35:03.605 [job-0] INFO  JobContainer - Running by standalone Mode.
+2020-01-09 13:35:03.657 [taskGroup-0] INFO  TaskGroupContainer - taskGroupId=[0] start [5] channels for [11] tasks.
+2020-01-09 13:35:03.674 [taskGroup-0] INFO  Channel - Channel set byte_speed_limit to -1, No bps activated.
+2020-01-09 13:35:03.677 [taskGroup-0] INFO  Channel - Channel set record_speed_limit to -1, No tps activated.
+2020-01-09 13:35:03.715 [taskGroup-0] INFO  TaskGroupContainer - taskGroup[0] taskId[0] attemptCount[1] is started
+2020-01-09 13:35:03.732 [0-0-0-reader] INFO  CommonRdbmsReader$Task - Begin to read record by Sql: [select id,name,pass from haha  where  (1 <= id AND id < 2) 
+] jdbcUrl:[jdbc:mysql://39.97.255.156:3307/lp_test?useUnicode=true&characterEncoding=utf8&yearIsDateType=false&zeroDateTimeBehavior=convertToNull&tinyInt1isBit=false&rewriteBatchedStatements=true].
+2020-01-09 13:35:03.740 [taskGroup-0] INFO  TaskGroupContainer - taskGroup[0] taskId[1] attemptCount[1] is started
+2020-01-09 13:35:03.742 [0-0-1-reader] INFO  CommonRdbmsReader$Task - Begin to read record by Sql: [select id,name,pass from haha  where  (2 <= id AND id < 3) 
+] jdbcUrl:[jdbc:mysql://39.97.255.156:3307/lp_test?useUnicode=true&characterEncoding=utf8&yearIsDateType=false&zeroDateTimeBehavior=convertToNull&tinyInt1isBit=false&rewriteBatchedStatements=true].
+2020-01-09 13:35:03.753 [0-0-0-writer] INFO  DBUtil - execute sql:[set session sql_mode='ANSI']
+2020-01-09 13:35:03.757 [0-0-2-reader] INFO  CommonRdbmsReader$Task - Begin to read record by Sql: [select id,name,pass from haha  where  (3 <= id AND id < 4) 
+] jdbcUrl:[jdbc:mysql://39.97.255.156:3307/lp_test?useUnicode=true&characterEncoding=utf8&yearIsDateType=false&zeroDateTimeBehavior=convertToNull&tinyInt1isBit=false&rewriteBatchedStatements=true].
+2020-01-09 13:35:03.756 [taskGroup-0] INFO  TaskGroupContainer - taskGroup[0] taskId[2] attemptCount[1] is started
+2020-01-09 13:35:03.767 [0-0-1-writer] INFO  DBUtil - execute sql:[set session sql_mode='ANSI']
+2020-01-09 13:35:03.772 [0-0-2-writer] INFO  DBUtil - execute sql:[set session sql_mode='ANSI']
+2020-01-09 13:35:03.773 [taskGroup-0] INFO  TaskGroupContainer - taskGroup[0] taskId[3] attemptCount[1] is started
+2020-01-09 13:35:03.775 [0-0-3-reader] INFO  CommonRdbmsReader$Task - Begin to read record by Sql: [select id,name,pass from haha  where  (4 <= id AND id < 5) 
+] jdbcUrl:[jdbc:mysql://39.97.255.156:3307/lp_test?useUnicode=true&characterEncoding=utf8&yearIsDateType=false&zeroDateTimeBehavior=convertToNull&tinyInt1isBit=false&rewriteBatchedStatements=true].
+2020-01-09 13:35:03.781 [0-0-1-writer] INFO  DBUtil - execute sql:[set session sql_mode='ANSI']
+2020-01-09 13:35:03.788 [taskGroup-0] INFO  TaskGroupContainer - taskGroup[0] taskId[4] attemptCount[1] is started
+2020-01-09 13:35:03.789 [0-0-4-reader] INFO  CommonRdbmsReader$Task - Begin to read record by Sql: [select id,name,pass from haha  where  (5 <= id AND id < 6) 
+] jdbcUrl:[jdbc:mysql://39.97.255.156:3307/lp_test?useUnicode=true&characterEncoding=utf8&yearIsDateType=false&zeroDateTimeBehavior=convertToNull&tinyInt1isBit=false&rewriteBatchedStatements=true].
+2020-01-09 13:35:03.800 [0-0-2-writer] INFO  DBUtil - execute sql:[set session sql_mode='ANSI']
+2020-01-09 13:35:03.807 [0-0-0-writer] INFO  DBUtil - execute sql:[set session sql_mode='ANSI']
+2020-01-09 13:35:03.810 [0-0-4-writer] INFO  DBUtil - execute sql:[set session sql_mode='ANSI']
+2020-01-09 13:35:03.810 [0-0-3-writer] INFO  DBUtil - execute sql:[set session sql_mode='ANSI']
+2020-01-09 13:35:03.815 [0-0-3-writer] INFO  DBUtil - execute sql:[set session sql_mode='ANSI']
+2020-01-09 13:35:03.836 [0-0-4-writer] INFO  DBUtil - execute sql:[set session sql_mode='ANSI']
+2020-01-09 13:35:04.108 [0-0-0-reader] INFO  CommonRdbmsReader$Task - Finished read record by Sql: [select id,name,pass from haha  where  (1 <= id AND id < 2) 
+] jdbcUrl:[jdbc:mysql://39.97.255.156:3307/lp_test?useUnicode=true&characterEncoding=utf8&yearIsDateType=false&zeroDateTimeBehavior=convertToNull&tinyInt1isBit=false&rewriteBatchedStatements=true].
+2020-01-09 13:35:04.357 [0-0-4-reader] INFO  CommonRdbmsReader$Task - Finished read record by Sql: [select id,name,pass from haha  where  (5 <= id AND id < 6) 
+] jdbcUrl:[jdbc:mysql://39.97.255.156:3307/lp_test?useUnicode=true&characterEncoding=utf8&yearIsDateType=false&zeroDateTimeBehavior=convertToNull&tinyInt1isBit=false&rewriteBatchedStatements=true].
+2020-01-09 13:35:04.491 [taskGroup-0] INFO  TaskGroupContainer - taskGroup[0] taskId[0] is successed, used[784]ms
+2020-01-09 13:35:04.491 [taskGroup-0] INFO  TaskGroupContainer - taskGroup[0] taskId[4] is successed, used[714]ms
+2020-01-09 13:35:04.498 [taskGroup-0] INFO  TaskGroupContainer - taskGroup[0] taskId[5] attemptCount[1] is started
+2020-01-09 13:35:04.499 [0-0-5-reader] INFO  CommonRdbmsReader$Task - Begin to read record by Sql: [select id,name,pass from haha  where  (6 <= id AND id < 7) 
+] jdbcUrl:[jdbc:mysql://39.97.255.156:3307/lp_test?useUnicode=true&characterEncoding=utf8&yearIsDateType=false&zeroDateTimeBehavior=convertToNull&tinyInt1isBit=false&rewriteBatchedStatements=true].
+2020-01-09 13:35:04.508 [0-0-5-writer] INFO  DBUtil - execute sql:[set session sql_mode='ANSI']
+2020-01-09 13:35:04.510 [taskGroup-0] INFO  TaskGroupContainer - taskGroup[0] taskId[6] attemptCount[1] is started
+2020-01-09 13:35:04.511 [0-0-6-reader] INFO  CommonRdbmsReader$Task - Begin to read record by Sql: [select id,name,pass from haha  where  (7 <= id AND id < 8) 
+] jdbcUrl:[jdbc:mysql://39.97.255.156:3307/lp_test?useUnicode=true&characterEncoding=utf8&yearIsDateType=false&zeroDateTimeBehavior=convertToNull&tinyInt1isBit=false&rewriteBatchedStatements=true].
+2020-01-09 13:35:04.523 [0-0-5-writer] INFO  DBUtil - execute sql:[set session sql_mode='ANSI']
+2020-01-09 13:35:04.524 [0-0-6-writer] INFO  DBUtil - execute sql:[set session sql_mode='ANSI']
+2020-01-09 13:35:04.535 [0-0-6-writer] INFO  DBUtil - execute sql:[set session sql_mode='ANSI']
+2020-01-09 13:35:04.635 [0-0-3-reader] INFO  CommonRdbmsReader$Task - Finished read record by Sql: [select id,name,pass from haha  where  (4 <= id AND id < 5) 
+] jdbcUrl:[jdbc:mysql://39.97.255.156:3307/lp_test?useUnicode=true&characterEncoding=utf8&yearIsDateType=false&zeroDateTimeBehavior=convertToNull&tinyInt1isBit=false&rewriteBatchedStatements=true].
+2020-01-09 13:35:04.903 [0-0-2-reader] INFO  CommonRdbmsReader$Task - Finished read record by Sql: [select id,name,pass from haha  where  (3 <= id AND id < 4) 
+] jdbcUrl:[jdbc:mysql://39.97.255.156:3307/lp_test?useUnicode=true&characterEncoding=utf8&yearIsDateType=false&zeroDateTimeBehavior=convertToNull&tinyInt1isBit=false&rewriteBatchedStatements=true].
+2020-01-09 13:35:05.012 [taskGroup-0] INFO  TaskGroupContainer - taskGroup[0] taskId[2] is successed, used[1269]ms
+2020-01-09 13:35:05.012 [taskGroup-0] INFO  TaskGroupContainer - taskGroup[0] taskId[3] is successed, used[1250]ms
+2020-01-09 13:35:05.030 [0-0-7-writer] INFO  DBUtil - execute sql:[set session sql_mode='ANSI']
+2020-01-09 13:35:05.037 [taskGroup-0] INFO  TaskGroupContainer - taskGroup[0] taskId[7] attemptCount[1] is started
+2020-01-09 13:35:05.038 [0-0-7-reader] INFO  CommonRdbmsReader$Task - Begin to read record by Sql: [select id,name,pass from haha  where  (8 <= id AND id < 9) 
+] jdbcUrl:[jdbc:mysql://39.97.255.156:3307/lp_test?useUnicode=true&characterEncoding=utf8&yearIsDateType=false&zeroDateTimeBehavior=convertToNull&tinyInt1isBit=false&rewriteBatchedStatements=true].
+2020-01-09 13:35:05.049 [taskGroup-0] INFO  TaskGroupContainer - taskGroup[0] taskId[8] attemptCount[1] is started
+2020-01-09 13:35:05.050 [0-0-8-reader] INFO  CommonRdbmsReader$Task - Begin to read record by Sql: [select id,name,pass from haha  where  (9 <= id AND id < 10) 
+] jdbcUrl:[jdbc:mysql://39.97.255.156:3307/lp_test?useUnicode=true&characterEncoding=utf8&yearIsDateType=false&zeroDateTimeBehavior=convertToNull&tinyInt1isBit=false&rewriteBatchedStatements=true].
+2020-01-09 13:35:05.058 [0-0-8-writer] INFO  DBUtil - execute sql:[set session sql_mode='ANSI']
+2020-01-09 13:35:05.060 [0-0-7-writer] INFO  DBUtil - execute sql:[set session sql_mode='ANSI']
+2020-01-09 13:35:05.078 [0-0-8-writer] INFO  DBUtil - execute sql:[set session sql_mode='ANSI']
+2020-01-09 13:35:05.153 [0-0-1-reader] INFO  CommonRdbmsReader$Task - Finished read record by Sql: [select id,name,pass from haha  where  (2 <= id AND id < 3) 
+] jdbcUrl:[jdbc:mysql://39.97.255.156:3307/lp_test?useUnicode=true&characterEncoding=utf8&yearIsDateType=false&zeroDateTimeBehavior=convertToNull&tinyInt1isBit=false&rewriteBatchedStatements=true].
+2020-01-09 13:35:05.250 [taskGroup-0] INFO  TaskGroupContainer - taskGroup[0] taskId[1] is successed, used[1517]ms
+2020-01-09 13:35:05.258 [taskGroup-0] INFO  TaskGroupContainer - taskGroup[0] taskId[9] attemptCount[1] is started
+2020-01-09 13:35:05.259 [0-0-9-reader] INFO  CommonRdbmsReader$Task - Begin to read record by Sql: [select id,name,pass from haha  where  (10 <= id AND id <= 11) 
+] jdbcUrl:[jdbc:mysql://39.97.255.156:3307/lp_test?useUnicode=true&characterEncoding=utf8&yearIsDateType=false&zeroDateTimeBehavior=convertToNull&tinyInt1isBit=false&rewriteBatchedStatements=true].
+2020-01-09 13:35:05.269 [0-0-9-writer] INFO  DBUtil - execute sql:[set session sql_mode='ANSI']
+2020-01-09 13:35:05.276 [0-0-9-writer] INFO  DBUtil - execute sql:[set session sql_mode='ANSI']
+2020-01-09 13:35:05.413 [0-0-8-reader] INFO  CommonRdbmsReader$Task - Finished read record by Sql: [select id,name,pass from haha  where  (9 <= id AND id < 10) 
+] jdbcUrl:[jdbc:mysql://39.97.255.156:3307/lp_test?useUnicode=true&characterEncoding=utf8&yearIsDateType=false&zeroDateTimeBehavior=convertToNull&tinyInt1isBit=false&rewriteBatchedStatements=true].
+2020-01-09 13:35:05.559 [taskGroup-0] INFO  TaskGroupContainer - taskGroup[0] taskId[8] is successed, used[519]ms
+2020-01-09 13:35:05.568 [taskGroup-0] INFO  TaskGroupContainer - taskGroup[0] taskId[10] attemptCount[1] is started
+2020-01-09 13:35:05.569 [0-0-10-reader] INFO  CommonRdbmsReader$Task - Begin to read record by Sql: [select id,name,pass from haha  where  id IS NULL
+] jdbcUrl:[jdbc:mysql://39.97.255.156:3307/lp_test?useUnicode=true&characterEncoding=utf8&yearIsDateType=false&zeroDateTimeBehavior=convertToNull&tinyInt1isBit=false&rewriteBatchedStatements=true].
+2020-01-09 13:35:05.578 [0-0-10-writer] INFO  DBUtil - execute sql:[set session sql_mode='ANSI']
+2020-01-09 13:35:05.591 [0-0-10-writer] INFO  DBUtil - execute sql:[set session sql_mode='ANSI']
+2020-01-09 13:35:05.681 [0-0-7-reader] INFO  CommonRdbmsReader$Task - Finished read record by Sql: [select id,name,pass from haha  where  (8 <= id AND id < 9) 
+] jdbcUrl:[jdbc:mysql://39.97.255.156:3307/lp_test?useUnicode=true&characterEncoding=utf8&yearIsDateType=false&zeroDateTimeBehavior=convertToNull&tinyInt1isBit=false&rewriteBatchedStatements=true].
+2020-01-09 13:35:05.769 [taskGroup-0] INFO  TaskGroupContainer - taskGroup[0] taskId[7] is successed, used[752]ms
+2020-01-09 13:35:05.942 [0-0-6-reader] INFO  CommonRdbmsReader$Task - Finished read record by Sql: [select id,name,pass from haha  where  (7 <= id AND id < 8) 
+] jdbcUrl:[jdbc:mysql://39.97.255.156:3307/lp_test?useUnicode=true&characterEncoding=utf8&yearIsDateType=false&zeroDateTimeBehavior=convertToNull&tinyInt1isBit=false&rewriteBatchedStatements=true].
+2020-01-09 13:35:06.070 [taskGroup-0] INFO  TaskGroupContainer - taskGroup[0] taskId[6] is successed, used[1570]ms
+2020-01-09 13:35:06.206 [0-0-5-reader] INFO  CommonRdbmsReader$Task - Finished read record by Sql: [select id,name,pass from haha  where  (6 <= id AND id < 7) 
+] jdbcUrl:[jdbc:mysql://39.97.255.156:3307/lp_test?useUnicode=true&characterEncoding=utf8&yearIsDateType=false&zeroDateTimeBehavior=convertToNull&tinyInt1isBit=false&rewriteBatchedStatements=true].
+2020-01-09 13:35:06.371 [taskGroup-0] INFO  TaskGroupContainer - taskGroup[0] taskId[5] is successed, used[1878]ms
+2020-01-09 13:35:06.465 [0-0-10-reader] INFO  CommonRdbmsReader$Task - Finished read record by Sql: [select id,name,pass from haha  where  id IS NULL
+] jdbcUrl:[jdbc:mysql://39.97.255.156:3307/lp_test?useUnicode=true&characterEncoding=utf8&yearIsDateType=false&zeroDateTimeBehavior=convertToNull&tinyInt1isBit=false&rewriteBatchedStatements=true].
+2020-01-09 13:35:06.572 [taskGroup-0] INFO  TaskGroupContainer - taskGroup[0] taskId[10] is successed, used[1010]ms
+2020-01-09 13:35:06.721 [0-0-9-reader] INFO  CommonRdbmsReader$Task - Finished read record by Sql: [select id,name,pass from haha  where  (10 <= id AND id <= 11) 
+] jdbcUrl:[jdbc:mysql://39.97.255.156:3307/lp_test?useUnicode=true&characterEncoding=utf8&yearIsDateType=false&zeroDateTimeBehavior=convertToNull&tinyInt1isBit=false&rewriteBatchedStatements=true].
+2020-01-09 13:35:07.074 [taskGroup-0] INFO  TaskGroupContainer - taskGroup[0] taskId[9] is successed, used[1821]ms
+2020-01-09 13:35:07.075 [taskGroup-0] INFO  TaskGroupContainer - taskGroup[0] completed it's tasks.
+2020-01-09 13:35:13.692 [job-0] INFO  StandAloneJobContainerCommunicator - Total 11 records, 92 bytes | Speed 9B/s, 1 records/s | Error 0 records, 0 bytes |  All Task WaitWriterTime 0.000s |  All Task WaitReaderTime 2.755s | Percentage 100.00%
+2020-01-09 13:35:13.697 [job-0] INFO  AbstractScheduler - Scheduler accomplished all tasks.
+2020-01-09 13:35:13.698 [job-0] INFO  JobContainer - DataX Writer.Job [mysqlwriter] do post work.
+2020-01-09 13:35:13.698 [job-0] INFO  JobContainer - DataX Reader.Job [mysqlreader] do post work.
+2020-01-09 13:35:13.698 [job-0] INFO  JobContainer - DataX jobId [0] completed successfully.
+2020-01-09 13:35:13.699 [job-0] INFO  HookInvoker - No hook invoked, because base dir not exists or is a file: /root/dataX/datax/hook
+2020-01-09 13:35:13.700 [job-0] INFO  JobContainer - 
+	 [total cpu info] => 
+		averageCpu                     | maxDeltaCpu                    | minDeltaCpu                    
+		-1.00%                         | -1.00%                         | -1.00%
+                        
+
+	 [total gc info] => 
+		 NAME                 | totalGCCount       | maxDeltaGCCount    | minDeltaGCCount    | totalGCTime        | maxDeltaGCTime     | minDeltaGCTime     
+		 Copy                 | 0                  | 0                  | 0                  | 0.000s             | 0.000s             | 0.000s             
+		 MarkSweepCompact     | 0                  | 0                  | 0                  | 0.000s             | 0.000s             | 0.000s             
+
+2020-01-09 13:35:13.701 [job-0] INFO  JobContainer - PerfTrace not enable!
+2020-01-09 13:35:13.704 [job-0] INFO  StandAloneJobContainerCommunicator - Total 11 records, 92 bytes | Speed 9B/s, 1 records/s | Error 0 records, 0 bytes |  All Task WaitWriterTime 0.000s |  All Task WaitReaderTime 2.755s | Percentage 100.00%
+2020-01-09 13:35:13.709 [job-0] INFO  JobContainer - 
+任务启动时刻                    : 2020-01-09 13:35:01
+任务结束时刻                    : 2020-01-09 13:35:13
+任务总计耗时                    :                 12s
+任务平均流量                    :                9B/s
+记录写入速度                    :              1rec/s
+读出记录总数                    :                  11
+读写失败总数                    :                   0
+
+
+DataX (DATAX-OPENSOURCE-3.0), From Alibaba !
+Copyright (C) 2010-2017, Alibaba Group. All Rights Reserved.
+
+
+2020-01-09 13:40:00.494 [main] INFO  VMInfo - VMInfo# operatingSystem class => sun.management.OperatingSystemImpl
+2020-01-09 13:40:00.508 [main] INFO  Engine - the machine info  => 
+
+	osInfo:	Oracle Corporation 1.8 25.60-b23
+	jvmInfo:	Linux amd64 2.6.32-696.16.1.el6.x86_64
+	cpu num:	1
+
+	totalPhysicalMemory:	-0.00G
+	freePhysicalMemory:	-0.00G
+	maxFileDescriptorCount:	-1
+	currentOpenFileDescriptorCount:	-1
+
+	GC Names	[Copy, MarkSweepCompact]
+
+	MEMORY_NAME                    | allocation_size                | init_size                      
+	Eden Space                     | 273.06MB                       | 273.06MB                       
+	Code Cache                     | 240.00MB                       | 2.44MB                         
+	Survivor Space                 | 34.13MB                        | 34.13MB                        
+	Compressed Class Space         | 1,024.00MB                     | 0.00MB                         
+	Metaspace                      | -0.00MB                        | 0.00MB                         
+	Tenured Gen                    | 682.69MB                       | 682.69MB                       
+
+
+2020-01-09 13:40:00.545 [main] INFO  Engine - 
+{
+	"content":[
+		{
+			"reader":{
+				"name":"mysqlreader",
+				"parameter":{
+					"column":[
+						"id",
+						"name",
+						"pass"
+					],
+					"connection":[
+						{
+							"jdbcUrl":[
+								"jdbc:mysql://39.97.255.156:3307/lp_test?useUnicode=true&characterEncoding=utf8"
+							],
+							"table":[
+								"haha"
+							]
+						}
+					],
+					"password":"**********",
+					"splitPk":"id",
+					"username":"root"
+				}
+			},
+			"writer":{
+				"name":"mysqlwriter",
+				"parameter":{
+					"column":[
+						"id",
+						"name",
+						"pass"
+					],
+					"connection":[
+						{
+							"jdbcUrl":"jdbc:mysql://127.0.0.1:3306/test?useSSL=false&serverTimezone=Asia/Shanghai",
+							"table":[
+								"haha"
+							]
+						}
+					],
+					"password":"******",
+					"preSql":[
+						"truncate haha"
+					],
+					"session":[
+						"set session sql_mode='ANSI'"
+					],
+					"username":"root",
+					"writeMode":"insert"
+				}
+			}
+		}
+	],
+	"setting":{
+		"speed":{
+			"channel":5
+		}
+	}
+}
+
+2020-01-09 13:40:00.571 [main] WARN  Engine - prioriy set to 0, because NumberFormatException, the value is: null
+2020-01-09 13:40:00.573 [main] INFO  PerfTrace - PerfTrace traceId=job_-1, isEnable=false, priority=0
+2020-01-09 13:40:00.573 [main] INFO  JobContainer - DataX jobContainer starts job.
+2020-01-09 13:40:00.579 [main] INFO  JobContainer - Set jobId = 0
+2020-01-09 13:40:01.539 [job-0] INFO  OriginalConfPretreatmentUtil - Available jdbcUrl:jdbc:mysql://39.97.255.156:3307/lp_test?useUnicode=true&characterEncoding=utf8&yearIsDateType=false&zeroDateTimeBehavior=convertToNull&tinyInt1isBit=false&rewriteBatchedStatements=true.
+2020-01-09 13:40:01.848 [job-0] INFO  OriginalConfPretreatmentUtil - table:[haha] has columns:[id,name,pass].
+2020-01-09 13:40:02.329 [job-0] INFO  OriginalConfPretreatmentUtil - table:[haha] all columns:[
+id,name,pass
+].
+2020-01-09 13:40:02.342 [job-0] INFO  OriginalConfPretreatmentUtil - Write data [
+insert INTO %s (id,name,pass) VALUES(?,?,?)
+], which jdbcUrl like:[jdbc:mysql://127.0.0.1:3306/test?useSSL=false&serverTimezone=Asia/Shanghai&yearIsDateType=false&zeroDateTimeBehavior=convertToNull&tinyInt1isBit=false&rewriteBatchedStatements=true]
+2020-01-09 13:40:02.344 [job-0] INFO  JobContainer - jobContainer starts to do prepare ...
+2020-01-09 13:40:02.345 [job-0] INFO  JobContainer - DataX Reader.Job [mysqlreader] do prepare work .
+2020-01-09 13:40:02.347 [job-0] INFO  JobContainer - DataX Writer.Job [mysqlwriter] do prepare work .
+2020-01-09 13:40:02.359 [job-0] INFO  CommonRdbmsWriter$Job - Begin to execute preSqls:[truncate haha]. context info:jdbc:mysql://127.0.0.1:3306/test?useSSL=false&serverTimezone=Asia/Shanghai&yearIsDateType=false&zeroDateTimeBehavior=convertToNull&tinyInt1isBit=false&rewriteBatchedStatements=true.
+2020-01-09 13:40:02.413 [job-0] INFO  JobContainer - jobContainer starts to do split ...
+2020-01-09 13:40:02.416 [job-0] INFO  JobContainer - Job set Channel-Number to 5 channels.
+2020-01-09 13:40:02.694 [job-0] INFO  SingleTableSplitUtil - split pk [sql=SELECT MIN(id),MAX(id) FROM haha] is running... 
+2020-01-09 13:40:02.881 [job-0] INFO  SingleTableSplitUtil - After split(), allQuerySql=[
+select id,name,pass from haha  where  (1 <= id AND id < 2) 
+select id,name,pass from haha  where  (2 <= id AND id < 3) 
+select id,name,pass from haha  where  (3 <= id AND id < 4) 
+select id,name,pass from haha  where  (4 <= id AND id < 5) 
+select id,name,pass from haha  where  (5 <= id AND id < 6) 
+select id,name,pass from haha  where  (6 <= id AND id < 7) 
+select id,name,pass from haha  where  (7 <= id AND id < 8) 
+select id,name,pass from haha  where  (8 <= id AND id < 9) 
+select id,name,pass from haha  where  (9 <= id AND id < 10) 
+select id,name,pass from haha  where  (10 <= id AND id <= 11) 
+select id,name,pass from haha  where  id IS NULL
+].
+2020-01-09 13:40:02.884 [job-0] INFO  JobContainer - DataX Reader.Job [mysqlreader] splits to [11] tasks.
+2020-01-09 13:40:02.893 [job-0] INFO  JobContainer - DataX Writer.Job [mysqlwriter] splits to [11] tasks.
+2020-01-09 13:40:02.968 [job-0] INFO  JobContainer - jobContainer starts to do schedule ...
+2020-01-09 13:40:02.998 [job-0] INFO  JobContainer - Scheduler starts [1] taskGroups.
+2020-01-09 13:40:03.009 [job-0] INFO  JobContainer - Running by standalone Mode.
+2020-01-09 13:40:03.044 [taskGroup-0] INFO  TaskGroupContainer - taskGroupId=[0] start [5] channels for [11] tasks.
+2020-01-09 13:40:03.062 [taskGroup-0] INFO  Channel - Channel set byte_speed_limit to -1, No bps activated.
+2020-01-09 13:40:03.066 [taskGroup-0] INFO  Channel - Channel set record_speed_limit to -1, No tps activated.
+2020-01-09 13:40:03.088 [taskGroup-0] INFO  TaskGroupContainer - taskGroup[0] taskId[0] attemptCount[1] is started
+2020-01-09 13:40:03.100 [taskGroup-0] INFO  TaskGroupContainer - taskGroup[0] taskId[1] attemptCount[1] is started
+2020-01-09 13:40:03.110 [0-0-1-reader] INFO  CommonRdbmsReader$Task - Begin to read record by Sql: [select id,name,pass from haha  where  (2 <= id AND id < 3) 
+] jdbcUrl:[jdbc:mysql://39.97.255.156:3307/lp_test?useUnicode=true&characterEncoding=utf8&yearIsDateType=false&zeroDateTimeBehavior=convertToNull&tinyInt1isBit=false&rewriteBatchedStatements=true].
+2020-01-09 13:40:03.112 [0-0-0-reader] INFO  CommonRdbmsReader$Task - Begin to read record by Sql: [select id,name,pass from haha  where  (1 <= id AND id < 2) 
+] jdbcUrl:[jdbc:mysql://39.97.255.156:3307/lp_test?useUnicode=true&characterEncoding=utf8&yearIsDateType=false&zeroDateTimeBehavior=convertToNull&tinyInt1isBit=false&rewriteBatchedStatements=true].
+2020-01-09 13:40:03.115 [taskGroup-0] INFO  TaskGroupContainer - taskGroup[0] taskId[2] attemptCount[1] is started
+2020-01-09 13:40:03.115 [0-0-2-reader] INFO  CommonRdbmsReader$Task - Begin to read record by Sql: [select id,name,pass from haha  where  (3 <= id AND id < 4) 
+] jdbcUrl:[jdbc:mysql://39.97.255.156:3307/lp_test?useUnicode=true&characterEncoding=utf8&yearIsDateType=false&zeroDateTimeBehavior=convertToNull&tinyInt1isBit=false&rewriteBatchedStatements=true].
+2020-01-09 13:40:03.124 [0-0-0-writer] INFO  DBUtil - execute sql:[set session sql_mode='ANSI']
+2020-01-09 13:40:03.130 [0-0-2-writer] INFO  DBUtil - execute sql:[set session sql_mode='ANSI']
+2020-01-09 13:40:03.133 [taskGroup-0] INFO  TaskGroupContainer - taskGroup[0] taskId[3] attemptCount[1] is started
+2020-01-09 13:40:03.136 [0-0-3-reader] INFO  CommonRdbmsReader$Task - Begin to read record by Sql: [select id,name,pass from haha  where  (4 <= id AND id < 5) 
+] jdbcUrl:[jdbc:mysql://39.97.255.156:3307/lp_test?useUnicode=true&characterEncoding=utf8&yearIsDateType=false&zeroDateTimeBehavior=convertToNull&tinyInt1isBit=false&rewriteBatchedStatements=true].
+2020-01-09 13:40:03.145 [taskGroup-0] INFO  TaskGroupContainer - taskGroup[0] taskId[4] attemptCount[1] is started
+2020-01-09 13:40:03.146 [0-0-4-reader] INFO  CommonRdbmsReader$Task - Begin to read record by Sql: [select id,name,pass from haha  where  (5 <= id AND id < 6) 
+] jdbcUrl:[jdbc:mysql://39.97.255.156:3307/lp_test?useUnicode=true&characterEncoding=utf8&yearIsDateType=false&zeroDateTimeBehavior=convertToNull&tinyInt1isBit=false&rewriteBatchedStatements=true].
+2020-01-09 13:40:03.154 [0-0-3-writer] INFO  DBUtil - execute sql:[set session sql_mode='ANSI']
+2020-01-09 13:40:03.156 [0-0-1-writer] INFO  DBUtil - execute sql:[set session sql_mode='ANSI']
+2020-01-09 13:40:03.170 [0-0-4-writer] INFO  DBUtil - execute sql:[set session sql_mode='ANSI']
+2020-01-09 13:40:03.180 [0-0-1-writer] INFO  DBUtil - execute sql:[set session sql_mode='ANSI']
+2020-01-09 13:40:03.180 [0-0-2-writer] INFO  DBUtil - execute sql:[set session sql_mode='ANSI']
+2020-01-09 13:40:03.179 [0-0-0-writer] INFO  DBUtil - execute sql:[set session sql_mode='ANSI']
+2020-01-09 13:40:03.179 [0-0-3-writer] INFO  DBUtil - execute sql:[set session sql_mode='ANSI']
+2020-01-09 13:40:03.196 [0-0-4-writer] INFO  DBUtil - execute sql:[set session sql_mode='ANSI']
+2020-01-09 13:40:03.489 [0-0-1-reader] INFO  CommonRdbmsReader$Task - Finished read record by Sql: [select id,name,pass from haha  where  (2 <= id AND id < 3) 
+] jdbcUrl:[jdbc:mysql://39.97.255.156:3307/lp_test?useUnicode=true&characterEncoding=utf8&yearIsDateType=false&zeroDateTimeBehavior=convertToNull&tinyInt1isBit=false&rewriteBatchedStatements=true].
+2020-01-09 13:40:03.748 [0-0-4-reader] INFO  CommonRdbmsReader$Task - Finished read record by Sql: [select id,name,pass from haha  where  (5 <= id AND id < 6) 
+] jdbcUrl:[jdbc:mysql://39.97.255.156:3307/lp_test?useUnicode=true&characterEncoding=utf8&yearIsDateType=false&zeroDateTimeBehavior=convertToNull&tinyInt1isBit=false&rewriteBatchedStatements=true].
+2020-01-09 13:40:03.848 [taskGroup-0] INFO  TaskGroupContainer - taskGroup[0] taskId[1] is successed, used[757]ms
+2020-01-09 13:40:03.849 [taskGroup-0] INFO  TaskGroupContainer - taskGroup[0] taskId[4] is successed, used[711]ms
+2020-01-09 13:40:03.864 [taskGroup-0] INFO  TaskGroupContainer - taskGroup[0] taskId[5] attemptCount[1] is started
+2020-01-09 13:40:03.867 [0-0-5-reader] INFO  CommonRdbmsReader$Task - Begin to read record by Sql: [select id,name,pass from haha  where  (6 <= id AND id < 7) 
+] jdbcUrl:[jdbc:mysql://39.97.255.156:3307/lp_test?useUnicode=true&characterEncoding=utf8&yearIsDateType=false&zeroDateTimeBehavior=convertToNull&tinyInt1isBit=false&rewriteBatchedStatements=true].
+2020-01-09 13:40:03.877 [taskGroup-0] INFO  TaskGroupContainer - taskGroup[0] taskId[6] attemptCount[1] is started
+2020-01-09 13:40:03.878 [0-0-6-reader] INFO  CommonRdbmsReader$Task - Begin to read record by Sql: [select id,name,pass from haha  where  (7 <= id AND id < 8) 
+] jdbcUrl:[jdbc:mysql://39.97.255.156:3307/lp_test?useUnicode=true&characterEncoding=utf8&yearIsDateType=false&zeroDateTimeBehavior=convertToNull&tinyInt1isBit=false&rewriteBatchedStatements=true].
+2020-01-09 13:40:03.880 [0-0-5-writer] INFO  DBUtil - execute sql:[set session sql_mode='ANSI']
+2020-01-09 13:40:03.885 [0-0-6-writer] INFO  DBUtil - execute sql:[set session sql_mode='ANSI']
+2020-01-09 13:40:03.907 [0-0-5-writer] INFO  DBUtil - execute sql:[set session sql_mode='ANSI']
+2020-01-09 13:40:03.911 [0-0-6-writer] INFO  DBUtil - execute sql:[set session sql_mode='ANSI']
+2020-01-09 13:40:04.004 [0-0-3-reader] INFO  CommonRdbmsReader$Task - Finished read record by Sql: [select id,name,pass from haha  where  (4 <= id AND id < 5) 
+] jdbcUrl:[jdbc:mysql://39.97.255.156:3307/lp_test?useUnicode=true&characterEncoding=utf8&yearIsDateType=false&zeroDateTimeBehavior=convertToNull&tinyInt1isBit=false&rewriteBatchedStatements=true].
+2020-01-09 13:40:04.179 [taskGroup-0] INFO  TaskGroupContainer - taskGroup[0] taskId[3] is successed, used[1062]ms
+2020-01-09 13:40:04.193 [taskGroup-0] INFO  TaskGroupContainer - taskGroup[0] taskId[7] attemptCount[1] is started
+2020-01-09 13:40:04.194 [0-0-7-reader] INFO  CommonRdbmsReader$Task - Begin to read record by Sql: [select id,name,pass from haha  where  (8 <= id AND id < 9) 
+] jdbcUrl:[jdbc:mysql://39.97.255.156:3307/lp_test?useUnicode=true&characterEncoding=utf8&yearIsDateType=false&zeroDateTimeBehavior=convertToNull&tinyInt1isBit=false&rewriteBatchedStatements=true].
+2020-01-09 13:40:04.202 [0-0-7-writer] INFO  DBUtil - execute sql:[set session sql_mode='ANSI']
+2020-01-09 13:40:04.215 [0-0-7-writer] INFO  DBUtil - execute sql:[set session sql_mode='ANSI']
+2020-01-09 13:40:04.284 [0-0-2-reader] INFO  CommonRdbmsReader$Task - Finished read record by Sql: [select id,name,pass from haha  where  (3 <= id AND id < 4) 
+] jdbcUrl:[jdbc:mysql://39.97.255.156:3307/lp_test?useUnicode=true&characterEncoding=utf8&yearIsDateType=false&zeroDateTimeBehavior=convertToNull&tinyInt1isBit=false&rewriteBatchedStatements=true].
+2020-01-09 13:40:04.540 [0-0-0-reader] INFO  CommonRdbmsReader$Task - Finished read record by Sql: [select id,name,pass from haha  where  (1 <= id AND id < 2) 
+] jdbcUrl:[jdbc:mysql://39.97.255.156:3307/lp_test?useUnicode=true&characterEncoding=utf8&yearIsDateType=false&zeroDateTimeBehavior=convertToNull&tinyInt1isBit=false&rewriteBatchedStatements=true].
+2020-01-09 13:40:04.595 [taskGroup-0] INFO  TaskGroupContainer - taskGroup[0] taskId[2] is successed, used[1490]ms
+2020-01-09 13:40:04.606 [taskGroup-0] INFO  TaskGroupContainer - taskGroup[0] taskId[8] attemptCount[1] is started
+2020-01-09 13:40:04.611 [0-0-8-reader] INFO  CommonRdbmsReader$Task - Begin to read record by Sql: [select id,name,pass from haha  where  (9 <= id AND id < 10) 
+] jdbcUrl:[jdbc:mysql://39.97.255.156:3307/lp_test?useUnicode=true&characterEncoding=utf8&yearIsDateType=false&zeroDateTimeBehavior=convertToNull&tinyInt1isBit=false&rewriteBatchedStatements=true].
+2020-01-09 13:40:04.618 [0-0-8-writer] INFO  DBUtil - execute sql:[set session sql_mode='ANSI']
+2020-01-09 13:40:04.630 [0-0-8-writer] INFO  DBUtil - execute sql:[set session sql_mode='ANSI']
+2020-01-09 13:40:04.707 [taskGroup-0] INFO  TaskGroupContainer - taskGroup[0] taskId[0] is successed, used[1624]ms
+2020-01-09 13:40:04.718 [taskGroup-0] INFO  TaskGroupContainer - taskGroup[0] taskId[9] attemptCount[1] is started
+2020-01-09 13:40:04.719 [0-0-9-reader] INFO  CommonRdbmsReader$Task - Begin to read record by Sql: [select id,name,pass from haha  where  (10 <= id AND id <= 11) 
+] jdbcUrl:[jdbc:mysql://39.97.255.156:3307/lp_test?useUnicode=true&characterEncoding=utf8&yearIsDateType=false&zeroDateTimeBehavior=convertToNull&tinyInt1isBit=false&rewriteBatchedStatements=true].
+2020-01-09 13:40:04.725 [0-0-9-writer] INFO  DBUtil - execute sql:[set session sql_mode='ANSI']
+2020-01-09 13:40:04.739 [0-0-9-writer] INFO  DBUtil - execute sql:[set session sql_mode='ANSI']
+2020-01-09 13:40:04.818 [0-0-7-reader] INFO  CommonRdbmsReader$Task - Finished read record by Sql: [select id,name,pass from haha  where  (8 <= id AND id < 9) 
+] jdbcUrl:[jdbc:mysql://39.97.255.156:3307/lp_test?useUnicode=true&characterEncoding=utf8&yearIsDateType=false&zeroDateTimeBehavior=convertToNull&tinyInt1isBit=false&rewriteBatchedStatements=true].
+2020-01-09 13:40:04.919 [taskGroup-0] INFO  TaskGroupContainer - taskGroup[0] taskId[7] is successed, used[736]ms
+2020-01-09 13:40:04.933 [taskGroup-0] INFO  TaskGroupContainer - taskGroup[0] taskId[10] attemptCount[1] is started
+2020-01-09 13:40:04.933 [0-0-10-reader] INFO  CommonRdbmsReader$Task - Begin to read record by Sql: [select id,name,pass from haha  where  id IS NULL
+] jdbcUrl:[jdbc:mysql://39.97.255.156:3307/lp_test?useUnicode=true&characterEncoding=utf8&yearIsDateType=false&zeroDateTimeBehavior=convertToNull&tinyInt1isBit=false&rewriteBatchedStatements=true].
+2020-01-09 13:40:04.938 [0-0-10-writer] INFO  DBUtil - execute sql:[set session sql_mode='ANSI']
+2020-01-09 13:40:04.950 [0-0-10-writer] INFO  DBUtil - execute sql:[set session sql_mode='ANSI']
+2020-01-09 13:40:05.078 [0-0-6-reader] INFO  CommonRdbmsReader$Task - Finished read record by Sql: [select id,name,pass from haha  where  (7 <= id AND id < 8) 
+] jdbcUrl:[jdbc:mysql://39.97.255.156:3307/lp_test?useUnicode=true&characterEncoding=utf8&yearIsDateType=false&zeroDateTimeBehavior=convertToNull&tinyInt1isBit=false&rewriteBatchedStatements=true].
+2020-01-09 13:40:05.234 [taskGroup-0] INFO  TaskGroupContainer - taskGroup[0] taskId[6] is successed, used[1368]ms
+2020-01-09 13:40:05.344 [0-0-5-reader] INFO  CommonRdbmsReader$Task - Finished read record by Sql: [select id,name,pass from haha  where  (6 <= id AND id < 7) 
+] jdbcUrl:[jdbc:mysql://39.97.255.156:3307/lp_test?useUnicode=true&characterEncoding=utf8&yearIsDateType=false&zeroDateTimeBehavior=convertToNull&tinyInt1isBit=false&rewriteBatchedStatements=true].
+2020-01-09 13:40:05.435 [taskGroup-0] INFO  TaskGroupContainer - taskGroup[0] taskId[5] is successed, used[1584]ms
+2020-01-09 13:40:05.595 [0-0-10-reader] INFO  CommonRdbmsReader$Task - Finished read record by Sql: [select id,name,pass from haha  where  id IS NULL
+] jdbcUrl:[jdbc:mysql://39.97.255.156:3307/lp_test?useUnicode=true&characterEncoding=utf8&yearIsDateType=false&zeroDateTimeBehavior=convertToNull&tinyInt1isBit=false&rewriteBatchedStatements=true].
+2020-01-09 13:40:05.736 [taskGroup-0] INFO  TaskGroupContainer - taskGroup[0] taskId[10] is successed, used[811]ms
+2020-01-09 13:40:05.874 [0-0-9-reader] INFO  CommonRdbmsReader$Task - Finished read record by Sql: [select id,name,pass from haha  where  (10 <= id AND id <= 11) 
+] jdbcUrl:[jdbc:mysql://39.97.255.156:3307/lp_test?useUnicode=true&characterEncoding=utf8&yearIsDateType=false&zeroDateTimeBehavior=convertToNull&tinyInt1isBit=false&rewriteBatchedStatements=true].
+2020-01-09 13:40:06.037 [taskGroup-0] INFO  TaskGroupContainer - taskGroup[0] taskId[9] is successed, used[1328]ms
+2020-01-09 13:40:06.130 [0-0-8-reader] INFO  CommonRdbmsReader$Task - Finished read record by Sql: [select id,name,pass from haha  where  (9 <= id AND id < 10) 
+] jdbcUrl:[jdbc:mysql://39.97.255.156:3307/lp_test?useUnicode=true&characterEncoding=utf8&yearIsDateType=false&zeroDateTimeBehavior=convertToNull&tinyInt1isBit=false&rewriteBatchedStatements=true].
+2020-01-09 13:40:06.438 [taskGroup-0] INFO  TaskGroupContainer - taskGroup[0] taskId[8] is successed, used[1841]ms
+2020-01-09 13:40:06.439 [taskGroup-0] INFO  TaskGroupContainer - taskGroup[0] completed it's tasks.
+2020-01-09 13:40:13.073 [job-0] INFO  StandAloneJobContainerCommunicator - Total 11 records, 92 bytes | Speed 9B/s, 1 records/s | Error 0 records, 0 bytes |  All Task WaitWriterTime 0.000s |  All Task WaitReaderTime 3.098s | Percentage 100.00%
+2020-01-09 13:40:13.074 [job-0] INFO  AbstractScheduler - Scheduler accomplished all tasks.
+2020-01-09 13:40:13.074 [job-0] INFO  JobContainer - DataX Writer.Job [mysqlwriter] do post work.
+2020-01-09 13:40:13.077 [job-0] INFO  JobContainer - DataX Reader.Job [mysqlreader] do post work.
+2020-01-09 13:40:13.077 [job-0] INFO  JobContainer - DataX jobId [0] completed successfully.
+2020-01-09 13:40:13.078 [job-0] INFO  HookInvoker - No hook invoked, because base dir not exists or is a file: /root/dataX/datax/hook
+2020-01-09 13:40:13.078 [job-0] INFO  JobContainer - 
+	 [total cpu info] => 
+		averageCpu                     | maxDeltaCpu                    | minDeltaCpu                    
+		-1.00%                         | -1.00%                         | -1.00%
+                        
+
+	 [total gc info] => 
+		 NAME                 | totalGCCount       | maxDeltaGCCount    | minDeltaGCCount    | totalGCTime        | maxDeltaGCTime     | minDeltaGCTime     
+		 Copy                 | 0                  | 0                  | 0                  | 0.000s             | 0.000s             | 0.000s             
+		 MarkSweepCompact     | 0                  | 0                  | 0                  | 0.000s             | 0.000s             | 0.000s             
+
+2020-01-09 13:40:13.079 [job-0] INFO  JobContainer - PerfTrace not enable!
+2020-01-09 13:40:13.079 [job-0] INFO  StandAloneJobContainerCommunicator - Total 11 records, 92 bytes | Speed 9B/s, 1 records/s | Error 0 records, 0 bytes |  All Task WaitWriterTime 0.000s |  All Task WaitReaderTime 3.098s | Percentage 100.00%
+2020-01-09 13:40:13.085 [job-0] INFO  JobContainer - 
+任务启动时刻                    : 2020-01-09 13:40:00
+任务结束时刻                    : 2020-01-09 13:40:13
+任务总计耗时                    :                 12s
+任务平均流量                    :                9B/s
+记录写入速度                    :              1rec/s
+读出记录总数                    :                  11
+读写失败总数                    :                   0
+
+
+DataX (DATAX-OPENSOURCE-3.0), From Alibaba !
+Copyright (C) 2010-2017, Alibaba Group. All Rights Reserved.
+
+
+2020-01-09 16:00:00.485 [main] INFO  VMInfo - VMInfo# operatingSystem class => sun.management.OperatingSystemImpl
+2020-01-09 16:00:00.504 [main] INFO  Engine - the machine info  => 
+
+	osInfo:	Oracle Corporation 1.8 25.60-b23
+	jvmInfo:	Linux amd64 2.6.32-696.16.1.el6.x86_64
+	cpu num:	1
+
+	totalPhysicalMemory:	-0.00G
+	freePhysicalMemory:	-0.00G
+	maxFileDescriptorCount:	-1
+	currentOpenFileDescriptorCount:	-1
+
+	GC Names	[Copy, MarkSweepCompact]
+
+	MEMORY_NAME                    | allocation_size                | init_size                      
+	Eden Space                     | 273.06MB                       | 273.06MB                       
+	Code Cache                     | 240.00MB                       | 2.44MB                         
+	Survivor Space                 | 34.13MB                        | 34.13MB                        
+	Compressed Class Space         | 1,024.00MB                     | 0.00MB                         
+	Metaspace                      | -0.00MB                        | 0.00MB                         
+	Tenured Gen                    | 682.69MB                       | 682.69MB                       
+
+
+2020-01-09 16:00:00.546 [main] INFO  Engine - 
+{
+	"content":[
+		{
+			"reader":{
+				"name":"mysqlreader",
+				"parameter":{
+					"column":[
+						"id",
+						"name",
+						"pass"
+					],
+					"connection":[
+						{
+							"jdbcUrl":[
+								"jdbc:mysql://39.97.255.156:3307/lp_test?useUnicode=true&characterEncoding=utf8"
+							],
+							"table":[
+								"haha"
+							]
+						}
+					],
+					"password":"**********",
+					"splitPk":"id",
+					"username":"root"
+				}
+			},
+			"writer":{
+				"name":"mysqlwriter",
+				"parameter":{
+					"column":[
+						"id",
+						"name",
+						"pass"
+					],
+					"connection":[
+						{
+							"jdbcUrl":"jdbc:mysql://127.0.0.1:3306/test?useSSL=false&serverTimezone=Asia/Shanghai",
+							"table":[
+								"haha"
+							]
+						}
+					],
+					"password":"******",
+					"preSql":[
+						"truncate haha"
+					],
+					"session":[
+						"set session sql_mode='ANSI'"
+					],
+					"username":"root",
+					"writeMode":"insert"
+				}
+			}
+		}
+	],
+	"setting":{
+		"speed":{
+			"channel":5
+		}
+	}
+}
+
+2020-01-09 16:00:00.574 [main] WARN  Engine - prioriy set to 0, because NumberFormatException, the value is: null
+2020-01-09 16:00:00.576 [main] INFO  PerfTrace - PerfTrace traceId=job_-1, isEnable=false, priority=0
+2020-01-09 16:00:00.576 [main] INFO  JobContainer - DataX jobContainer starts job.
+2020-01-09 16:00:00.589 [main] INFO  JobContainer - Set jobId = 0
+2020-01-09 16:00:01.512 [job-0] INFO  OriginalConfPretreatmentUtil - Available jdbcUrl:jdbc:mysql://39.97.255.156:3307/lp_test?useUnicode=true&characterEncoding=utf8&yearIsDateType=false&zeroDateTimeBehavior=convertToNull&tinyInt1isBit=false&rewriteBatchedStatements=true.
+2020-01-09 16:00:01.827 [job-0] INFO  OriginalConfPretreatmentUtil - table:[haha] has columns:[id,name,pass].
+2020-01-09 16:00:02.329 [job-0] INFO  OriginalConfPretreatmentUtil - table:[haha] all columns:[
+id,name,pass
+].
+2020-01-09 16:00:02.341 [job-0] INFO  OriginalConfPretreatmentUtil - Write data [
+insert INTO %s (id,name,pass) VALUES(?,?,?)
+], which jdbcUrl like:[jdbc:mysql://127.0.0.1:3306/test?useSSL=false&serverTimezone=Asia/Shanghai&yearIsDateType=false&zeroDateTimeBehavior=convertToNull&tinyInt1isBit=false&rewriteBatchedStatements=true]
+2020-01-09 16:00:02.342 [job-0] INFO  JobContainer - jobContainer starts to do prepare ...
+2020-01-09 16:00:02.344 [job-0] INFO  JobContainer - DataX Reader.Job [mysqlreader] do prepare work .
+2020-01-09 16:00:02.346 [job-0] INFO  JobContainer - DataX Writer.Job [mysqlwriter] do prepare work .
+2020-01-09 16:00:02.359 [job-0] INFO  CommonRdbmsWriter$Job - Begin to execute preSqls:[truncate haha]. context info:jdbc:mysql://127.0.0.1:3306/test?useSSL=false&serverTimezone=Asia/Shanghai&yearIsDateType=false&zeroDateTimeBehavior=convertToNull&tinyInt1isBit=false&rewriteBatchedStatements=true.
+2020-01-09 16:00:02.406 [job-0] INFO  JobContainer - jobContainer starts to do split ...
+2020-01-09 16:00:02.408 [job-0] INFO  JobContainer - Job set Channel-Number to 5 channels.
+2020-01-09 16:00:02.690 [job-0] INFO  SingleTableSplitUtil - split pk [sql=SELECT MIN(id),MAX(id) FROM haha] is running... 
+2020-01-09 16:00:02.879 [job-0] INFO  SingleTableSplitUtil - After split(), allQuerySql=[
+select id,name,pass from haha  where  (1 <= id AND id < 2) 
+select id,name,pass from haha  where  (2 <= id AND id < 3) 
+select id,name,pass from haha  where  (3 <= id AND id < 4) 
+select id,name,pass from haha  where  (4 <= id AND id < 5) 
+select id,name,pass from haha  where  (5 <= id AND id < 6) 
+select id,name,pass from haha  where  (6 <= id AND id < 7) 
+select id,name,pass from haha  where  (7 <= id AND id < 8) 
+select id,name,pass from haha  where  (8 <= id AND id < 9) 
+select id,name,pass from haha  where  (9 <= id AND id < 10) 
+select id,name,pass from haha  where  (10 <= id AND id <= 11) 
+select id,name,pass from haha  where  id IS NULL
+].
+2020-01-09 16:00:02.884 [job-0] INFO  JobContainer - DataX Reader.Job [mysqlreader] splits to [11] tasks.
+2020-01-09 16:00:02.888 [job-0] INFO  JobContainer - DataX Writer.Job [mysqlwriter] splits to [11] tasks.
+2020-01-09 16:00:02.968 [job-0] INFO  JobContainer - jobContainer starts to do schedule ...
+2020-01-09 16:00:02.998 [job-0] INFO  JobContainer - Scheduler starts [1] taskGroups.
+2020-01-09 16:00:03.005 [job-0] INFO  JobContainer - Running by standalone Mode.
+2020-01-09 16:00:03.055 [taskGroup-0] INFO  TaskGroupContainer - taskGroupId=[0] start [5] channels for [11] tasks.
+2020-01-09 16:00:03.074 [taskGroup-0] INFO  Channel - Channel set byte_speed_limit to -1, No bps activated.
+2020-01-09 16:00:03.074 [taskGroup-0] INFO  Channel - Channel set record_speed_limit to -1, No tps activated.
+2020-01-09 16:00:03.106 [taskGroup-0] INFO  TaskGroupContainer - taskGroup[0] taskId[0] attemptCount[1] is started
+2020-01-09 16:00:03.114 [taskGroup-0] INFO  TaskGroupContainer - taskGroup[0] taskId[1] attemptCount[1] is started
+2020-01-09 16:00:03.130 [0-0-1-writer] INFO  DBUtil - execute sql:[set session sql_mode='ANSI']
+2020-01-09 16:00:03.142 [0-0-0-writer] INFO  DBUtil - execute sql:[set session sql_mode='ANSI']
+2020-01-09 16:00:03.145 [0-0-0-reader] INFO  CommonRdbmsReader$Task - Begin to read record by Sql: [select id,name,pass from haha  where  (1 <= id AND id < 2) 
+] jdbcUrl:[jdbc:mysql://39.97.255.156:3307/lp_test?useUnicode=true&characterEncoding=utf8&yearIsDateType=false&zeroDateTimeBehavior=convertToNull&tinyInt1isBit=false&rewriteBatchedStatements=true].
+2020-01-09 16:00:03.146 [0-0-1-reader] INFO  CommonRdbmsReader$Task - Begin to read record by Sql: [select id,name,pass from haha  where  (2 <= id AND id < 3) 
+] jdbcUrl:[jdbc:mysql://39.97.255.156:3307/lp_test?useUnicode=true&characterEncoding=utf8&yearIsDateType=false&zeroDateTimeBehavior=convertToNull&tinyInt1isBit=false&rewriteBatchedStatements=true].
+2020-01-09 16:00:03.146 [taskGroup-0] INFO  TaskGroupContainer - taskGroup[0] taskId[2] attemptCount[1] is started
+2020-01-09 16:00:03.146 [0-0-2-reader] INFO  CommonRdbmsReader$Task - Begin to read record by Sql: [select id,name,pass from haha  where  (3 <= id AND id < 4) 
+] jdbcUrl:[jdbc:mysql://39.97.255.156:3307/lp_test?useUnicode=true&characterEncoding=utf8&yearIsDateType=false&zeroDateTimeBehavior=convertToNull&tinyInt1isBit=false&rewriteBatchedStatements=true].
+2020-01-09 16:00:03.161 [0-0-2-writer] INFO  DBUtil - execute sql:[set session sql_mode='ANSI']
+2020-01-09 16:00:03.164 [0-0-1-writer] INFO  DBUtil - execute sql:[set session sql_mode='ANSI']
+2020-01-09 16:00:03.168 [taskGroup-0] INFO  TaskGroupContainer - taskGroup[0] taskId[3] attemptCount[1] is started
+2020-01-09 16:00:03.170 [0-0-3-reader] INFO  CommonRdbmsReader$Task - Begin to read record by Sql: [select id,name,pass from haha  where  (4 <= id AND id < 5) 
+] jdbcUrl:[jdbc:mysql://39.97.255.156:3307/lp_test?useUnicode=true&characterEncoding=utf8&yearIsDateType=false&zeroDateTimeBehavior=convertToNull&tinyInt1isBit=false&rewriteBatchedStatements=true].
+2020-01-09 16:00:03.178 [taskGroup-0] INFO  TaskGroupContainer - taskGroup[0] taskId[4] attemptCount[1] is started
+2020-01-09 16:00:03.179 [0-0-4-reader] INFO  CommonRdbmsReader$Task - Begin to read record by Sql: [select id,name,pass from haha  where  (5 <= id AND id < 6) 
+] jdbcUrl:[jdbc:mysql://39.97.255.156:3307/lp_test?useUnicode=true&characterEncoding=utf8&yearIsDateType=false&zeroDateTimeBehavior=convertToNull&tinyInt1isBit=false&rewriteBatchedStatements=true].
+2020-01-09 16:00:03.188 [0-0-3-writer] INFO  DBUtil - execute sql:[set session sql_mode='ANSI']
+2020-01-09 16:00:03.197 [0-0-0-writer] INFO  DBUtil - execute sql:[set session sql_mode='ANSI']
+2020-01-09 16:00:03.209 [0-0-3-writer] INFO  DBUtil - execute sql:[set session sql_mode='ANSI']
+2020-01-09 16:00:03.216 [0-0-4-writer] INFO  DBUtil - execute sql:[set session sql_mode='ANSI']
+2020-01-09 16:00:03.226 [0-0-2-writer] INFO  DBUtil - execute sql:[set session sql_mode='ANSI']
+2020-01-09 16:00:03.227 [0-0-4-writer] INFO  DBUtil - execute sql:[set session sql_mode='ANSI']
+2020-01-09 16:00:03.520 [0-0-0-reader] INFO  CommonRdbmsReader$Task - Finished read record by Sql: [select id,name,pass from haha  where  (1 <= id AND id < 2) 
+] jdbcUrl:[jdbc:mysql://39.97.255.156:3307/lp_test?useUnicode=true&characterEncoding=utf8&yearIsDateType=false&zeroDateTimeBehavior=convertToNull&tinyInt1isBit=false&rewriteBatchedStatements=true].
+2020-01-09 16:00:03.787 [0-0-4-reader] INFO  CommonRdbmsReader$Task - Finished read record by Sql: [select id,name,pass from haha  where  (5 <= id AND id < 6) 
+] jdbcUrl:[jdbc:mysql://39.97.255.156:3307/lp_test?useUnicode=true&characterEncoding=utf8&yearIsDateType=false&zeroDateTimeBehavior=convertToNull&tinyInt1isBit=false&rewriteBatchedStatements=true].
+2020-01-09 16:00:03.881 [taskGroup-0] INFO  TaskGroupContainer - taskGroup[0] taskId[0] is successed, used[783]ms
+2020-01-09 16:00:03.881 [taskGroup-0] INFO  TaskGroupContainer - taskGroup[0] taskId[4] is successed, used[711]ms
+2020-01-09 16:00:03.896 [taskGroup-0] INFO  TaskGroupContainer - taskGroup[0] taskId[5] attemptCount[1] is started
+2020-01-09 16:00:03.898 [0-0-5-reader] INFO  CommonRdbmsReader$Task - Begin to read record by Sql: [select id,name,pass from haha  where  (6 <= id AND id < 7) 
+] jdbcUrl:[jdbc:mysql://39.97.255.156:3307/lp_test?useUnicode=true&characterEncoding=utf8&yearIsDateType=false&zeroDateTimeBehavior=convertToNull&tinyInt1isBit=false&rewriteBatchedStatements=true].
+2020-01-09 16:00:03.905 [0-0-5-writer] INFO  DBUtil - execute sql:[set session sql_mode='ANSI']
+2020-01-09 16:00:03.909 [taskGroup-0] INFO  TaskGroupContainer - taskGroup[0] taskId[6] attemptCount[1] is started
+2020-01-09 16:00:03.910 [0-0-6-reader] INFO  CommonRdbmsReader$Task - Begin to read record by Sql: [select id,name,pass from haha  where  (7 <= id AND id < 8) 
+] jdbcUrl:[jdbc:mysql://39.97.255.156:3307/lp_test?useUnicode=true&characterEncoding=utf8&yearIsDateType=false&zeroDateTimeBehavior=convertToNull&tinyInt1isBit=false&rewriteBatchedStatements=true].
+2020-01-09 16:00:03.913 [0-0-6-writer] INFO  DBUtil - execute sql:[set session sql_mode='ANSI']
+2020-01-09 16:00:03.928 [0-0-5-writer] INFO  DBUtil - execute sql:[set session sql_mode='ANSI']
+2020-01-09 16:00:03.931 [0-0-6-writer] INFO  DBUtil - execute sql:[set session sql_mode='ANSI']
+2020-01-09 16:00:04.057 [0-0-3-reader] INFO  CommonRdbmsReader$Task - Finished read record by Sql: [select id,name,pass from haha  where  (4 <= id AND id < 5) 
+] jdbcUrl:[jdbc:mysql://39.97.255.156:3307/lp_test?useUnicode=true&characterEncoding=utf8&yearIsDateType=false&zeroDateTimeBehavior=convertToNull&tinyInt1isBit=false&rewriteBatchedStatements=true].
+2020-01-09 16:00:04.320 [0-0-2-reader] INFO  CommonRdbmsReader$Task - Finished read record by Sql: [select id,name,pass from haha  where  (3 <= id AND id < 4) 
+] jdbcUrl:[jdbc:mysql://39.97.255.156:3307/lp_test?useUnicode=true&characterEncoding=utf8&yearIsDateType=false&zeroDateTimeBehavior=convertToNull&tinyInt1isBit=false&rewriteBatchedStatements=true].
+2020-01-09 16:00:04.411 [taskGroup-0] INFO  TaskGroupContainer - taskGroup[0] taskId[2] is successed, used[1279]ms
+2020-01-09 16:00:04.411 [taskGroup-0] INFO  TaskGroupContainer - taskGroup[0] taskId[3] is successed, used[1260]ms
+2020-01-09 16:00:04.426 [taskGroup-0] INFO  TaskGroupContainer - taskGroup[0] taskId[7] attemptCount[1] is started
+2020-01-09 16:00:04.430 [0-0-7-reader] INFO  CommonRdbmsReader$Task - Begin to read record by Sql: [select id,name,pass from haha  where  (8 <= id AND id < 9) 
+] jdbcUrl:[jdbc:mysql://39.97.255.156:3307/lp_test?useUnicode=true&characterEncoding=utf8&yearIsDateType=false&zeroDateTimeBehavior=convertToNull&tinyInt1isBit=false&rewriteBatchedStatements=true].
+2020-01-09 16:00:04.436 [taskGroup-0] INFO  TaskGroupContainer - taskGroup[0] taskId[8] attemptCount[1] is started
+2020-01-09 16:00:04.436 [0-0-8-reader] INFO  CommonRdbmsReader$Task - Begin to read record by Sql: [select id,name,pass from haha  where  (9 <= id AND id < 10) 
+] jdbcUrl:[jdbc:mysql://39.97.255.156:3307/lp_test?useUnicode=true&characterEncoding=utf8&yearIsDateType=false&zeroDateTimeBehavior=convertToNull&tinyInt1isBit=false&rewriteBatchedStatements=true].
+2020-01-09 16:00:04.442 [0-0-8-writer] INFO  DBUtil - execute sql:[set session sql_mode='ANSI']
+2020-01-09 16:00:04.444 [0-0-7-writer] INFO  DBUtil - execute sql:[set session sql_mode='ANSI']
+2020-01-09 16:00:04.458 [0-0-7-writer] INFO  DBUtil - execute sql:[set session sql_mode='ANSI']
+2020-01-09 16:00:04.459 [0-0-8-writer] INFO  DBUtil - execute sql:[set session sql_mode='ANSI']
+2020-01-09 16:00:04.574 [0-0-1-reader] INFO  CommonRdbmsReader$Task - Finished read record by Sql: [select id,name,pass from haha  where  (2 <= id AND id < 3) 
+] jdbcUrl:[jdbc:mysql://39.97.255.156:3307/lp_test?useUnicode=true&characterEncoding=utf8&yearIsDateType=false&zeroDateTimeBehavior=convertToNull&tinyInt1isBit=false&rewriteBatchedStatements=true].
+2020-01-09 16:00:04.737 [taskGroup-0] INFO  TaskGroupContainer - taskGroup[0] taskId[1] is successed, used[1627]ms
+2020-01-09 16:00:04.748 [taskGroup-0] INFO  TaskGroupContainer - taskGroup[0] taskId[9] attemptCount[1] is started
+2020-01-09 16:00:04.749 [0-0-9-reader] INFO  CommonRdbmsReader$Task - Begin to read record by Sql: [select id,name,pass from haha  where  (10 <= id AND id <= 11) 
+] jdbcUrl:[jdbc:mysql://39.97.255.156:3307/lp_test?useUnicode=true&characterEncoding=utf8&yearIsDateType=false&zeroDateTimeBehavior=convertToNull&tinyInt1isBit=false&rewriteBatchedStatements=true].
+2020-01-09 16:00:04.753 [0-0-9-writer] INFO  DBUtil - execute sql:[set session sql_mode='ANSI']
+2020-01-09 16:00:04.763 [0-0-9-writer] INFO  DBUtil - execute sql:[set session sql_mode='ANSI']
+2020-01-09 16:00:04.840 [0-0-8-reader] INFO  CommonRdbmsReader$Task - Finished read record by Sql: [select id,name,pass from haha  where  (9 <= id AND id < 10) 
+] jdbcUrl:[jdbc:mysql://39.97.255.156:3307/lp_test?useUnicode=true&characterEncoding=utf8&yearIsDateType=false&zeroDateTimeBehavior=convertToNull&tinyInt1isBit=false&rewriteBatchedStatements=true].
+2020-01-09 16:00:04.949 [taskGroup-0] INFO  TaskGroupContainer - taskGroup[0] taskId[8] is successed, used[521]ms
+2020-01-09 16:00:04.960 [taskGroup-0] INFO  TaskGroupContainer - taskGroup[0] taskId[10] attemptCount[1] is started
+2020-01-09 16:00:04.961 [0-0-10-reader] INFO  CommonRdbmsReader$Task - Begin to read record by Sql: [select id,name,pass from haha  where  id IS NULL
+] jdbcUrl:[jdbc:mysql://39.97.255.156:3307/lp_test?useUnicode=true&characterEncoding=utf8&yearIsDateType=false&zeroDateTimeBehavior=convertToNull&tinyInt1isBit=false&rewriteBatchedStatements=true].
+2020-01-09 16:00:04.971 [0-0-10-writer] INFO  DBUtil - execute sql:[set session sql_mode='ANSI']
+2020-01-09 16:00:04.981 [0-0-10-writer] INFO  DBUtil - execute sql:[set session sql_mode='ANSI']
+2020-01-09 16:00:05.104 [0-0-7-reader] INFO  CommonRdbmsReader$Task - Finished read record by Sql: [select id,name,pass from haha  where  (8 <= id AND id < 9) 
+] jdbcUrl:[jdbc:mysql://39.97.255.156:3307/lp_test?useUnicode=true&characterEncoding=utf8&yearIsDateType=false&zeroDateTimeBehavior=convertToNull&tinyInt1isBit=false&rewriteBatchedStatements=true].
+2020-01-09 16:00:05.261 [taskGroup-0] INFO  TaskGroupContainer - taskGroup[0] taskId[7] is successed, used[845]ms
+2020-01-09 16:00:05.366 [0-0-6-reader] INFO  CommonRdbmsReader$Task - Finished read record by Sql: [select id,name,pass from haha  where  (7 <= id AND id < 8) 
+] jdbcUrl:[jdbc:mysql://39.97.255.156:3307/lp_test?useUnicode=true&characterEncoding=utf8&yearIsDateType=false&zeroDateTimeBehavior=convertToNull&tinyInt1isBit=false&rewriteBatchedStatements=true].
+2020-01-09 16:00:05.462 [taskGroup-0] INFO  TaskGroupContainer - taskGroup[0] taskId[6] is successed, used[1564]ms
+2020-01-09 16:00:05.635 [0-0-5-reader] INFO  CommonRdbmsReader$Task - Finished read record by Sql: [select id,name,pass from haha  where  (6 <= id AND id < 7) 
+] jdbcUrl:[jdbc:mysql://39.97.255.156:3307/lp_test?useUnicode=true&characterEncoding=utf8&yearIsDateType=false&zeroDateTimeBehavior=convertToNull&tinyInt1isBit=false&rewriteBatchedStatements=true].
+2020-01-09 16:00:05.897 [0-0-10-reader] INFO  CommonRdbmsReader$Task - Finished read record by Sql: [select id,name,pass from haha  where  id IS NULL
+] jdbcUrl:[jdbc:mysql://39.97.255.156:3307/lp_test?useUnicode=true&characterEncoding=utf8&yearIsDateType=false&zeroDateTimeBehavior=convertToNull&tinyInt1isBit=false&rewriteBatchedStatements=true].
+2020-01-09 16:00:05.964 [taskGroup-0] INFO  TaskGroupContainer - taskGroup[0] taskId[5] is successed, used[2080]ms
+2020-01-09 16:00:05.964 [taskGroup-0] INFO  TaskGroupContainer - taskGroup[0] taskId[10] is successed, used[1011]ms
+2020-01-09 16:00:06.157 [0-0-9-reader] INFO  CommonRdbmsReader$Task - Finished read record by Sql: [select id,name,pass from haha  where  (10 <= id AND id <= 11) 
+] jdbcUrl:[jdbc:mysql://39.97.255.156:3307/lp_test?useUnicode=true&characterEncoding=utf8&yearIsDateType=false&zeroDateTimeBehavior=convertToNull&tinyInt1isBit=false&rewriteBatchedStatements=true].
+2020-01-09 16:00:06.465 [taskGroup-0] INFO  TaskGroupContainer - taskGroup[0] taskId[9] is successed, used[1726]ms
+2020-01-09 16:00:06.466 [taskGroup-0] INFO  TaskGroupContainer - taskGroup[0] completed it's tasks.
+2020-01-09 16:00:13.086 [job-0] INFO  StandAloneJobContainerCommunicator - Total 11 records, 92 bytes | Speed 9B/s, 1 records/s | Error 0 records, 0 bytes |  All Task WaitWriterTime 0.000s |  All Task WaitReaderTime 4.522s | Percentage 100.00%
+2020-01-09 16:00:13.086 [job-0] INFO  AbstractScheduler - Scheduler accomplished all tasks.
+2020-01-09 16:00:13.088 [job-0] INFO  JobContainer - DataX Writer.Job [mysqlwriter] do post work.
+2020-01-09 16:00:13.091 [job-0] INFO  JobContainer - DataX Reader.Job [mysqlreader] do post work.
+2020-01-09 16:00:13.093 [job-0] INFO  JobContainer - DataX jobId [0] completed successfully.
+2020-01-09 16:00:13.094 [job-0] INFO  HookInvoker - No hook invoked, because base dir not exists or is a file: /root/dataX/datax/hook
+2020-01-09 16:00:13.099 [job-0] INFO  JobContainer - 
+	 [total cpu info] => 
+		averageCpu                     | maxDeltaCpu                    | minDeltaCpu                    
+		-1.00%                         | -1.00%                         | -1.00%
+                        
+
+	 [total gc info] => 
+		 NAME                 | totalGCCount       | maxDeltaGCCount    | minDeltaGCCount    | totalGCTime        | maxDeltaGCTime     | minDeltaGCTime     
+		 Copy                 | 0                  | 0                  | 0                  | 0.000s             | 0.000s             | 0.000s             
+		 MarkSweepCompact     | 0                  | 0                  | 0                  | 0.000s             | 0.000s             | 0.000s             
+
+2020-01-09 16:00:13.099 [job-0] INFO  JobContainer - PerfTrace not enable!
+2020-01-09 16:00:13.100 [job-0] INFO  StandAloneJobContainerCommunicator - Total 11 records, 92 bytes | Speed 9B/s, 1 records/s | Error 0 records, 0 bytes |  All Task WaitWriterTime 0.000s |  All Task WaitReaderTime 4.522s | Percentage 100.00%
+2020-01-09 16:00:13.103 [job-0] INFO  JobContainer - 
+任务启动时刻                    : 2020-01-09 16:00:00
+任务结束时刻                    : 2020-01-09 16:00:13
+任务总计耗时                    :                 12s
+任务平均流量                    :                9B/s
+记录写入速度                    :              1rec/s
+读出记录总数                    :                  11
+读写失败总数                    :                   0
+
+
+DataX (DATAX-OPENSOURCE-3.0), From Alibaba !
+Copyright (C) 2010-2017, Alibaba Group. All Rights Reserved.
+
+
+2020-02-25 11:16:57.255 [main] INFO  VMInfo - VMInfo# operatingSystem class => sun.management.OperatingSystemImpl
+2020-02-25 11:16:57.282 [main] INFO  Engine - the machine info  => 
+
+	osInfo:	Oracle Corporation 1.8 25.60-b23
+	jvmInfo:	Linux amd64 2.6.32-696.16.1.el6.x86_64
+	cpu num:	1
+
+	totalPhysicalMemory:	-0.00G
+	freePhysicalMemory:	-0.00G
+	maxFileDescriptorCount:	-1
+	currentOpenFileDescriptorCount:	-1
+
+	GC Names	[Copy, MarkSweepCompact]
+
+	MEMORY_NAME                    | allocation_size                | init_size                      
+	Eden Space                     | 273.06MB                       | 273.06MB                       
+	Code Cache                     | 240.00MB                       | 2.44MB                         
+	Survivor Space                 | 34.13MB                        | 34.13MB                        
+	Compressed Class Space         | 1,024.00MB                     | 0.00MB                         
+	Metaspace                      | -0.00MB                        | 0.00MB                         
+	Tenured Gen                    | 682.69MB                       | 682.69MB                       
+
+
+2020-02-25 11:16:57.342 [main] INFO  Engine - 
+{
+	"content":[
+		{
+			"reader":{
+				"name":"mysqlreader",
+				"parameter":{
+					"column":[
+						"id",
+						"name",
+						"pass"
+					],
+					"connection":[
+						{
+							"jdbcUrl":[
+								"jdbc:mysql://39.97.255.156:3307/lp_test?useUnicode=true&characterEncoding=utf8"
+							],
+							"table":[
+								"haha"
+							]
+						}
+					],
+					"password":"**********",
+					"splitPk":"id",
+					"username":"root"
+				}
+			},
+			"writer":{
+				"name":"mysqlwriter",
+				"parameter":{
+					"column":[
+						"id",
+						"name",
+						"pass"
+					],
+					"connection":[
+						{
+							"jdbcUrl":"jdbc:mysql://127.0.0.1:3306/test?useSSL=false&serverTimezone=Asia/Shanghai",
+							"table":[
+								"haha"
+							]
+						}
+					],
+					"password":"******",
+					"preSql":[
+						"truncate haha"
+					],
+					"session":[
+						"set session sql_mode='ANSI'"
+					],
+					"username":"root",
+					"writeMode":"insert"
+				}
+			}
+		}
+	],
+	"setting":{
+		"speed":{
+			"channel":5
+		}
+	}
+}
+
+2020-02-25 11:16:57.384 [main] WARN  Engine - prioriy set to 0, because NumberFormatException, the value is: null
+2020-02-25 11:16:57.386 [main] INFO  PerfTrace - PerfTrace traceId=job_-1, isEnable=false, priority=0
+2020-02-25 11:16:57.390 [main] INFO  JobContainer - DataX jobContainer starts job.
+2020-02-25 11:16:57.398 [main] INFO  JobContainer - Set jobId = 0
+2020-02-25 11:16:58.846 [job-0] INFO  OriginalConfPretreatmentUtil - Available jdbcUrl:jdbc:mysql://39.97.255.156:3307/lp_test?useUnicode=true&characterEncoding=utf8&yearIsDateType=false&zeroDateTimeBehavior=convertToNull&tinyInt1isBit=false&rewriteBatchedStatements=true.
+2020-02-25 11:16:58.974 [job-0] INFO  OriginalConfPretreatmentUtil - table:[haha] has columns:[id,name,pass].
+2020-02-25 11:16:59.878 [job-0] ERROR JobContainer - Exception when job run
+com.alibaba.datax.common.exception.DataXException: Code:[MYSQLErrCode-04], Description:[表不存在，请检查表名或者联系DBA确认该表是否存在].  - 表名为：haha 执行的SQL为:select * from haha where 1=2 具体错误信息为：java.sql.SQLSyntaxErrorException: Table 'test.haha' doesn't exist
+	at com.alibaba.datax.common.exception.DataXException.asDataXException(DataXException.java:26) ~[datax-common-0.0.1-SNAPSHOT.jar:na]
+	at com.alibaba.datax.plugin.rdbms.util.RdbmsException.asQueryException(RdbmsException.java:75) ~[plugin-rdbms-util-0.0.1-SNAPSHOT.jar:na]
+	at com.alibaba.datax.plugin.rdbms.util.DBUtil.getTableColumnsByConn(DBUtil.java:524) ~[plugin-rdbms-util-0.0.1-SNAPSHOT.jar:na]
+	at com.alibaba.datax.plugin.rdbms.writer.util.OriginalConfPretreatmentUtil.dealColumnConf(OriginalConfPretreatmentUtil.java:105) ~[plugin-rdbms-util-0.0.1-SNAPSHOT.jar:na]
+	at com.alibaba.datax.plugin.rdbms.writer.util.OriginalConfPretreatmentUtil.dealColumnConf(OriginalConfPretreatmentUtil.java:140) ~[plugin-rdbms-util-0.0.1-SNAPSHOT.jar:na]
+	at com.alibaba.datax.plugin.rdbms.writer.util.OriginalConfPretreatmentUtil.doPretreatment(OriginalConfPretreatmentUtil.java:35) ~[plugin-rdbms-util-0.0.1-SNAPSHOT.jar:na]
+	at com.alibaba.datax.plugin.rdbms.writer.CommonRdbmsWriter$Job.init(CommonRdbmsWriter.java:41) ~[plugin-rdbms-util-0.0.1-SNAPSHOT.jar:na]
+	at com.alibaba.datax.plugin.writer.mysqlwriter.MysqlWriter$Job.init(MysqlWriter.java:31) ~[mysqlwriter-0.0.1-SNAPSHOT.jar:na]
+	at com.alibaba.datax.core.job.JobContainer.initJobWriter(JobContainer.java:704) ~[datax-core-0.0.1-SNAPSHOT.jar:na]
+	at com.alibaba.datax.core.job.JobContainer.init(JobContainer.java:304) ~[datax-core-0.0.1-SNAPSHOT.jar:na]
+	at com.alibaba.datax.core.job.JobContainer.start(JobContainer.java:113) ~[datax-core-0.0.1-SNAPSHOT.jar:na]
+	at com.alibaba.datax.core.Engine.start(Engine.java:92) [datax-core-0.0.1-SNAPSHOT.jar:na]
+	at com.alibaba.datax.core.Engine.entry(Engine.java:171) [datax-core-0.0.1-SNAPSHOT.jar:na]
+	at com.alibaba.datax.core.Engine.main(Engine.java:204) [datax-core-0.0.1-SNAPSHOT.jar:na]
+2020-02-25 11:16:59.891 [job-0] INFO  StandAloneJobContainerCommunicator - Total 0 records, 0 bytes | Speed 0B/s, 0 records/s | Error 0 records, 0 bytes |  All Task WaitWriterTime 0.000s |  All Task WaitReaderTime 0.000s | Percentage 0.00%
+2020-02-25 11:16:59.897 [job-0] ERROR Engine - 
+
+经DataX智能分析,该任务最可能的错误原因是:
+com.alibaba.datax.common.exception.DataXException: Code:[MYSQLErrCode-04], Description:[表不存在，请检查表名或者联系DBA确认该表是否存在].  - 表名为：haha 执行的SQL为:select * from haha where 1=2 具体错误信息为：java.sql.SQLSyntaxErrorException: Table 'test.haha' doesn't exist
+	at com.alibaba.datax.common.exception.DataXException.asDataXException(DataXException.java:26)
+	at com.alibaba.datax.plugin.rdbms.util.RdbmsException.asQueryException(RdbmsException.java:75)
+	at com.alibaba.datax.plugin.rdbms.util.DBUtil.getTableColumnsByConn(DBUtil.java:524)
+	at com.alibaba.datax.plugin.rdbms.writer.util.OriginalConfPretreatmentUtil.dealColumnConf(OriginalConfPretreatmentUtil.java:105)
+	at com.alibaba.datax.plugin.rdbms.writer.util.OriginalConfPretreatmentUtil.dealColumnConf(OriginalConfPretreatmentUtil.java:140)
+	at com.alibaba.datax.plugin.rdbms.writer.util.OriginalConfPretreatmentUtil.doPretreatment(OriginalConfPretreatmentUtil.java:35)
+	at com.alibaba.datax.plugin.rdbms.writer.CommonRdbmsWriter$Job.init(CommonRdbmsWriter.java:41)
+	at com.alibaba.datax.plugin.writer.mysqlwriter.MysqlWriter$Job.init(MysqlWriter.java:31)
+	at com.alibaba.datax.core.job.JobContainer.initJobWriter(JobContainer.java:704)
+	at com.alibaba.datax.core.job.JobContainer.init(JobContainer.java:304)
+	at com.alibaba.datax.core.job.JobContainer.start(JobContainer.java:113)
+	at com.alibaba.datax.core.Engine.start(Engine.java:92)
+	at com.alibaba.datax.core.Engine.entry(Engine.java:171)
+	at com.alibaba.datax.core.Engine.main(Engine.java:204)
+

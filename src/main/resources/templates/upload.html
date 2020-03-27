@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <script type="text/javascript"  th:src="@{/static/js/jquery.min.js}"></script>
+    <title>upload</title>
+</head>
+<body>
+<div th:if="${uploadStatus}" th:text="${uploadStatus}">上传成功</div>
+<form th:action="@{/uploadFile}" method="post" enctype="multipart/form-data">
+    上传文件<input type="button" value="添加文件" onclick="add()"/>
+    <div id="file" th:value="文件上传区域"></div>
+    <input id="submit" type="submit" value="上传" style="display: none"/>
+</form>
+
+<script type="text/javascript">
+    function add(){
+        var innerdiv = "<div>";
+        innerdiv+="<input type='file' value='fileUpload' required='required'/>"+
+                "<input type='button' value='删除' required='remove(this)'/>";
+        innerdiv+="</div>";
+        $("#file").append(innerdiv);
+        $("#submit").css("display","block");
+    }
+    function remove(obj) {
+        $("obj").parent().remove();
+        if($("#file div").length==0){
+            $("#submit").css("display","none");
+        }
+    }
+</script>
+</body>
+</html>
