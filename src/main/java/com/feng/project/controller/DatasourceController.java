@@ -12,6 +12,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.feng.project.domain.Datasource;
@@ -91,17 +92,33 @@ public class DatasourceController {
     	return new ModelAndView("admin/show-table-desc","model",model);
     }
     
-    @RequestMapping("/datasource/copyTable")
+    @RequestMapping("/datasource/copyTableForm")
     public ModelAndView copyTableForm(Model model) {
     	model.addAttribute("datalist",databaseService.findAll());
         return new ModelAndView("admin/copy-table","model",model);
     }
     
-    
+    @ResponseBody
     @RequestMapping("/datasource/getTableList")
     public List<String> getTableList(String name) {
     	Datasource datasource = databaseService.findDatasourceByName(name);
     	Connection conn = ConnectionUtil.getConn(datasource, datasource.getType());
         return ConnectionUtil.getTables(ConnectionUtil.getMetaDate(conn));
     }
+    
+    @RequestMapping("/datasource/copyTable")
+    public ModelAndView copyTable(Model model,String sdatasource,String sname,String ddatasource,String dname) {
+    	Datasource datasources = databaseService.findDatasourceByName(sdatasource);
+    	Datasource datasourced = databaseService.findDatasourceByName(ddatasource);
+    	Connection conn = ConnectionUtil.getConn(datasources, datasources.getType());
+    	String createsql = ConnectionUtil.createTable(
+    			ConnectionUtil.getPrimaryKey(ConnectionUtil.getMetaDate(conn), sname), 
+    			dname, ConnectionUtil.getColumn(ConnectionUtil.getMetaDate(conn), sname));
+    	conn = ConnectionUtil.getConn(datasourced, datasourced.getType());
+    	boolean flag = ConnectionUtil.executeSQL(conn, createsql);
+    	model.addAttribute("flag", flag);
+    	model.addAttribute("tablelist",ConnectionUtil.getTables(ConnectionUtil.getMetaDate(conn)));
+    	return new ModelAndView("admin/show-table","model",model);
+    }
+    
 }

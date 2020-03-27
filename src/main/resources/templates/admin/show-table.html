@@ -253,7 +253,7 @@
                                 </select>
                             </div>
                             <input type="text" class="search" />
-                            <a class="btn-flat success new-product" th:href="@{/datasource/copyTable}">copy table</a>
+                            <a class="btn-flat success new-product" th:href="@{/datasource/copyTableForm}">copy table</a>
                         </div>
                     </div>
 
@@ -297,6 +297,14 @@
     <script th:src="@{/js/jquery-latest.js}"></script>
     <script th:src="@{/js/bootstrap.min.js}"></script>
     <script th:src="@{/js/theme.js}"></script>
-
+   <script th:inline="javascript" >
+		var v = [[${model.flag}]]
+		if (v) { 
+			alert("创建成功");
+	    }
+		if(!v){
+			alert("创建失败");
+		}
+	</script>
 </body>
 </html>
