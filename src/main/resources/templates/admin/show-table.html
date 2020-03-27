@@ -253,7 +253,7 @@
                                 </select>
                             </div>
                             <input type="text" class="search" />
-                            <a class="btn-flat success new-product" href="new-user.html">+ Add product</a>
+                            <a class="btn-flat success new-product" th:href="@{/datasource/copyTable}">copy table</a>
                         </div>
                     </div>
 
@@ -280,8 +280,7 @@
                                     <td class="description" th:text="${table}">
                                     </td>
                                     <td class="description">
-                                    <a th:href="@{'/datasource/showTableDesc/'+${model.id}+'/'+${table}}">表结构</a>&nbsp;
-                                    <a href="#">复制表</a>
+                                    <a th:href="@{'/datasource/showTableDesc/'+${model.id}+'/'+${table}}">表结构</a>
                                     </td>
                                 </tr>
                             </tbody>

@@ -6,6 +6,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface DatasourceRepository extends JpaRepository<Datasource,Integer> {
-
+	Datasource findDatasourceByName(String name);
 
 }

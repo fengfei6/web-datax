@@ -1,6 +1,7 @@
 package com.feng.project.controller;
 
 import java.sql.Connection;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -90,4 +91,17 @@ public class DatasourceController {
     	return new ModelAndView("admin/show-table-desc","model",model);
     }
     
+    @RequestMapping("/datasource/copyTable")
+    public ModelAndView copyTableForm(Model model) {
+    	model.addAttribute("datalist",databaseService.findAll());
+        return new ModelAndView("admin/copy-table","model",model);
+    }
+    
+    
+    @RequestMapping("/datasource/getTableList")
+    public List<String> getTableList(String name) {
+    	Datasource datasource = databaseService.findDatasourceByName(name);
+    	Connection conn = ConnectionUtil.getConn(datasource, datasource.getType());
+        return ConnectionUtil.getTables(ConnectionUtil.getMetaDate(conn));
+    }
 }

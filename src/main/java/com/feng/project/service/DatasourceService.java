@@ -36,4 +36,8 @@ public class DatasourceService {
     public void delete(Integer id) {
     	datasourceRepository.deleteById(id);
     }
+    
+    public Datasource findDatasourceByName(String name) {
+    	return datasourceRepository.findDatasourceByName(name);
+    }
 }
