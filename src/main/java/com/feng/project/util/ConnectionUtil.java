@@ -24,7 +24,7 @@ import com.feng.project.domain.Datasource;
 public class ConnectionUtil {
 
 	/**
-	 * @param database
+	 * @param datasource
 	 * @param type
 	 * @return
 	 * @throws Exception
@@ -181,7 +181,8 @@ public class ConnectionUtil {
 				sb.append(entry.getKey()+" "+entry.getValue()+",");
 			}
 		}
-		return sb.toString().replace("varchar", "varchar(255)");
+		return sb.toString().replace("varchar", "varchar(255)")
+				.replace("VARCHAR", "VARCHAR(255)");
 	}
 	
 	/**

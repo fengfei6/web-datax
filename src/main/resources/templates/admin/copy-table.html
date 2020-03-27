@@ -275,7 +275,7 @@
                                         
                                             <div class="field-box">
                                                 <label>选择源数据库:</label>
-                                                <select class="span8" name="startArea1" id="start_select1" name="sdatasource">
+                                                <select class="span8" id="start_select1" name="sdatasource">
                                                 	<option selected = true>--请选择--</option>
 													<option  th:each="datasource:${model.datalist}" th:value="${datasource.name}" th:text="${datasource.name}" ></option> 
 												</select> 
@@ -290,7 +290,7 @@
                                        
                                            <div class="field-box">
                                                 <label>选择源表:</label>
-                                                <select class="span8" name="startArea2" id="start_select2" name="sname"> 
+                                                <select class="span8"  id="start_select2" name="sname">
 													<option selected = true>--请选择--</option>
 												</select> 
                                             </div>
@@ -395,9 +395,9 @@
 				type:'post', 
 				data:{name:t}, 
 				success:function(data){ 
-				       var t2 = $("#start_select2").empty(); 
-						
-				        for ( var i = 0; i < data.length; i++) { 
+				       var t2 = $("#start_select2").empty();
+                        t2.append("<option >--请选择--</option>");
+                    for ( var i = 0; i < data.length; i++) {
 				        	 console.log(data[i]);
 				             t2.append("<option value='"+data[i]+"'>"+ data[i]+"</option>"); 
 				         } 

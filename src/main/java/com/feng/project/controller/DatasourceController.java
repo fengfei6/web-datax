@@ -56,7 +56,7 @@ public class DatasourceController {
         }
         databaseService.update(datasource);
         model.addAttribute("datalist", databaseService.findAll());
-        model.addAttribute("flag", flag);
+        model.addAttribute("conn_flag", flag);
         return new ModelAndView("admin/database-list","model",model);
     }
     
@@ -116,9 +116,9 @@ public class DatasourceController {
     			dname, ConnectionUtil.getColumn(ConnectionUtil.getMetaDate(conn), sname));
     	conn = ConnectionUtil.getConn(datasourced, datasourced.getType());
     	boolean flag = ConnectionUtil.executeSQL(conn, createsql);
-    	model.addAttribute("flag", flag);
-    	model.addAttribute("tablelist",ConnectionUtil.getTables(ConnectionUtil.getMetaDate(conn)));
-    	return new ModelAndView("admin/show-table","model",model);
+    	model.addAttribute("create_flag", flag);
+    	model.addAttribute("datalist",databaseService.findAll());
+    	return new ModelAndView("admin/database-list","model",model);
     }
     
 }

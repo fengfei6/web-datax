@@ -326,14 +326,15 @@
     <script th:src="@{/js/jquery-latest.js}"></script>
     <script th:src="@{/js/bootstrap.min.js}"></script>
     <script th:src="@{/js/theme.js}"></script>
-    <script th:inline="javascript" >
-		var v = [[${model.flag}]]
-		if (v) { 
-			alert("连接成功");
-	    }
-		if(!v){
-			alert("连接失败");
-		}
+    <script th:inline="javascript">
+		var v = [[${model.conn_flag}]]
+        if (v) {
+            alert("连接成功");
+        }
+        if(!v){
+            alert("连接失败");
+        }
+
 	</script>
   
 </body>
