@@ -32,7 +32,7 @@ public class jobUtil {
 		sb.append("\"],\"jdbcUrl\": [\"").append(jdbcUrl);
 		sb.append("\"]}]}}}]}}");
 	
-		File file = new File("d:/test.json");
+		File file = new File("src/main/resources/static/file/test.json");
 		if(!file.exists()) {
 			file.createNewFile();
 		}

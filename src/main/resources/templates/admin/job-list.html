@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-	<title>Detail Admin - Form Wizard</title>
+	<title>Detail Admin - Tables showcase</title>
     
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 	
@@ -10,20 +10,16 @@
     <link th:href="@{/css/bootstrap/bootstrap-responsive.css}" rel="stylesheet" />
     <link th:href="@{/css/bootstrap/bootstrap-overrides.css}" type="text/css" rel="stylesheet" />
 
-    <!-- libraries -->
-    <link th:href="@{/css/lib/bootstrap-wysihtml5.css}" type="text/css" rel="stylesheet" />
-    <link th:href="@{/css/lib/uniform.default.css}" type="text/css" rel="stylesheet" />
-    <link th:href="@{/css/lib/select2.css}" type="text/css" rel="stylesheet" />
-    <link th:href="@{/css/lib/bootstrap.datepicker.css}" type="text/css" rel="stylesheet" />
-    <link th:href="@{/css/lib/font-awesome.css}" type="text/css" rel="stylesheet" />
-
     <!-- global styles -->
     <link rel="stylesheet" type="text/css" th:href="@{/css/layout.css}" />
     <link rel="stylesheet" type="text/css" th:href="@{/css/elements.css}" />
     <link rel="stylesheet" type="text/css" th:href="@{/css/icons.css}" />
+
+    <!-- libraries -->
+    <link th:href="@{/css/lib/font-awesome.css}" type="text/css" rel="stylesheet" />
     
     <!-- this page specific styles -->
-    <link rel="stylesheet" th:href="@{/css/compiled/form-wizard.css}" type="text/css" media="screen" />
+    <link rel="stylesheet" th:href="@{/css/compiled/tables.css}" type="text/css" media="screen" />
 
     <!-- open sans font -->
     <link href='http://fonts.useso.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css' />
@@ -134,7 +130,7 @@
                     </div>
                 </li>
                 <li class="dropdown">
-                    <a href="#" class="dropdown-toggle hidden-phone" data-toggle="dropdown">
+                    <a href="#" class="dropdown-toggle hidden-phone" data-toggle="dropdown" th:text="${name} ? ${name}:'未登录'">
                         Your account
                         <b class="caret"></b>
                     </a>
@@ -181,7 +177,7 @@
                     <i class="icon-chevron-down"></i>
                 </a>
                 <ul class="submenu">
-                    <li><a href="/admin/database-list">数据源列表</a></li>
+                    <li><a href="/datasource/list">数据源列表</a></li>
                     <li><a href="/admin/new-database">新增数据源</a></li>
                 </ul>
             </li>
@@ -222,8 +218,6 @@
             </li>
         </ul>
     </div>
-
-
 	<!-- main container -->
     <div class="content">
         
@@ -236,177 +230,100 @@
                 <span class="icon"></span><span class="text">Dark skin</span>
             </a>
         </div>
-        <form action="/datasource/copyTable" method="post">
+        
         <div class="container-fluid">
             <div id="pad-wrapper">
-                <!-- <div class="row-fluid head">
-                    <div class="span12">
-                        <h4>Form wizard</h4>
-                    </div>
-                </div> -->
 
-				
-                <div class="row-fluid">
-                    <div class="span12">
-                        <div id="fuelux-wizard" class="wizard row-fluid">
-                            <ul class="wizard-steps">
-                                <li data-target="#step1" class="active">
-                                    <span class="step">1</span>
-                                    <span class="title">选择源数据库<br /> Source Datasource</span>
-                                </li>
-                                <li data-target="#step2">
-                                    <span class="step">2</span>
-                                    <span class="title">选择表 <br /> Table</span>
-                                </li>
-                                <li data-target="#step3">
-                                    <span class="step">3</span>
-                                    <span class="title">选择目的数据源 <br />Destination Datasource</span>
-                                </li>
-                                <li data-target="#step4">
-                                    <span class="step">4</span>
-                                    <span class="title">表名 <br />Table Name</span>
-                                </li>
-                            </ul>                            
+                <!-- products table-->
+                <!-- the script for the toggle all checkboxes from header is located in js/theme.js -->
+                <div class="table-wrapper products-table section">
+                    <div class="row-fluid head">
+                        <div class="span12">
+                            <h4>Job</h4>
                         </div>
-                        <div class="step-content">
-                            <div class="step-pane active" id="step1">
-                                <div class="row-fluid form-wrapper">
-                                    <div class="span8">
-                                        
-                                            <div class="field-box">
-                                                <label>选择源数据库:</label>
-                                                <select class="span8" id="start_select1" name="sdatasource">
-                                                	<option selected = true>--请选择--</option>
-													<option  th:each="datasource:${model.datalist}" th:value="${datasource.id}" th:text="${datasource.name}" ></option>
-												</select> 
-                                            </div>
-                                        
-                                    </div>
-                                </div>
+                    </div>
+
+                    <div class="row-fluid filter-block">
+                        <div class="pull-right">
+                            <div class="ui-select">
+                                <select>
+                                  <option />Filter users
+                                  <option />Signed last 30 days
+                                  <option />Active users
+                                </select>
                             </div>
-                            <div class="step-pane" id="step2">
-                                <div class="row-fluid form-wrapper">
-                                    <div class="span8">
-                                       
-                                           <div class="field-box">
-                                                <label>选择源表:</label>
-                                                <select class="span8"  id="start_select2" name="sname">
-													<option selected = true>--请选择--</option>
-												</select> 
-                                            </div>
-                                        
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="step-pane" id="step3">
-                                <div class="row-fluid form-wrapper">
-                                    <div class="span8">
-                                        
-                                            <label>选择目的数据库:</label>
-                                                <select class="span8" name="ddatasource">
-                                                	<option selected = true>--请选择--</option>
-													<option  th:each="datasource:${model.datalist}"  th:value="${datasource.id}" th:text="${datasource.name}" ></option>
-												</select> 
-                                        
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="step-pane" id="step4">
-                                <div class="row-fluid form-wrapper payment-info">
-                                    <div class="span8">
-                                       
-                                            <div class="field-box">
-                                                <label>表名:</label>
-                                                <input class="span5" type="text" name="dname"/>
-                                            </div>
-                                           
-                                    </div>
-                                </div>
-                            </div>
+                            <input type="text" class="search" />
+                            <a class="btn-flat success new-product" th:href="@{/job/prepare}">+ Add Job</a>
                         </div>
-                        <div class="wizard-actions">
-                            <button type="button" disabled="" class="btn-glow primary btn-prev"> 
-                                <i class="icon-chevron-left"></i>上一步
-                            </button>
-                            <button type="button" class="btn-glow primary btn-next" data-last="Finish">
-                                下一步 <i class="icon-chevron-right"></i>
-                            </button>
-                            <button type="sumbit" class="btn-glow success btn-finish">
-                               提交任务
-                            </button>
-                        </div>
+                    </div>
+
+                    <div class="row-fluid">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th class="span3">
+                                       Job
+                                    </th>
+                                    <th class="span3">
+                                        <span class="line"></span>Description
+                                    </th> 
+                                    <th class="span3">
+                                        <span class="line"></span>Source Table
+                                    </th>
+                                    <th class="span3">
+                                        <span class="line"></span>Target Table
+                                    </th>
+                                    <th class="span3">
+                                        <span class="line"></span>CreateTime
+                                    </th> 
+                                    <th class="span3">
+                                        <span class="line"></span>Operate
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- row -->
+                                <tr class="first" th:each="job:${model.joblist}">
+
+                                    <td>
+                                   		 <div class="img">
+                                            <img th:src="@{/img/logo.jpg}" />
+                                        </div>
+                                        <a th:href="@{'/datasource/showAll/'+${job.id}}" class="name" th:text="${job.name}?${job.name}:''"></a>
+                                    </td>
+                                    <td class="description" th:text="${job.description}?${job.description}:''">
+                                    </td>
+                                    <td class="description" th:text="${job.readerTable}? ${job.readerTable}:''">
+                                    </td>
+                                    <td class="description" th:text="${job.writerTable}? ${job.writerTable}:''">
+                                    </td>
+                                    <td class="description" th:text="${job.createTime}? ${job.createTime}:''">
+                                    </td>
+                                    <td class="description">
+                                        <ul class="action">
+                                            <li><a th:href="@{'/job/edit/'+${job.id}}">Edit</a></li>
+                                            <li class="last"><a th:href="@{'/job/logList/'+${job.id}}">Log</a></li>
+                                        </ul>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
+                <!-- end products table -->
             </div>
         </div>
-        </form>
     </div>
     <!-- end main container -->
 
-	<!-- scripts for this page -->
+	<!-- scripts -->
     <script th:src="@{/js/jquery-latest.js}"></script>
     <script th:src="@{/js/bootstrap.min.js}"></script>
     <script th:src="@{/js/theme.js}"></script>
-    <script th:src="@{/js/fuelux.wizard.js}"></script>
+    <script th:inline="javascript">
 
-    <script type="text/javascript" th:inline="javascript">
-        $(function () {
-            var $wizard = $('#fuelux-wizard'),
-                $btnPrev = $('.wizard-actions .btn-prev'),
-                $btnNext = $('.wizard-actions .btn-next'),
-                $btnFinish = $(".wizard-actions .btn-finish");
 
-            $wizard.wizard().on('finished', function(e) {
-                // wizard complete code
-            }).on("changed", function(e) {
-                var step = $wizard.wizard("selectedItem");
-                // reset states
-                $btnNext.removeAttr("disabled");
-                $btnPrev.removeAttr("disabled");
-                $btnNext.show();
-                $btnFinish.hide();
-
-                if (step.step === 1) {
-                    $btnPrev.attr("disabled", "disabled");
-                } else if (step.step === 4) {
-                    $btnNext.hide();
-                    $btnFinish.show();
-                }
-            });
-
-            $btnPrev.on('click', function() {
-                $wizard.wizard('previous');
-            });
-            $btnNext.on('click', function() {
-                $wizard.wizard('next');
-            });
-        });
-        
-            $(document).ready(function(){ 
-            $("#start_select1").change(function(){ 
-               var t = $("#start_select1").val(); 
-               if(t ==''){ 
-                   return; 
-				} 
-				
-				$.ajax({ 
-				url:"/datasource/getTableList", 
-				async:true, 
-				type:'post', 
-				data:{name:t}, 
-				success:function(data){ 
-				       var t2 = $("#start_select2").empty();
-                        t2.append("<option >--请选择--</option>");
-                    for ( var i = 0; i < data.length; i++) {
-				        	 console.log(data[i]);
-				             t2.append("<option value='"+data[i]+"'>"+ data[i]+"</option>"); 
-				         } 
-				     } 
-				}) 
-				}); 
-			})
-
-    </script>
-
+	</script>
+  
 </body>
 </html>

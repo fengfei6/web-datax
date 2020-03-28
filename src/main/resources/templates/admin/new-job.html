@@ -224,9 +224,9 @@
     </div>
 
 
-	<!-- main container -->
+    <!-- main container -->
     <div class="content">
-        
+
         <!-- settings changer -->
         <div class="skins-nav">
             <a href="#" class="skin first_nav selected">
@@ -236,109 +236,127 @@
                 <span class="icon"></span><span class="text">Dark skin</span>
             </a>
         </div>
-        <form action="/datasource/copyTable" method="post">
-        <div class="container-fluid">
-            <div id="pad-wrapper">
-                <!-- <div class="row-fluid head">
-                    <div class="span12">
-                        <h4>Form wizard</h4>
-                    </div>
-                </div> -->
-
-				
-                <div class="row-fluid">
-                    <div class="span12">
-                        <div id="fuelux-wizard" class="wizard row-fluid">
-                            <ul class="wizard-steps">
-                                <li data-target="#step1" class="active">
-                                    <span class="step">1</span>
-                                    <span class="title">选择源数据库<br /> Source Datasource</span>
-                                </li>
-                                <li data-target="#step2">
-                                    <span class="step">2</span>
-                                    <span class="title">选择表 <br /> Table</span>
-                                </li>
-                                <li data-target="#step3">
-                                    <span class="step">3</span>
-                                    <span class="title">选择目的数据源 <br />Destination Datasource</span>
-                                </li>
-                                <li data-target="#step4">
-                                    <span class="step">4</span>
-                                    <span class="title">表名 <br />Table Name</span>
-                                </li>
-                            </ul>                            
+        <form action="/job/saveJob" method="post">
+            <div class="container-fluid">
+                <div id="pad-wrapper">
+                    <!-- <div class="row-fluid head">
+                        <div class="span12">
+                            <h4>Form wizard</h4>
                         </div>
-                        <div class="step-content">
-                            <div class="step-pane active" id="step1">
-                                <div class="row-fluid form-wrapper">
-                                    <div class="span8">
-                                        
+                    </div> -->
+
+
+                    <div class="row-fluid">
+                        <div class="span12">
+                            <div id="fuelux-wizard" class="wizard row-fluid">
+                                <ul class="wizard-steps">
+                                    <li data-target="#step1" class="active">
+                                        <span class="step">1</span>
+                                        <span class="title">选择源数据库，表<br /> Source Datasource</span>
+                                    </li>
+                                    <li data-target="#step2">
+                                        <span class="step">2</span>
+                                        <span class="title">填写同步前语句 <br /> Table</span>
+                                    </li>
+                                    <li data-target="#step3">
+                                        <span class="step">3</span>
+                                        <span class="title">选择目的数据源，表<br />Destination Datasource</span>
+                                    </li>
+                                    <li data-target="#step4">
+                                        <span class="step">4</span>
+                                        <span class="title">同步任务名 <br />Table Name</span>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="step-content">
+                                <div class="step-pane active" id="step1">
+                                    <div class="row-fluid form-wrapper">
+                                        <div class="span8">
                                             <div class="field-box">
                                                 <label>选择源数据库:</label>
-                                                <select class="span8" id="start_select1" name="sdatasource">
-                                                	<option selected = true>--请选择--</option>
-													<option  th:each="datasource:${model.datalist}" th:value="${datasource.id}" th:text="${datasource.name}" ></option>
-												</select> 
+                                                <select class="span8" id="start_select1" name="readerDbId">
+                                                    <option selected = true>--请选择--</option>
+                                                    <option  th:each="datasource:${model.datalist}" th:value="${datasource.id}" th:text="${datasource.name}" ></option>
+                                                </select>
                                             </div>
-                                        
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="step-pane" id="step2">
-                                <div class="row-fluid form-wrapper">
-                                    <div class="span8">
-                                       
-                                           <div class="field-box">
-                                                <label>选择源表:</label>
-                                                <select class="span8"  id="start_select2" name="sname">
-													<option selected = true>--请选择--</option>
-												</select> 
-                                            </div>
-                                        
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="step-pane" id="step3">
-                                <div class="row-fluid form-wrapper">
-                                    <div class="span8">
-                                        
-                                            <label>选择目的数据库:</label>
-                                                <select class="span8" name="ddatasource">
-                                                	<option selected = true>--请选择--</option>
-													<option  th:each="datasource:${model.datalist}"  th:value="${datasource.id}" th:text="${datasource.name}" ></option>
-												</select> 
-                                        
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="step-pane" id="step4">
-                                <div class="row-fluid form-wrapper payment-info">
-                                    <div class="span8">
-                                       
                                             <div class="field-box">
-                                                <label>表名:</label>
-                                                <input class="span5" type="text" name="dname"/>
+                                                <label>选择源表:</label>
+                                                <select class="span8"  id="start_select2" name="readerTable">
+
+                                                </select>
                                             </div>
-                                           
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="step-pane" id="step2">
+                                    <div class="row-fluid form-wrapper">
+                                        <div class="span8">
+                                            <div class="field-box">
+                                                <label>同步前语句:</label>
+                                                <input class="span8" type="text" name="querySql"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="step-pane" id="step3">
+                                    <div class="row-fluid form-wrapper">
+                                        <div class="span8">
+                                            <div class="field-box">
+                                                <label>选择目标数据库:</label>
+                                                <select class="span8" id="start_select3" name="writerDbId">
+                                                    <option selected = true>--请选择--</option>
+                                                    <option  th:each="datasource:${model.datalist}" th:value="${datasource.id}" th:text="${datasource.name}" ></option>
+                                                </select>
+                                            </div>
+                                            <div class="field-box">
+                                                <label>选择目标表:</label>
+                                                <select class="span8"  id="start_select4" name="writerTable">
+
+                                                </select>
+                                            </div>
+                                            <div class="field-box">
+                                                <label>写入前sql:</label>
+                                                <input class="span8" type="text" name="writerPresql"/>
+                                            </div>
+                                            <div class="field-box success">
+                                                <label>写入后sql:</label>
+                                                <input class="span8" type="text" name="writerPostsql"/>
+                                                <span class="alert-msg"><i class="icon-ok-sign"></i> Username available</span>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="step-pane" id="step4">
+                                    <div class="row-fluid form-wrapper payment-info">
+                                        <div class="span8">
+                                            <div class="field-box">
+                                                <label>同步任务名:</label>
+                                                <input class="span8" type="text" name="name"/>
+                                            </div>
+                                            <div class="field-box">
+                                                <label>同步任务描述:</label>
+                                                <input class="span8" type="text" name="description"/>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="wizard-actions">
-                            <button type="button" disabled="" class="btn-glow primary btn-prev"> 
-                                <i class="icon-chevron-left"></i>上一步
-                            </button>
-                            <button type="button" class="btn-glow primary btn-next" data-last="Finish">
-                                下一步 <i class="icon-chevron-right"></i>
-                            </button>
-                            <button type="sumbit" class="btn-glow success btn-finish">
-                               提交任务
-                            </button>
+                            <div class="wizard-actions">
+                                <button type="button" disabled="" class="btn-glow primary btn-prev">
+                                    <i class="icon-chevron-left"></i>上一步
+                                </button>
+                                <button type="button" class="btn-glow primary btn-next" data-last="Finish">
+                                    下一步 <i class="icon-chevron-right"></i>
+                                </button>
+                                <button type="sumbit" class="btn-glow success btn-finish">
+                                    提交任务
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
         </form>
     </div>
     <!-- end main container -->
@@ -381,30 +399,54 @@
                 $wizard.wizard('next');
             });
         });
-        
-            $(document).ready(function(){ 
-            $("#start_select1").change(function(){ 
-               var t = $("#start_select1").val(); 
-               if(t ==''){ 
-                   return; 
-				} 
-				
-				$.ajax({ 
-				url:"/datasource/getTableList", 
-				async:true, 
-				type:'post', 
-				data:{name:t}, 
-				success:function(data){ 
-				       var t2 = $("#start_select2").empty();
+
+        $(document).ready(function(){
+            $("#start_select1").change(function(){
+                var t = $("#start_select1").val();
+                if(t ==''){
+                    return;
+                }
+
+                $.ajax({
+                    url:"/datasource/getTableList",
+                    async:true,
+                    type:'post',
+                    data:{id:t},
+                    success:function(data){
+                        var t2 = $("#start_select2").empty();
                         t2.append("<option >--请选择--</option>");
-                    for ( var i = 0; i < data.length; i++) {
-				        	 console.log(data[i]);
-				             t2.append("<option value='"+data[i]+"'>"+ data[i]+"</option>"); 
-				         } 
-				     } 
-				}) 
-				}); 
-			})
+                        for ( var i = 0; i < data.length; i++) {
+                            console.log(data[i]);
+                            t2.append("<option value='"+data[i]+"'>"+ data[i]+"</option>");
+                        }
+                    }
+                })
+            });
+        })
+
+        $(document).ready(function(){
+            $("#start_select3").change(function(){
+                var t = $("#start_select3").val();
+                if(t ==''){
+                    return;
+                }
+
+                $.ajax({
+                    url:"/datasource/getTableList",
+                    async:true,
+                    type:'post',
+                    data:{id:t},
+                    success:function(data){
+                        var t2 = $("#start_select4").empty();
+                        t2.append("<option >--请选择--</option>");
+                        for ( var i = 0; i < data.length; i++) {
+                            console.log(data[i]);
+                            t2.append("<option value='"+data[i]+"'>"+ data[i]+"</option>");
+                        }
+                    }
+                })
+            });
+        })
 
     </script>
 
