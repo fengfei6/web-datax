@@ -265,6 +265,9 @@
                                        Job
                                     </th>
                                     <th class="span3">
+                                        <span class="line"></span>Name
+                                    </th>
+                                    <th class="span3">
                                         <span class="line"></span>Description
                                     </th> 
                                     <th class="span3">
@@ -289,7 +292,9 @@
                                    		 <div class="img">
                                             <img th:src="@{/img/logo.jpg}" />
                                         </div>
-                                        <a th:href="@{'/datasource/showAll/'+${job.id}}" class="name" th:text="${job.name}?${job.name}:''"></a>
+                                        <a id="jobId" th:href="@{'/datasource/showAll/'+${job.id}}" th:value="${job.id}" th:text="${job.id}?${job.id}:''"></a>
+                                    </td>
+                                    <td class="description" th:text="${job.name}?${job.name}:''">
                                     </td>
                                     <td class="description" th:text="${job.description}?${job.description}:''">
                                     </td>
@@ -301,7 +306,7 @@
                                     </td>
                                     <td class="description">
                                         <ul class="action">
-                                            <li><a th:href="@{'/job/edit/'+${job.id}}">Edit</a></li>
+                                            <li><a id="exec">Execute</a></li>
                                             <li class="last"><a th:href="@{'/job/logList/'+${job.id}}">Log</a></li>
                                         </ul>
                                     </td>
@@ -321,7 +326,25 @@
     <script th:src="@{/js/bootstrap.min.js}"></script>
     <script th:src="@{/js/theme.js}"></script>
     <script th:inline="javascript">
+        $(document).ready(function(){
+            $("#exec").click(function(){
+                var t = $("#jobId").attr("value");
+                if(t ==''){
+                    return;
+                }
 
+                $.ajax({
+                    url:"/job/execJob",
+                    async:true,
+                    type:'post',
+                    data:{id:t},
+                    success:function(data){
+                    debugger;
+                        alert("data");
+                    }
+                })
+            });
+        })
 
 	</script>
   
