@@ -87,4 +87,12 @@ public class JobController {
         model.addAttribute("jobLog",sb.toString());
         return new ModelAndView("admin/job-log","model",model);
     }
+    
+    @RequestMapping("/job/addFileJob")
+    public ModelAndView addFileJob(Job job, Model model){
+        jobService.save(job);
+        model.addAttribute("joblist",jobService.findAll());
+        return new ModelAndView("admin/job-list","model",model);
+    }
+    
 }

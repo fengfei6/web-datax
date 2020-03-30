@@ -278,43 +278,49 @@
                                     </div>
                                 </div>
                             </div>
+                            <form action="/job/addFileJob" method="post">
                             <div class="step-pane" id="step2">
                                 <div class="row-fluid form-wrapper">
                                     <div class="span8">
                                        
                                             <div class="field-box">
                                                 <label>文件内容显示,请确定:</label>
-                                                <textarea class="span8" id="content" style="width:1000px;height:500px" disabled>hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh</textarea>
+                                                <textarea class="span8" id="content" style="width:1000px;height:500px" disabled name="jsonContent"></textarea>
                                             </div>
                                         
                                     </div>
                                 </div>
                             </div>
-                          
+                         
                             <div class="step-pane" id="step4">
                                 <div class="row-fluid form-wrapper payment-info">
                                     <div class="span8">
                                         
                                             <div class="field-box">
                                                 <label>同步任务名称:</label>
-                                                <input class="span4" type="text" />
+                                                <input class="span4" type="text" name="name"/>
                                             </div>
-                                        
+                                        	<div class="field-box">
+                                                <label>同步任务描述:</label>
+                                                <input class="span4" type="text" name="description"/>
+                                            </div>
                                     </div>
                                 </div>
                             </div>
+                             <div class="wizard-actions">
+	                            <button type="button" disabled="" class="btn-glow primary btn-prev"> 
+	                                <i class="icon-chevron-left"></i>上一步
+	                            </button>
+	                            <button type="button" class="btn-glow primary btn-next" data-last="Finish">
+	                             		   下一步 <i class="icon-chevron-right"></i>
+	                            </button>
+	                            <button type="submit" class="btn-glow success btn-finish">
+	                              		 提交任务
+	                            </button>
+                        	</div>
+                        	</form>
                         </div>
-                        <div class="wizard-actions">
-                            <button type="button" disabled="" class="btn-glow primary btn-prev"> 
-                                <i class="icon-chevron-left"></i>上一步
-                            </button>
-                            <button type="button" class="btn-glow primary btn-next" data-last="Finish">
-                                下一步 <i class="icon-chevron-right"></i>
-                            </button>
-                            <button type="botton" class="btn-glow success btn-finish">
-                               提交任务
-                            </button>
-                        </div>
+
                     </div>
                 </div>
             </div>
