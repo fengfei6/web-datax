@@ -52,7 +52,7 @@ public class FileUploadController {
         String cmd = "python /root/dataX/datax/bin/datax.py /root/dataX/datax/job/test.json";
         Connection connection = DataxUtil.login(ip, username, password);
         DataxUtil.transferFile(connection,filepath,"/root/dataX/datax/job");
-        String execmd = DataxUtil.execmd(connection, cmd);
+        String execmd = DataxUtil.execmd(connection, cmd,"test");
         return "admin/result";
     }
 

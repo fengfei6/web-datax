@@ -52,13 +52,13 @@ public class DataxUtil {
      *            即将执行的命令
      * @return 命令执行完后返回的结果值
      */
-    public static String execmd(Connection connection, String cmd) {
+    public static String execmd(Connection connection, String cmd,String logName) {
         String result = "";
         try{
             if (connection != null) {
                 Session session = connection.openSession();// 打开一个会话
                 session.execCommand(cmd);// 执行命令
-                result = processStdout(session.getStdout(), DEFAULTCHART);
+                result = processStdout(session.getStdout(), DEFAULTCHART,logName);
                 //System.out.println(result);
                 // 如果为得到标准输出为空，说明脚本执行出错了
                 /*if (StringUtils.isBlank(result)) {
@@ -87,7 +87,7 @@ public class DataxUtil {
      *            编码
      * @return 以纯文本的格式返回
      */
-    private static String processStdout(InputStream in, String charset) {
+    private static String processStdout(InputStream in, String charset,String name) {
         InputStream stdout = new StreamGobbler(in);
         StringBuffer buffer = new StringBuffer();
         try {
@@ -98,7 +98,7 @@ public class DataxUtil {
                 System.out.println(line);
             }
             br.close();
-            writeLog(buffer.toString());
+            writeLog(buffer.toString(),name);
         } catch (UnsupportedEncodingException e) {
             System.out.println("解析脚本出错：" + e.getMessage());
             e.printStackTrace();
@@ -161,8 +161,8 @@ public class DataxUtil {
     }
 
 
-    public static void writeLog(String result) throws IOException {
-        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream("src/main/resources/static/log/log.log",true)));
+    public static void writeLog(String result,String name) throws IOException {
+        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream("src/main/resources/static/log/"+name+".log")));
         bw.write(result);
         bw.flush();
         bw.close();

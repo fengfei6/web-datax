@@ -1,0 +1,16 @@
+
+DataX (DATAX-OPENSOURCE-3.0), From Alibaba !
+Copyright (C) 2010-2017, Alibaba Group. All Rights Reserved.
+
+
+2020-03-30 12:25:09.967 [main] WARN  ConfigParser - 插件[null,null]加载失败，1s后重试... Exception:Code:[Framework-12], Description:[DataX插件初始化错误, 该问题通常是由于DataX安装错误引起，请联系您的运维解决 .].  - 插件加载失败，未完成指定插件加载:[null] 
+2020-03-30 12:25:10.984 [main] ERROR Engine - 
+
+经DataX智能分析,该任务最可能的错误原因是:
+com.alibaba.datax.common.exception.DataXException: Code:[Framework-12], Description:[DataX插件初始化错误, 该问题通常是由于DataX安装错误引起，请联系您的运维解决 .].  - 插件加载失败，未完成指定插件加载:[null]
+	at com.alibaba.datax.common.exception.DataXException.asDataXException(DataXException.java:26)
+	at com.alibaba.datax.core.util.ConfigParser.parsePluginConfig(ConfigParser.java:142)
+	at com.alibaba.datax.core.util.ConfigParser.parse(ConfigParser.java:63)
+	at com.alibaba.datax.core.Engine.entry(Engine.java:137)
+	at com.alibaba.datax.core.Engine.main(Engine.java:204)
+

@@ -20,7 +20,14 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
+
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -58,19 +65,26 @@ public class JobController {
         return new ModelAndView("admin/job-list","model",model);
     }
 
-    @ResponseBody
-    @RequestMapping("/job/execJob")
-    public List<String> doJobOnce(Integer id) throws IOException {
+    @RequestMapping("/job/execJob/{id}")
+    public ModelAndView doJobOnce(@PathVariable Integer id,Model model) throws IOException {
         Job job = jobService.getOne(id);
         JobUtil.getJsonfile(datasourceService.getDatasource(
                 job.getReaderDbId()),datasourceService.getDatasource(job.getWriterDbId()),
                 job.getReaderTable(),job.getWriterTable(),job.getName());
         Connection conn = DataxUtil.login("192.144.129.188", "root", "FFei916#");
         DataxUtil.transferFile(conn, "src/main/resources/static/file/job.json", "/usr/local/datax/job");
-        String result = DataxUtil.execmd(conn, "python /usr/local/datax/bin/datax.py /usr/local/datax/job/job.json");
-        System.out.println(result);
-        List<String> list = new ArrayList<>();
-        list.add("succ");
-        return list;
+        String result = DataxUtil.execmd(conn, "python /usr/local/datax/bin/datax.py /usr/local/datax/job/job.json",job.getName());
+        return getJobLog(model, job.getName());
+    }
+    
+    public ModelAndView getJobLog(Model model,String name) throws IOException{
+    	FileReader fr = new FileReader("src/main/resources/static/log/"+name+".log"); 
+    	StringBuilder sb = new StringBuilder();
+    	int ch = 0;  
+    	while((ch = fr.read())!=-1 ){   
+    		sb.append((char)ch);   
+    	} 
+        model.addAttribute("jobLog",sb.toString());
+        return new ModelAndView("admin/job-log","model",model);
     }
 }
