@@ -4,13 +4,19 @@ import com.feng.project.domain.Job;
 import com.feng.project.domain.User;
 import com.feng.project.service.DatasourceService;
 import com.feng.project.service.JobService;
+import com.feng.project.util.DataxUtil;
 import com.feng.project.util.JobUtil;
+
+import ch.ethz.ssh2.Connection;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
@@ -52,12 +58,17 @@ public class JobController {
         return new ModelAndView("admin/job-list","model",model);
     }
 
+    @ResponseBody
     @RequestMapping("/job/execJob")
     public List<String> doJobOnce(Integer id) throws IOException {
         Job job = jobService.getOne(id);
         JobUtil.getJsonfile(datasourceService.getDatasource(
                 job.getReaderDbId()),datasourceService.getDatasource(job.getWriterDbId()),
                 job.getReaderTable(),job.getWriterTable(),job.getName());
+        Connection conn = DataxUtil.login("192.144.129.188", "root", "FFei916#");
+        DataxUtil.transferFile(conn, "src/main/resources/static/file/job.json", "/usr/local/datax/job");
+        String result = DataxUtil.execmd(conn, "python /usr/local/datax/bin/datax.py /usr/local/datax/job/job.json");
+        System.out.println(result);
         List<String> list = new ArrayList<>();
         list.add("succ");
         return list;

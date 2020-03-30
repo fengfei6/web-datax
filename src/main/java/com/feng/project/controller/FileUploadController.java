@@ -1,7 +1,7 @@
 package com.feng.project.controller;
 
 import ch.ethz.ssh2.Connection;
-import com.feng.project.util.dataxUtil;
+import com.feng.project.util.DataxUtil;
 import org.quartz.JobDetail;
 import org.quartz.Scheduler;
 import org.quartz.SchedulerException;
@@ -46,13 +46,13 @@ public class FileUploadController {
 
     @PostMapping("/exec")
     public String dataxService(String filepath) throws IOException {
-        String ip = "106.13.149.72";
+        String ip = "192.144.129.188";
         String username = "root";
         String password = "FFei916#";
         String cmd = "python /root/dataX/datax/bin/datax.py /root/dataX/datax/job/test.json";
-        Connection connection = dataxUtil.login(ip, username, password);
-        dataxUtil.transferFile(connection,filepath,"/root/dataX/datax/job");
-        String execmd = dataxUtil.execmd(connection, cmd);
+        Connection connection = DataxUtil.login(ip, username, password);
+        DataxUtil.transferFile(connection,filepath,"/root/dataX/datax/job");
+        String execmd = DataxUtil.execmd(connection, cmd);
         return "admin/result";
     }
 

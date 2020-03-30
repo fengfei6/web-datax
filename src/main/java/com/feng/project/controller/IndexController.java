@@ -23,12 +23,4 @@ public class IndexController {
 		return xxx;
 	}
 
-	@RequestMapping("/test")
-	public String test(Model model) {
-		List<String> aaa = new ArrayList<String>();
-		aaa.add("111");
-		aaa.add("222");
-		model.addAttribute("dtlist",aaa);
-		return "form";
-	}
 }

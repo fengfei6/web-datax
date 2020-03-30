@@ -1,17 +1,31 @@
 package com.feng.project.util;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 
-import ch.ethz.ssh2.*;
 import org.apache.commons.io.IOUtils;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Component;
 
+import ch.ethz.ssh2.Connection;
+import ch.ethz.ssh2.SCPClient;
+import ch.ethz.ssh2.SCPOutputStream;
+import ch.ethz.ssh2.Session;
+import ch.ethz.ssh2.StreamGobbler;
+
 @Component("datax")
-public class dataxUtil {
+public class DataxUtil {
     private static String DEFAULTCHART = "UTF-8";
 
     public static Connection login(String ip, String username, String password) {
@@ -142,17 +156,10 @@ public class dataxUtil {
     }
 
     public static String getFileName(String uploadFileName){
-        Calendar calendar= Calendar.getInstance();
-        SimpleDateFormat dateFormat= new SimpleDateFormat("yyyy-MM-dd");
-        String name = "_datax_job_"+uploadFileName+"_json-"+dateFormat+".*.log";
+        String name = "_datax_job_"+uploadFileName+"_json-"+"*.log";
         return name;
     }
 
-    public static String getDirectoryName(){
-        Calendar now = Calendar.getInstance();
-        SimpleDateFormat dateFormat= new SimpleDateFormat("hh:mm:ss");
-        return dateFormat.toString();
-    }
 
     public static void writeLog(String result) throws IOException {
         BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream("src/main/resources/static/log/log.log",true)));
