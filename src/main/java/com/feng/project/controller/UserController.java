@@ -6,8 +6,12 @@ import com.feng.project.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
+
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -46,4 +50,22 @@ public class UserController {
         mailService.sendSimpleEmail(email,subject,Integer.toString(pass));
         return new ModelAndView("index");
      }
+    
+    @RequestMapping("/user/findAll")
+    public ModelAndView findAll(Model model) {
+    	model.addAttribute("userlist", userService.findAll());
+    	return new ModelAndView("admin/user-list","model",model);
+    }
+    
+    @RequestMapping("/user/modifyRole/{id}")
+    public ModelAndView modifyRole(@PathVariable Integer id,Model model){
+    	User user = userService.getOne(id);
+    	String role = "admin";
+    	if("admin".equals(user.getRole())) {
+    		role = "user";
+    	}
+    	userService.modifyRole(id, role);
+    	model.addAttribute("userlist", userService.findAll());
+    	return new ModelAndView("admin/user-list","model",model);
+    }
 }

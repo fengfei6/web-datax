@@ -22,6 +22,9 @@ public interface UserRepository extends JpaRepository<User,Integer> {
 
     Optional<User> findUserByNameAndPassword(String name, String password);
 
-
+    @Transactional
+    @Modifying
+    @Query(value = "update user  SET role =?2  where id=?1", nativeQuery = true)
+    Integer modifyRole(Integer id,String role);
 
 }
