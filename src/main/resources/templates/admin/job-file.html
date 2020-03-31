@@ -285,7 +285,8 @@
                                        
                                             <div class="field-box">
                                                 <label>文件内容显示,请确定:</label>
-                                                <textarea class="span8" id="content" style="width:1000px;height:500px" disabled name="jsonContent"></textarea>
+                                                <textarea class="span4" id="content" style="width:1000px;height:500px" disabled ></textarea>
+                                                <input type="hidden" name="jsonContent" id="con"/>
                                             </div>
                                         
                                     </div>
@@ -382,6 +383,7 @@
               success: function (data) {
                 alert("上传成功");
                 $("#content").val(data[0]);
+                $("#con").val(data[0]);
               },
               error: function () {
                 alert("上传失败！");
