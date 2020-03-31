@@ -268,16 +268,21 @@
                                         <span class="line"></span>TableName
                                     </th>
                                     <th class="span3">
+                                        <span class="line"></span>Count
+                                    </th>
+                                    <th class="span3">
                                         <span class="line"></span>Operate
                                     </th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <!-- row -->
-                                <tr class="first" th:each="table,tableStat:${model.tablelist}">
+                                <tr class="first" th:each="table,tableStat:${model.tablemap}">
                                     <td class="description" th:text="${tableStat.index}+1" >
                                     </td>
-                                    <td class="description" th:text="${table}">
+                                    <td class="description" th:text="${table.current.key}">
+                                    </td>
+                                    <td class="description" th:text="${table.current.value}">
                                     </td>
                                     <td class="description">
                                     <a th:href="@{'/datasource/showTableDesc/'+${model.id}+'/'+${table}}">表结构</a>

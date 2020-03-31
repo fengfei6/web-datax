@@ -3,6 +3,7 @@ package com.feng.project.util;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -97,21 +98,23 @@ public class ConnectionUtil {
 	 * @return
 	 * @throws SQLException
 	 */
-	public static List<String> getTables(DatabaseMetaData metaData){
-		if(metaData == null ) {return null;}
-		List<String> tableNameList = new ArrayList<String>();
+	public static Map<String,Integer> getTables(Connection conn){
+		if(conn == null ) {return null;}
+		DatabaseMetaData metaData = getMetaDate(conn);
+		Map<String,Integer> map = new HashMap<String,Integer>();
 		ResultSet tables;
 		try {
 			tables = metaData.getTables(null, null, "%", new String[] { "TABLE" });
 			while (tables.next()) {
-				String TABLE_NAME = tables.getString("TABLE_NAME") ;
-				tableNameList.add(TABLE_NAME);
+				String TABLE_NAME = tables.getString("TABLE_NAME");
+				Integer count = execute(conn, "select count(1) from "+TABLE_NAME);
+				map.put(TABLE_NAME, count);
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return tableNameList;
+		return map;
 	}
 	
 	/**
@@ -210,6 +213,22 @@ public class ConnectionUtil {
         }
 	}
 	
+	public static Integer execute(Connection conn, String createSql) {
+		int count = 0;
+        PreparedStatement stmt;
+        try {
+            stmt = conn.prepareStatement(createSql);
+            ResultSet rs = stmt.executeQuery(createSql);
+            while (rs.next()) {
+                count++;
+            }
+        } catch (SQLException e) {
+            return 0;
+        }finally {
+        	return count;
+        }
+	}
+	
 	public static void main(String[] args) throws Exception {
 		// TODO Auto-generated method stub
 		Datasource database = new Datasource("192.144.129.188","3306","test","root","123456");
@@ -218,22 +237,14 @@ public class ConnectionUtil {
 		
 		DatabaseMetaData metaData = conn.getMetaData();
 		
-		List<String> tablesList = getTables(metaData);
-		Object[] arr = tablesList.toArray();
-		System.out.println(Arrays.toString(arr));
+		Map<String,Integer> tablemap = getTables(conn);
 		
-		/*
-		for(int i = 0;i<arr.length;i++) {
-			Map<String,String> map = getColumn(metaData, (String)arr[i]);
-			List<String> keys = getPrimaryKey(metaData, (String)arr[i]);
-			System.out.println(createTable(keys,"test",map));
+		
+		for(Entry<String, Integer> entry : tablemap.entrySet()) {
+			System.out.println(entry.getKey()+" "+entry.getValue());
 		}
-		*/
-		Map<String,String> map = getColumn(metaData, (String)arr[0]);
-		List<String> keys = getPrimaryKey(metaData, (String)arr[0]);
-		System.out.println(createTable(keys,"test",map));
 		
-		System.out.println(executeSQL(conn, createTable(keys,"test",map)));
+		
 	}
 
 }

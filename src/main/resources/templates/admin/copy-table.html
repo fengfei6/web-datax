@@ -397,9 +397,9 @@
 				success:function(data){ 
 				       var t2 = $("#start_select2").empty();
                         t2.append("<option >--请选择--</option>");
-                    for ( var i = 0; i < data.length; i++) {
-				        	 console.log(data[i]);
-				             t2.append("<option value='"+data[i]+"'>"+ data[i]+"</option>"); 
+                    	for ( var key in data) {
+				        	 console.log(data[key]);
+				             t2.append("<option value='"+data[key]+"'>"+ data[key]+"</option>"); 
 				         } 
 				     } 
 				}) 

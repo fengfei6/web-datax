@@ -2,6 +2,7 @@ package com.feng.project.controller;
 
 import java.sql.Connection;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -75,7 +76,7 @@ public class DatasourceController {
     	Datasource datasource = datasourceService.getDatasource(id);
     	Connection conn = ConnectionUtil.getConn(datasource, datasource.getType());
     	model.addAttribute("id",id);
-    	model.addAttribute("tablelist",ConnectionUtil.getTables(ConnectionUtil.getMetaDate(conn)));
+    	model.addAttribute("tablemap",ConnectionUtil.getTables(conn));
     	return new ModelAndView("admin/show-table","model",model);
     }
     
@@ -97,10 +98,10 @@ public class DatasourceController {
     
     @ResponseBody
     @RequestMapping("/datasource/getTableList")
-    public List<String> getTableList(Integer id) {
+    public Map<String,Integer> getTableList(Integer id) {
     	Datasource datasource = datasourceService.getDatasource(id);
     	Connection conn = ConnectionUtil.getConn(datasource, datasource.getType());
-        return ConnectionUtil.getTables(ConnectionUtil.getMetaDate(conn));
+        return ConnectionUtil.getTables(conn);
     }
     
     @RequestMapping("/datasource/copyTable")
