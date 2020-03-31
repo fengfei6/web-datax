@@ -47,7 +47,7 @@ public class UserService {
     	return userRepository.findAll();
     }
     
-    public void modifyRole(Integer id,String role) {
-    	userRepository.modifyRole(id, role);
+    public Integer modifyRole(Integer id,String role) {
+    	return userRepository.modifyRole(id, role);
     }
 }

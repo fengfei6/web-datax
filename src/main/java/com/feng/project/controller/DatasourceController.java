@@ -25,9 +25,9 @@ public class DatasourceController {
 
     @RequestMapping("/datasource/add")
     public ModelAndView saveDB(Datasource datasource, HttpServletRequest request,Model model){
-        User user = (User)request.getSession().getAttribute("user");
+        //User user = (User)request.getSession().getAttribute("user");
         if(datasource.getId()==null) {
-	        datasource.setUserId(user.getId());
+	        //datasource.setUserId(user.getId());
 	        datasource.setIsConnection("0");
             datasourceService.save(datasource);
         }else {

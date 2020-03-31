@@ -107,7 +107,7 @@ public class ConnectionUtil {
 			tables = metaData.getTables(null, null, "%", new String[] { "TABLE" });
 			while (tables.next()) {
 				String TABLE_NAME = tables.getString("TABLE_NAME");
-				Integer count = execute(conn, "select count(1) from "+TABLE_NAME);
+				Integer count = execute(conn, "select * from "+TABLE_NAME);
 				map.put(TABLE_NAME, count);
 			}
 		} catch (SQLException e) {

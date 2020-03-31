@@ -243,10 +243,10 @@
                     <!-- left column -->
                     <div class="span9 with-sidebar">
                         <div class="container">
-                            <form class="new_user_form inline-input" />
+                            <form class="new_user_form inline-input" action="/user/add" method="post">
                                 <div class="span12 field-box">
                                     <label>Name:</label>
-                                    <input class="span9" type="text" />
+                                    <input class="span9" type="text" name="name"/>
                                 </div>
                                 <div class="span12 field-box">
                                     <label>State:</label>
@@ -263,12 +263,12 @@
                                     </div>
                                 </div>
                                 <div class="span12 field-box">
-                                    <label>Company:</label>
-                                    <input class="span9" type="text" />
+                                    <label>Password:</label>
+                                    <input class="span9" type="text" name="password"/>
                                 </div>
                                 <div class="span12 field-box">
                                     <label>Email:</label>
-                                    <input class="span9" type="text" />
+                                    <input class="span9" type="text" name="email"/>
                                 </div>
                                 <div class="span12 field-box">
                                     <label>Phone:</label>
@@ -293,7 +293,7 @@
                                     <span class="charactersleft">90 characters remaining. Field limited to 100 characters</span>
                                 </div>
                                 <div class="span11 field-box actions">
-                                    <input type="button" class="btn-glow primary" value="Create user" />
+                                    <input type="submit" class="btn-glow primary" value="Create user" />
                                     <span>OR</span>
                                     <input type="reset" value="Cancel" class="reset" />
                                 </div>

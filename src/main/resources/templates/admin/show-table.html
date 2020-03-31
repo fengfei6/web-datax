@@ -280,12 +280,12 @@
                                 <tr class="first" th:each="table,tableStat:${model.tablemap}">
                                     <td class="description" th:text="${tableStat.index}+1" >
                                     </td>
-                                    <td class="description" th:text="${table.current.key}">
+                                    <td class="description" th:text="${table.key}">
                                     </td>
-                                    <td class="description" th:text="${table.current.value}">
+                                    <td class="description" th:text="${table.value}">
                                     </td>
                                     <td class="description">
-                                    <a th:href="@{'/datasource/showTableDesc/'+${model.id}+'/'+${table}}">表结构</a>
+                                    <a th:href="@{'/datasource/showTableDesc/'+${model.id}+'/'+${table.key}}">表结构</a>
                                     </td>
                                 </tr>
                             </tbody>

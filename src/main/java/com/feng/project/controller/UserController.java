@@ -38,6 +38,7 @@ public class UserController {
 
     @PostMapping("/user/register")
     public ModelAndView register(User user){
+        user.setRole("user");
         userService.save(user);
         return new ModelAndView("register");
     }
@@ -58,14 +59,21 @@ public class UserController {
     }
     
     @RequestMapping("/user/modifyRole/{id}")
-    public ModelAndView modifyRole(@PathVariable Integer id,Model model){
+    public ModelAndView modifyRole(@PathVariable Integer id,Model model) throws InterruptedException {
     	User user = userService.getOne(id);
     	String role = "admin";
     	if("admin".equals(user.getRole())) {
     		role = "user";
     	}
     	userService.modifyRole(id, role);
-    	model.addAttribute("userlist", userService.findAll());
-    	return new ModelAndView("admin/user-list","model",model);
+    	return findAll(model);
+    }
+
+    @PostMapping("/user/add")
+    public ModelAndView addUser(User user,Model model){
+        user.setRole("user");
+        userService.save(user);
+        model.addAttribute("userlist",userService.findAll());
+        return new ModelAndView("admin/user-list","model",model);
     }
 }

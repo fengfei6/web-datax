@@ -295,170 +295,30 @@
                                     Name
                                 </th>
                                 <th class="span3 sortable">
-                                    <span class="line"></span>Signed up
+                                    <span class="line"></span>Email
                                 </th>
                                 <th class="span2 sortable">
-                                    <span class="line"></span>Total spent
+                                    <span class="line"></span>Role
                                 </th>
                                 <th class="span3 sortable align-right">
-                                    <span class="line"></span>Email
+                                    <span class="line"></span>Operate
                                 </th>
                             </tr>
                         </thead>
                         <tbody>
                         <!-- row -->
-                        <tr class="first">
-                            <td>
-                                <img th:src="@{/img/contact-img.png}" class="img-circle avatar hidden-phone" />
-                                <a href="#" class="name">Alejandra Galvan Castillo</a>
-                                <span class="subtext">Graphic Design</span>
+                        <tr class="first" th:each="user:${model.userlist}">
+                            <td th:text="${user.name}">
                             </td>
-                            <td>
-                                Mar 13, 2012
+                            <td th:text="${user.email}">
                             </td>
-                            <td>
-                                $ 4,500.00
+                            <td th:text="${user.role}">
                             </td>
-                            <td class="align-right">
-                                <a href="#">alejandra@canvas.com</a>
+                            <td class="align-right" >
+                                <a th:href="@{'/user/modifyRole/'+${user.id}}">更改角色</a>
                             </td>
                         </tr>
                         <!-- row -->
-                        <tr>
-                            <td>
-                                <img th:src="@{/img/contact-img2.png}" class="img-circle avatar hidden-phone" />
-                                <a href="#" class="name">Alejandra Galvan Castillo</a>
-                                <span class="subtext">Graphic Design</span>
-                            </td>
-                            <td>
-                                Jun 03, 2012
-                            </td>
-                            <td>
-                                $ 549.99
-                            </td>
-                            <td class="align-right">
-                                <a href="#">alejandra@canvas.com</a>
-                            </td>
-                        </tr>
-                        <!-- row -->
-                        <tr>
-                            <td>
-                                <img th:src="@{/img/contact-img.png}" class="img-circle avatar hidden-phone" />
-                                <a href="#" class="name">Alejandra Galvan Castillo</a>
-                                <span class="subtext">Graphic Design</span>
-                            </td>
-                            <td>
-                                Mar 01, 2014
-                            </td>
-                            <td>
-                                $ 30.00
-                            </td>
-                            <td class="align-right">
-                                <a href="#">alejandra@canvas.com</a>
-                            </td>
-                        </tr>
-                        <!-- row -->
-                        <tr>
-                            <td>
-                                <img th:src="@{/img/contact-img2.png}" class="img-circle avatar hidden-phone" />
-                                <a href="#" class="name">Alejandra Galvan Castillo</a>
-                                <span class="subtext">Graphic Design</span>
-                            </td>
-                            <td>
-                                Jan 28, 2012
-                            </td>
-                            <td>
-                                $ 1,320.00
-                            </td>
-                            <td class="align-right">
-                                <a href="#">alejandra@canvas.com</a>
-                            </td>
-                        </tr>
-                        <!-- row -->
-                        <tr>
-                            <td>
-                                <img th:src="@{/img/contact-img.png}" class="img-circle avatar hidden-phone" />
-                                <a href="#" class="name">Alejandra Galvan Castillo</a>
-                                <span class="subtext">Graphic Design</span>
-                            </td>
-                            <td>
-                                May 16, 2012
-                            </td>
-                            <td>
-                                $ 89.99
-                            </td>
-                            <td class="align-right">
-                                <a href="#">alejandra@canvas.com</a>
-                            </td>
-                        </tr>
-                        <!-- row -->
-                        <tr>
-                            <td>
-                                <img th:src="@{/img/contact-img2.png}" class="img-circle avatar hidden-phone" />
-                                <a href="#" class="name">Alejandra Galvan Castillo</a>
-                                <span class="subtext">Graphic Design</span>
-                            </td>
-                            <td>
-                                Sep 06, 2012
-                            </td>
-                            <td>
-                                $ 344.00
-                            </td>
-                            <td class="align-right">
-                                <a href="#">alejandra@canvas.com</a>
-                            </td>
-                        </tr>
-                        <!-- row -->
-                        <tr>
-                            <td>
-                                <img th:src="@{/img/contact-img.png}" class="img-circle avatar hidden-phone" />
-                                <a href="#" class="name">Alejandra Galvan Castillo</a>
-                                <span class="subtext">Graphic Design</span>
-                            </td>
-                            <td>
-                                Jul 13, 2012
-                            </td>
-                            <td>
-                                $ 800.00
-                            </td>
-                            <td class="align-right">
-                                <a href="#">alejandra@canvas.com</a>
-                            </td>
-                        </tr>
-                        <!-- row -->
-                        <tr>
-                            <td>
-                                <img th:src="@{/img/contact-img2.png}" class="img-circle avatar hidden-phone" />
-                                <a href="#" class="name">Alejandra Galvan Castillo</a>
-                                <span class="subtext">Graphic Design</span>
-                            </td>
-                            <td>
-                                Feb 13, 2014
-                            </td>
-                            <td>
-                                $ 250.00
-                            </td>
-                            <td class="align-right">
-                                <a href="#">alejandra@canvas.com</a>
-                            </td>
-                        </tr>
-                        <!-- row -->
-                        <tr>
-                            <td>
-                                <img th:src="@{/img/contact-img.png}" class="img-circle avatar hidden-phone" />
-                                <a href="#" class="name">Alejandra Galvan Castillo</a>
-                                <span class="subtext">Graphic Design</span>
-                            </td>
-                            <td>
-                                Feb 27, 2014
-                            </td>
-                            <td>
-                                $ 1,300.00
-                            </td>
-                            <td class="align-right">
-                                <a href="#">alejandra@canvas.com</a>
-                            </td>
-                        </tr>
                         </tbody>
                     </table>
                 </div>
