@@ -1,0 +1,26 @@
+body { 
+FONT-FAMILY: 'Lucida Grande','Lucida Sans Unicode','ËÎÌå','ÐÂËÎÌå',arial,verdana,sans-serif;
+text-align: center;
+} 
+
+TD {FONT-SIZE: 12px; COLOR: #333;}
+.solid-bottom {BORDER-BOTTOM: #dddddd 1px solid}
+
+.sec1  {
+background-color:  #F4F4F4;
+cursor:  hand;
+color:  #000000;
+border-left:  1px  solid  #FFFFFF;
+border-top:  1px  solid  #FFFFFF;
+border-right:  1px  solid  gray;
+border-bottom:  1px  solid  #FFFFFF
+}
+.sec2  {
+background-color:  #EAEAEA;
+cursor:  hand;
+color:  #58A200;
+border-left:  1px  solid  #FFFFFF;
+border-top:  1px  solid  #FFFFFF;
+border-right:  1px  solid  gray;
+font-weight:  bold;
+}

@@ -1,0 +1,22 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<HTML>
+ <HEAD>
+  <TITLE> cron iframe</TITLE>
+  <META NAME="Generator" CONTENT="EditPlus">
+  <META NAME="Author" CONTENT="">
+  <META NAME="Keywords" CONTENT="">
+  <META NAME="Description" CONTENT="">
+ </HEAD>
+<SCRIPT LANGUAGE="JavaScript">
+
+	function getvalues(){
+	  document.getElementById("cronq").value=window.cron.getvalues();
+	}
+
+</SCRIPT>
+ <BODY>
+ <iframe name="cron" id="cron" width="610" height="230" frameborder="0" scrolling="no" th:src="@{/admin/cron.html}"></iframe>
+ <input type="button" value="生成" onclick="getvalues()"/>
+<input type="text" id="cronq" value=""/>
+ </BODY>
+</HTML>
