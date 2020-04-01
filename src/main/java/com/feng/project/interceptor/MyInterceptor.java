@@ -18,6 +18,18 @@ public class MyInterceptor implements HandlerInterceptor {
             response.sendRedirect("/login");
             return false;
         }
+        if(url.startsWith("/job") && loginUser == null){
+            response.sendRedirect("/login");
+            return false;
+        }
+        if(url.startsWith("/user") && loginUser == null){
+            response.sendRedirect("/login");
+            return false;
+        }
+        if(url.startsWith("/datasource") && loginUser == null){
+            response.sendRedirect("/login");
+            return false;
+        }
         return true;
     }
     //请求已经被处理，但在视图渲染前

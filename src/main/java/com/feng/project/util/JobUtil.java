@@ -2,6 +2,7 @@ package com.feng.project.util;
 
 
 import com.feng.project.domain.Datasource;
+import com.feng.project.domain.Job;
 import com.feng.project.service.DatasourceService;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +16,7 @@ import java.util.UUID;
 
 public class JobUtil {
 
-	public static void getJsonfile(Datasource sdatasource,Datasource tdatasource,String stable,String ttable,String jobName) throws IOException {
+	public static void getJsonfile(Datasource sdatasource,Datasource tdatasource,Job job) throws IOException {
 		String reader= null;
 		String sjdbcUrl= null;
 
@@ -42,18 +43,18 @@ public class JobUtil {
 		sb.append("\",\"parameter\":{\"username\":\"").append(sdatasource.getUsername());
 		sb.append("\",\"password\":\"").append(sdatasource.getPassword());
 		sb.append("\",\"column\": [\"*\"],");
-		sb.append("\"connection\": [{\"table\": [\"").append(stable);
+		sb.append("\"connection\": [{\"table\": [\"").append(job.getReaderTable());
 		sb.append("\"],\"jdbcUrl\": [\"").append(sjdbcUrl).append("?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone = GMT");
 		sb.append("\"]}]}},");
 		sb.append("\"writer\": {\"name\": \"").append(writer);
-		sb.append("\",\"parameter\":{\"username\":\"").append(tdatasource.getUsername());
+		sb.append("\",\"parameter\":{\"writeMode\": \"insert\",\"username\":\"").append(tdatasource.getUsername());
 		sb.append("\",\"password\":\"").append(tdatasource.getPassword());
 		sb.append("\",\"column\": [\"*\"],");
-		sb.append("\"connection\": [{\"table\": [\"").append(ttable);
+		sb.append("\"connection\": [{\"table\": [\"").append(job.getWriterTable());
 		sb.append("\"],\"jdbcUrl\": [\"").append(tjdbcUrl).append("?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone = GMT");;
 		sb.append("\"]}]}}}]}}");
 	
-		File file = new File("src/main/resources/static/file/"+jobName+".json");
+		File file = new File("src/main/resources/static/file/"+job.getName()+".json");
 		if(!file.exists()) {
 			file.createNewFile();
 		}

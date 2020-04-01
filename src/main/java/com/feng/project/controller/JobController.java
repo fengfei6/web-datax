@@ -70,7 +70,7 @@ public class JobController {
         Job job = jobService.getOne(id);
         JobUtil.getJsonfile(datasourceService.getDatasource(
                 job.getReaderDbId()),datasourceService.getDatasource(job.getWriterDbId()),
-                job.getReaderTable(),job.getWriterTable(),job.getName());
+                job);
         Connection conn = DataxUtil.login("192.144.129.188", "root", "FFei916#");
         DataxUtil.transferFile(conn, "src/main/resources/static/file/"+job.getName()+".json", "/root/datax/job");
         String result = DataxUtil.execmd(conn, "python /root/datax/bin/datax.py /root/datax/job/"+job.getName()+".json",job.getName());

@@ -14,9 +14,9 @@ public class MyMVCconfig implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         // 通过registry来注册拦截器，通过addPathPatterns来添加拦截路径
-        /*
+        
     	registry.addInterceptor(myInterceptor).
                  addPathPatterns("/**").excludePathPatterns("/login").excludePathPatterns("/index");
-                 */
+                 
     }
 }
