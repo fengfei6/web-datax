@@ -71,7 +71,6 @@ public class UserController {
 
     @PostMapping("/user/add")
     public ModelAndView addUser(User user,Model model){
-        user.setRole("user");
         userService.save(user);
         model.addAttribute("userlist",userService.findAll());
         return new ModelAndView("admin/user-list","model",model);
@@ -81,5 +80,18 @@ public class UserController {
     public ModelAndView modifyPass(@PathVariable Integer id,@PathVariable String password,Model model) throws InterruptedException {
     	userService.modifyPass(id, password);
     	return findAll(model);
+    }
+    
+    @RequestMapping("/user/edit/{id}")
+    public ModelAndView updateUser(@PathVariable Integer id,Model model){
+        model.addAttribute("user",userService.getOne(id));
+        return new ModelAndView("admin/edit-user","model",model);
+    }
+    
+    @RequestMapping("/user/delete/{id}")
+    public ModelAndView deleteUser(@PathVariable Integer id,Model model){
+    	userService.delete(id);
+        model.addAttribute("userlist",userService.findAll());
+        return new ModelAndView("admin/user-list","model",model);
     }
 }

@@ -249,22 +249,17 @@
                                     <input class="span9" type="text" name="name"/>
                                 </div>
                                 <div class="span12 field-box">
-                                    <label>State:</label>
-                                    <div class="ui-select span5">
-                                        <select>
-                                            <option value="AK" />Alaska
-                                            <option value="HI" />Hawaii
-                                            <option value="CA" />California
-                                            <option value="NV" />Nevada
-                                            <option value="OR" />Oregon
-                                            <option value="WA" />Washington
-                                            <option value="AZ" />Arizona
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="span12 field-box">
                                     <label>Password:</label>
                                     <input class="span9" type="text" name="password"/>
+                                </div>
+                                <div class="span12 field-box">
+                                    <label>Role:</label>
+                                    <div class="ui-select span5">
+                                        <select name="role">
+                                            <option value="user" selected/>user
+                                            <option value="admin" />admin
+                                        </select>
+                                    </div>
                                 </div>
                                 <div class="span12 field-box">
                                     <label>Email:</label>
@@ -272,24 +267,24 @@
                                 </div>
                                 <div class="span12 field-box">
                                     <label>Phone:</label>
-                                    <input class="span9" type="text" />
+                                    <input class="span9" type="text" name="phone"/>
                                 </div>
                                 <div class="span12 field-box">
-                                    <label>Website:</label>
-                                    <input class="span9" type="text" />
+                                    <label>Hobby:</label>
+                                    <input class="span9" type="text" name="hobby"/>
                                 </div>
                                 <div class="span12 field-box">
                                     <label>Address:</label>
                                     <div class="address-fields">
-                                        <input class="span12" type="text" placeholder="Street address" />
-                                        <input class="span12 small" type="text" placeholder="City" />
-                                        <input class="span12 small" type="text" placeholder="State" />
-                                        <input class="span12 small last" type="text" placeholder="Postal Code" />
+                                    	<input class="span12 small" type="text" placeholder="Provice" name="provice"/>
+                                    	<input class="span12 small" type="text" placeholder="City" name="city"/>
+                                        <input class="span12 small last" type="text" placeholder="Postal Code" name="code"/>
+                                        <input class="span12" type="text" placeholder="Street address" name="address"/>
                                     </div>
                                 </div>
                                 <div class="span12 field-box textarea">
                                     <label>Notes:</label>
-                                    <textarea class="span9"></textarea>
+                                    <textarea class="span9" name="note"></textarea>
                                     <span class="charactersleft">90 characters remaining. Field limited to 100 characters</span>
                                 </div>
                                 <div class="span11 field-box actions">
