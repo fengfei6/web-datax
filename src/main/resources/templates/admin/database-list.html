@@ -327,7 +327,7 @@
     <script th:src="@{/js/bootstrap.min.js}"></script>
     <script th:src="@{/js/theme.js}"></script>
     <script th:inline="javascript">
-		var v = [[${model.conn_flag}]]
+		var v = [[${model.conn_flag}]] ?  [[${model.conn_flag}]] :"";
         if (v) {
             alert("连接成功");
         }

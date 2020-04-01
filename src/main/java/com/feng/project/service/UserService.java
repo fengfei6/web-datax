@@ -54,4 +54,8 @@ public class UserService {
     public Integer modifyPass(Integer id,String password) {
     	return userRepository.modifyPass(id, password);
     }
+    
+    public List<User> searchUsersByName(String name){
+    	return userRepository.searchUsersByName(name);
+    }
 }

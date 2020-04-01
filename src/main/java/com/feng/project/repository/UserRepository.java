@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -32,4 +33,8 @@ public interface UserRepository extends JpaRepository<User,Integer> {
     @Modifying
     @Query(value = "update user  SET password =?2  where id=?1", nativeQuery = true)
     Integer modifyPass(Integer id,String password);
+    
+    @Query(value = "select * from user where name like %?1%", nativeQuery = true)
+    List<User> searchUsersByName(String name);
+    
 }

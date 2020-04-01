@@ -94,4 +94,10 @@ public class UserController {
         model.addAttribute("userlist",userService.findAll());
         return new ModelAndView("admin/user-list","model",model);
     }
+    
+    @RequestMapping("/user/search")
+    public ModelAndView searchUsersByName(String name,Model model){
+        model.addAttribute("userlist",userService.searchUsersByName(name));
+        return new ModelAndView("admin/user-list","model",model);
+    }
 }
