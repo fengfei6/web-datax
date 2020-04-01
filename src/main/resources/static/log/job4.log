@@ -1,0 +1,181 @@
+
+DataX (DATAX-OPENSOURCE-3.0), From Alibaba !
+Copyright (C) 2010-2017, Alibaba Group. All Rights Reserved.
+
+
+2020-04-01 10:32:53.304 [main] INFO  VMInfo - VMInfo# operatingSystem class => sun.management.OperatingSystemImpl
+2020-04-01 10:32:53.319 [main] INFO  Engine - the machine info  => 
+
+	osInfo:	Oracle Corporation 1.8 25.60-b23
+	jvmInfo:	Linux amd64 3.10.0-862.el7.x86_64
+	cpu num:	1
+
+	totalPhysicalMemory:	-0.00G
+	freePhysicalMemory:	-0.00G
+	maxFileDescriptorCount:	-1
+	currentOpenFileDescriptorCount:	-1
+
+	GC Names	[Copy, MarkSweepCompact]
+
+	MEMORY_NAME                    | allocation_size                | init_size                      
+	Eden Space                     | 273.06MB                       | 273.06MB                       
+	Code Cache                     | 240.00MB                       | 2.44MB                         
+	Survivor Space                 | 34.13MB                        | 34.13MB                        
+	Compressed Class Space         | 1,024.00MB                     | 0.00MB                         
+	Metaspace                      | -0.00MB                        | 0.00MB                         
+	Tenured Gen                    | 682.69MB                       | 682.69MB                       
+
+
+2020-04-01 10:32:53.345 [main] INFO  Engine - 
+{
+	"content":[
+		{
+			"reader":{
+				"name":"mysqlreader",
+				"parameter":{
+					"column":[
+						"*"
+					],
+					"connection":[
+						{
+							"jdbcUrl":[
+								"jdbc:mysql://39.97.255.156:3307/lp_test?useUnicode=true&characterEncoding=utf8&serverTimezone=UTC"
+							],
+							"table":[
+								"student"
+							]
+						}
+					],
+					"password":"**********",
+					"username":"root"
+				}
+			},
+			"writer":{
+				"name":"mysqlwriter",
+				"parameter":{
+					"column":[
+						"*"
+					],
+					"connection":[
+						{
+							"jdbcUrl":[
+								"jdbc:mysql://39.97.255.156:3307/lp_test?useUnicode=true&characterEncoding=utf8&serverTimezone=UTC"
+							],
+							"table":[
+								"student2"
+							]
+						}
+					],
+					"password":"**********",
+					"username":"root"
+				}
+			}
+		}
+	],
+	"setting":{
+		"errorLimit":{
+			"percentage":0.02,
+			"record":0
+		},
+		"speed":{
+			"channel":3
+		}
+	}
+}
+
+2020-04-01 10:32:53.378 [main] WARN  Engine - prioriy set to 0, because NumberFormatException, the value is: null
+2020-04-01 10:32:53.380 [main] INFO  PerfTrace - PerfTrace traceId=job_-1, isEnable=false, priority=0
+2020-04-01 10:32:53.381 [main] INFO  JobContainer - DataX jobContainer starts job.
+2020-04-01 10:32:53.385 [main] INFO  JobContainer - Set jobId = 0
+2020-04-01 10:32:54.886 [job-0] INFO  OriginalConfPretreatmentUtil - Available jdbcUrl:jdbc:mysql://39.97.255.156:3307/lp_test?useUnicode=true&characterEncoding=utf8&serverTimezone=UTC&yearIsDateType=false&zeroDateTimeBehavior=convertToNull&tinyInt1isBit=false&rewriteBatchedStatements=true.
+2020-04-01 10:32:54.887 [job-0] WARN  OriginalConfPretreatmentUtil - 您的配置文件中的列配置存在一定的风险. 因为您未配置读取数据库表的列，当您的表字段个数、类型有变动时，可能影响任务正确性甚至会运行出错。请检查您的配置并作出修改.
+2020-04-01 10:32:54.949 [job-0] ERROR RetryUtil - Exception when calling callable, 异常Msg:Code:[DBUtilErrorCode-10], Description:[连接数据库失败. 请检查您的 账号、密码、数据库名称、IP、Port或者向 DBA 寻求帮助(注意网络环境).].  -  具体错误信息为：java.sql.SQLException: No suitable driver found for ["jdbc:mysql://39.97.255.156:3307/lp_test?useUnicode=true&characterEncoding=utf8&serverTimezone=UTC"]&yearIsDateType=false&zeroDateTimeBehavior=convertToNull&tinyInt1isBit=false&rewriteBatchedStatements=true
+com.alibaba.datax.common.exception.DataXException: Code:[DBUtilErrorCode-10], Description:[连接数据库失败. 请检查您的 账号、密码、数据库名称、IP、Port或者向 DBA 寻求帮助(注意网络环境).].  -  具体错误信息为：java.sql.SQLException: No suitable driver found for ["jdbc:mysql://39.97.255.156:3307/lp_test?useUnicode=true&characterEncoding=utf8&serverTimezone=UTC"]&yearIsDateType=false&zeroDateTimeBehavior=convertToNull&tinyInt1isBit=false&rewriteBatchedStatements=true
+	at com.alibaba.datax.common.exception.DataXException.asDataXException(DataXException.java:26) ~[datax-common-0.0.1-SNAPSHOT.jar:na]
+	at com.alibaba.datax.plugin.rdbms.util.RdbmsException.asConnException(RdbmsException.java:23) ~[plugin-rdbms-util-0.0.1-SNAPSHOT.jar:na]
+	at com.alibaba.datax.plugin.rdbms.util.DBUtil.connect(DBUtil.java:394) [plugin-rdbms-util-0.0.1-SNAPSHOT.jar:na]
+	at com.alibaba.datax.plugin.rdbms.util.DBUtil.connect(DBUtil.java:384) [plugin-rdbms-util-0.0.1-SNAPSHOT.jar:na]
+	at com.alibaba.datax.plugin.rdbms.util.DBUtil.access$000(DBUtil.java:22) [plugin-rdbms-util-0.0.1-SNAPSHOT.jar:na]
+	at com.alibaba.datax.plugin.rdbms.util.DBUtil$3.call(DBUtil.java:322) ~[plugin-rdbms-util-0.0.1-SNAPSHOT.jar:na]
+	at com.alibaba.datax.plugin.rdbms.util.DBUtil$3.call(DBUtil.java:319) ~[plugin-rdbms-util-0.0.1-SNAPSHOT.jar:na]
+	at com.alibaba.datax.common.util.RetryUtil$Retry.call(RetryUtil.java:164) ~[datax-common-0.0.1-SNAPSHOT.jar:na]
+	at com.alibaba.datax.common.util.RetryUtil$Retry.doRetry(RetryUtil.java:111) ~[datax-common-0.0.1-SNAPSHOT.jar:na]
+	at com.alibaba.datax.common.util.RetryUtil.executeWithRetry(RetryUtil.java:30) [datax-common-0.0.1-SNAPSHOT.jar:na]
+	at com.alibaba.datax.plugin.rdbms.util.DBUtil.getConnection(DBUtil.java:319) [plugin-rdbms-util-0.0.1-SNAPSHOT.jar:na]
+	at com.alibaba.datax.plugin.rdbms.util.DBUtil.getConnection(DBUtil.java:303) [plugin-rdbms-util-0.0.1-SNAPSHOT.jar:na]
+	at com.alibaba.datax.plugin.rdbms.util.JdbcConnectionFactory.getConnecttion(JdbcConnectionFactory.java:27) [plugin-rdbms-util-0.0.1-SNAPSHOT.jar:na]
+	at com.alibaba.datax.plugin.rdbms.writer.util.OriginalConfPretreatmentUtil.dealColumnConf(OriginalConfPretreatmentUtil.java:105) [plugin-rdbms-util-0.0.1-SNAPSHOT.jar:na]
+	at com.alibaba.datax.plugin.rdbms.writer.util.OriginalConfPretreatmentUtil.dealColumnConf(OriginalConfPretreatmentUtil.java:140) [plugin-rdbms-util-0.0.1-SNAPSHOT.jar:na]
+	at com.alibaba.datax.plugin.rdbms.writer.util.OriginalConfPretreatmentUtil.doPretreatment(OriginalConfPretreatmentUtil.java:35) [plugin-rdbms-util-0.0.1-SNAPSHOT.jar:na]
+	at com.alibaba.datax.plugin.rdbms.writer.CommonRdbmsWriter$Job.init(CommonRdbmsWriter.java:41) [plugin-rdbms-util-0.0.1-SNAPSHOT.jar:na]
+	at com.alibaba.datax.plugin.writer.mysqlwriter.MysqlWriter$Job.init(MysqlWriter.java:31) [mysqlwriter-0.0.1-SNAPSHOT.jar:na]
+	at com.alibaba.datax.core.job.JobContainer.initJobWriter(JobContainer.java:704) [datax-core-0.0.1-SNAPSHOT.jar:na]
+	at com.alibaba.datax.core.job.JobContainer.init(JobContainer.java:304) [datax-core-0.0.1-SNAPSHOT.jar:na]
+	at com.alibaba.datax.core.job.JobContainer.start(JobContainer.java:113) [datax-core-0.0.1-SNAPSHOT.jar:na]
+	at com.alibaba.datax.core.Engine.start(Engine.java:92) [datax-core-0.0.1-SNAPSHOT.jar:na]
+	at com.alibaba.datax.core.Engine.entry(Engine.java:171) [datax-core-0.0.1-SNAPSHOT.jar:na]
+	at com.alibaba.datax.core.Engine.main(Engine.java:204) [datax-core-0.0.1-SNAPSHOT.jar:na]
+2020-04-01 10:32:55.950 [job-0] ERROR RetryUtil - Exception when calling callable, 即将尝试执行第1次重试.本次重试计划等待[1000]ms,实际等待[1000]ms, 异常Msg:[Code:[DBUtilErrorCode-10], Description:[连接数据库失败. 请检查您的 账号、密码、数据库名称、IP、Port或者向 DBA 寻求帮助(注意网络环境).].  -  具体错误信息为：java.sql.SQLException: No suitable driver found for ["jdbc:mysql://39.97.255.156:3307/lp_test?useUnicode=true&characterEncoding=utf8&serverTimezone=UTC"]&yearIsDateType=false&zeroDateTimeBehavior=convertToNull&tinyInt1isBit=false&rewriteBatchedStatements=true]
+2020-04-01 10:32:57.951 [job-0] ERROR RetryUtil - Exception when calling callable, 即将尝试执行第2次重试.本次重试计划等待[2000]ms,实际等待[2000]ms, 异常Msg:[Code:[DBUtilErrorCode-10], Description:[连接数据库失败. 请检查您的 账号、密码、数据库名称、IP、Port或者向 DBA 寻求帮助(注意网络环境).].  -  具体错误信息为：java.sql.SQLException: No suitable driver found for ["jdbc:mysql://39.97.255.156:3307/lp_test?useUnicode=true&characterEncoding=utf8&serverTimezone=UTC"]&yearIsDateType=false&zeroDateTimeBehavior=convertToNull&tinyInt1isBit=false&rewriteBatchedStatements=true]
+2020-04-01 10:33:01.952 [job-0] ERROR RetryUtil - Exception when calling callable, 即将尝试执行第3次重试.本次重试计划等待[4000]ms,实际等待[4000]ms, 异常Msg:[Code:[DBUtilErrorCode-10], Description:[连接数据库失败. 请检查您的 账号、密码、数据库名称、IP、Port或者向 DBA 寻求帮助(注意网络环境).].  -  具体错误信息为：java.sql.SQLException: No suitable driver found for ["jdbc:mysql://39.97.255.156:3307/lp_test?useUnicode=true&characterEncoding=utf8&serverTimezone=UTC"]&yearIsDateType=false&zeroDateTimeBehavior=convertToNull&tinyInt1isBit=false&rewriteBatchedStatements=true]
+2020-04-01 10:33:09.952 [job-0] ERROR RetryUtil - Exception when calling callable, 即将尝试执行第4次重试.本次重试计划等待[8000]ms,实际等待[8000]ms, 异常Msg:[Code:[DBUtilErrorCode-10], Description:[连接数据库失败. 请检查您的 账号、密码、数据库名称、IP、Port或者向 DBA 寻求帮助(注意网络环境).].  -  具体错误信息为：java.sql.SQLException: No suitable driver found for ["jdbc:mysql://39.97.255.156:3307/lp_test?useUnicode=true&characterEncoding=utf8&serverTimezone=UTC"]&yearIsDateType=false&zeroDateTimeBehavior=convertToNull&tinyInt1isBit=false&rewriteBatchedStatements=true]
+2020-04-01 10:33:25.953 [job-0] ERROR RetryUtil - Exception when calling callable, 即将尝试执行第5次重试.本次重试计划等待[16000]ms,实际等待[16000]ms, 异常Msg:[Code:[DBUtilErrorCode-10], Description:[连接数据库失败. 请检查您的 账号、密码、数据库名称、IP、Port或者向 DBA 寻求帮助(注意网络环境).].  -  具体错误信息为：java.sql.SQLException: No suitable driver found for ["jdbc:mysql://39.97.255.156:3307/lp_test?useUnicode=true&characterEncoding=utf8&serverTimezone=UTC"]&yearIsDateType=false&zeroDateTimeBehavior=convertToNull&tinyInt1isBit=false&rewriteBatchedStatements=true]
+2020-04-01 10:33:57.954 [job-0] ERROR RetryUtil - Exception when calling callable, 即将尝试执行第6次重试.本次重试计划等待[32000]ms,实际等待[32000]ms, 异常Msg:[Code:[DBUtilErrorCode-10], Description:[连接数据库失败. 请检查您的 账号、密码、数据库名称、IP、Port或者向 DBA 寻求帮助(注意网络环境).].  -  具体错误信息为：java.sql.SQLException: No suitable driver found for ["jdbc:mysql://39.97.255.156:3307/lp_test?useUnicode=true&characterEncoding=utf8&serverTimezone=UTC"]&yearIsDateType=false&zeroDateTimeBehavior=convertToNull&tinyInt1isBit=false&rewriteBatchedStatements=true]
+2020-04-01 10:35:01.955 [job-0] ERROR RetryUtil - Exception when calling callable, 即将尝试执行第7次重试.本次重试计划等待[64000]ms,实际等待[64000]ms, 异常Msg:[Code:[DBUtilErrorCode-10], Description:[连接数据库失败. 请检查您的 账号、密码、数据库名称、IP、Port或者向 DBA 寻求帮助(注意网络环境).].  -  具体错误信息为：java.sql.SQLException: No suitable driver found for ["jdbc:mysql://39.97.255.156:3307/lp_test?useUnicode=true&characterEncoding=utf8&serverTimezone=UTC"]&yearIsDateType=false&zeroDateTimeBehavior=convertToNull&tinyInt1isBit=false&rewriteBatchedStatements=true]
+2020-04-01 10:37:09.956 [job-0] ERROR RetryUtil - Exception when calling callable, 即将尝试执行第8次重试.本次重试计划等待[128000]ms,实际等待[128000]ms, 异常Msg:[Code:[DBUtilErrorCode-10], Description:[连接数据库失败. 请检查您的 账号、密码、数据库名称、IP、Port或者向 DBA 寻求帮助(注意网络环境).].  -  具体错误信息为：java.sql.SQLException: No suitable driver found for ["jdbc:mysql://39.97.255.156:3307/lp_test?useUnicode=true&characterEncoding=utf8&serverTimezone=UTC"]&yearIsDateType=false&zeroDateTimeBehavior=convertToNull&tinyInt1isBit=false&rewriteBatchedStatements=true]
+2020-04-01 10:37:09.957 [job-0] ERROR JobContainer - Exception when job run
+com.alibaba.datax.common.exception.DataXException: Code:[DBUtilErrorCode-10], Description:[连接数据库失败. 请检查您的 账号、密码、数据库名称、IP、Port或者向 DBA 寻求帮助(注意网络环境).].  -  具体错误信息为：java.sql.SQLException: No suitable driver found for ["jdbc:mysql://39.97.255.156:3307/lp_test?useUnicode=true&characterEncoding=utf8&serverTimezone=UTC"]&yearIsDateType=false&zeroDateTimeBehavior=convertToNull&tinyInt1isBit=false&rewriteBatchedStatements=true
+	at com.alibaba.datax.common.exception.DataXException.asDataXException(DataXException.java:26) ~[datax-common-0.0.1-SNAPSHOT.jar:na]
+	at com.alibaba.datax.plugin.rdbms.util.RdbmsException.asConnException(RdbmsException.java:23) ~[plugin-rdbms-util-0.0.1-SNAPSHOT.jar:na]
+	at com.alibaba.datax.plugin.rdbms.util.DBUtil.connect(DBUtil.java:394) ~[plugin-rdbms-util-0.0.1-SNAPSHOT.jar:na]
+	at com.alibaba.datax.plugin.rdbms.util.DBUtil.connect(DBUtil.java:384) ~[plugin-rdbms-util-0.0.1-SNAPSHOT.jar:na]
+	at com.alibaba.datax.plugin.rdbms.util.DBUtil.access$000(DBUtil.java:22) ~[plugin-rdbms-util-0.0.1-SNAPSHOT.jar:na]
+	at com.alibaba.datax.plugin.rdbms.util.DBUtil$3.call(DBUtil.java:322) ~[plugin-rdbms-util-0.0.1-SNAPSHOT.jar:na]
+	at com.alibaba.datax.plugin.rdbms.util.DBUtil$3.call(DBUtil.java:319) ~[plugin-rdbms-util-0.0.1-SNAPSHOT.jar:na]
+	at com.alibaba.datax.common.util.RetryUtil$Retry.call(RetryUtil.java:164) ~[datax-common-0.0.1-SNAPSHOT.jar:na]
+	at com.alibaba.datax.common.util.RetryUtil$Retry.doRetry(RetryUtil.java:111) ~[datax-common-0.0.1-SNAPSHOT.jar:na]
+	at com.alibaba.datax.common.util.RetryUtil.executeWithRetry(RetryUtil.java:30) ~[datax-common-0.0.1-SNAPSHOT.jar:na]
+	at com.alibaba.datax.plugin.rdbms.util.DBUtil.getConnection(DBUtil.java:319) ~[plugin-rdbms-util-0.0.1-SNAPSHOT.jar:na]
+	at com.alibaba.datax.plugin.rdbms.util.DBUtil.getConnection(DBUtil.java:303) ~[plugin-rdbms-util-0.0.1-SNAPSHOT.jar:na]
+	at com.alibaba.datax.plugin.rdbms.util.JdbcConnectionFactory.getConnecttion(JdbcConnectionFactory.java:27) ~[plugin-rdbms-util-0.0.1-SNAPSHOT.jar:na]
+	at com.alibaba.datax.plugin.rdbms.writer.util.OriginalConfPretreatmentUtil.dealColumnConf(OriginalConfPretreatmentUtil.java:105) ~[plugin-rdbms-util-0.0.1-SNAPSHOT.jar:na]
+	at com.alibaba.datax.plugin.rdbms.writer.util.OriginalConfPretreatmentUtil.dealColumnConf(OriginalConfPretreatmentUtil.java:140) ~[plugin-rdbms-util-0.0.1-SNAPSHOT.jar:na]
+	at com.alibaba.datax.plugin.rdbms.writer.util.OriginalConfPretreatmentUtil.doPretreatment(OriginalConfPretreatmentUtil.java:35) ~[plugin-rdbms-util-0.0.1-SNAPSHOT.jar:na]
+	at com.alibaba.datax.plugin.rdbms.writer.CommonRdbmsWriter$Job.init(CommonRdbmsWriter.java:41) ~[plugin-rdbms-util-0.0.1-SNAPSHOT.jar:na]
+	at com.alibaba.datax.plugin.writer.mysqlwriter.MysqlWriter$Job.init(MysqlWriter.java:31) ~[mysqlwriter-0.0.1-SNAPSHOT.jar:na]
+	at com.alibaba.datax.core.job.JobContainer.initJobWriter(JobContainer.java:704) ~[datax-core-0.0.1-SNAPSHOT.jar:na]
+	at com.alibaba.datax.core.job.JobContainer.init(JobContainer.java:304) ~[datax-core-0.0.1-SNAPSHOT.jar:na]
+	at com.alibaba.datax.core.job.JobContainer.start(JobContainer.java:113) ~[datax-core-0.0.1-SNAPSHOT.jar:na]
+	at com.alibaba.datax.core.Engine.start(Engine.java:92) [datax-core-0.0.1-SNAPSHOT.jar:na]
+	at com.alibaba.datax.core.Engine.entry(Engine.java:171) [datax-core-0.0.1-SNAPSHOT.jar:na]
+	at com.alibaba.datax.core.Engine.main(Engine.java:204) [datax-core-0.0.1-SNAPSHOT.jar:na]
+2020-04-01 10:37:09.963 [job-0] INFO  StandAloneJobContainerCommunicator - Total 0 records, 0 bytes | Speed 0B/s, 0 records/s | Error 0 records, 0 bytes |  All Task WaitWriterTime 0.000s |  All Task WaitReaderTime 0.000s | Percentage 0.00%
+2020-04-01 10:37:09.964 [job-0] ERROR Engine - 
+
+经DataX智能分析,该任务最可能的错误原因是:
+com.alibaba.datax.common.exception.DataXException: Code:[DBUtilErrorCode-10], Description:[连接数据库失败. 请检查您的 账号、密码、数据库名称、IP、Port或者向 DBA 寻求帮助(注意网络环境).].  -  具体错误信息为：java.sql.SQLException: No suitable driver found for ["jdbc:mysql://39.97.255.156:3307/lp_test?useUnicode=true&characterEncoding=utf8&serverTimezone=UTC"]&yearIsDateType=false&zeroDateTimeBehavior=convertToNull&tinyInt1isBit=false&rewriteBatchedStatements=true
+	at com.alibaba.datax.common.exception.DataXException.asDataXException(DataXException.java:26)
+	at com.alibaba.datax.plugin.rdbms.util.RdbmsException.asConnException(RdbmsException.java:23)
+	at com.alibaba.datax.plugin.rdbms.util.DBUtil.connect(DBUtil.java:394)
+	at com.alibaba.datax.plugin.rdbms.util.DBUtil.connect(DBUtil.java:384)
+	at com.alibaba.datax.plugin.rdbms.util.DBUtil.access$000(DBUtil.java:22)
+	at com.alibaba.datax.plugin.rdbms.util.DBUtil$3.call(DBUtil.java:322)
+	at com.alibaba.datax.plugin.rdbms.util.DBUtil$3.call(DBUtil.java:319)
+	at com.alibaba.datax.common.util.RetryUtil$Retry.call(RetryUtil.java:164)
+	at com.alibaba.datax.common.util.RetryUtil$Retry.doRetry(RetryUtil.java:111)
+	at com.alibaba.datax.common.util.RetryUtil.executeWithRetry(RetryUtil.java:30)
+	at com.alibaba.datax.plugin.rdbms.util.DBUtil.getConnection(DBUtil.java:319)
+	at com.alibaba.datax.plugin.rdbms.util.DBUtil.getConnection(DBUtil.java:303)
+	at com.alibaba.datax.plugin.rdbms.util.JdbcConnectionFactory.getConnecttion(JdbcConnectionFactory.java:27)
+	at com.alibaba.datax.plugin.rdbms.writer.util.OriginalConfPretreatmentUtil.dealColumnConf(OriginalConfPretreatmentUtil.java:105)
+	at com.alibaba.datax.plugin.rdbms.writer.util.OriginalConfPretreatmentUtil.dealColumnConf(OriginalConfPretreatmentUtil.java:140)
+	at com.alibaba.datax.plugin.rdbms.writer.util.OriginalConfPretreatmentUtil.doPretreatment(OriginalConfPretreatmentUtil.java:35)
+	at com.alibaba.datax.plugin.rdbms.writer.CommonRdbmsWriter$Job.init(CommonRdbmsWriter.java:41)
+	at com.alibaba.datax.plugin.writer.mysqlwriter.MysqlWriter$Job.init(MysqlWriter.java:31)
+	at com.alibaba.datax.core.job.JobContainer.initJobWriter(JobContainer.java:704)
+	at com.alibaba.datax.core.job.JobContainer.init(JobContainer.java:304)
+	at com.alibaba.datax.core.job.JobContainer.start(JobContainer.java:113)
+	at com.alibaba.datax.core.Engine.start(Engine.java:92)
+	at com.alibaba.datax.core.Engine.entry(Engine.java:171)
+	at com.alibaba.datax.core.Engine.main(Engine.java:204)
+

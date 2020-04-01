@@ -76,4 +76,10 @@ public class UserController {
         model.addAttribute("userlist",userService.findAll());
         return new ModelAndView("admin/user-list","model",model);
     }
+    
+    @RequestMapping("/user/modifyPass/{id}/{password}")
+    public ModelAndView modifyPass(@PathVariable Integer id,@PathVariable String password,Model model) throws InterruptedException {
+    	userService.modifyPass(id, password);
+    	return findAll(model);
+    }
 }

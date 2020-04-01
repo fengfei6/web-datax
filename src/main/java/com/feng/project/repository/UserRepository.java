@@ -27,4 +27,9 @@ public interface UserRepository extends JpaRepository<User,Integer> {
     @Query(value = "update user  SET role =?2  where id=?1", nativeQuery = true)
     Integer modifyRole(Integer id,String role);
 
+    
+    @Transactional
+    @Modifying
+    @Query(value = "update user  SET password =?2  where id=?1", nativeQuery = true)
+    Integer modifyPass(Integer id,String password);
 }

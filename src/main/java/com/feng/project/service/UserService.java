@@ -50,4 +50,8 @@ public class UserService {
     public Integer modifyRole(Integer id,String role) {
     	return userRepository.modifyRole(id, role);
     }
+    
+    public Integer modifyPass(Integer id,String password) {
+    	return userRepository.modifyPass(id, password);
+    }
 }

@@ -72,8 +72,8 @@ public class JobController {
                 job.getReaderDbId()),datasourceService.getDatasource(job.getWriterDbId()),
                 job.getReaderTable(),job.getWriterTable(),job.getName());
         Connection conn = DataxUtil.login("192.144.129.188", "root", "FFei916#");
-        DataxUtil.transferFile(conn, "src/main/resources/static/file/job.json", "/usr/local/datax/job");
-        String result = DataxUtil.execmd(conn, "python /usr/local/datax/bin/datax.py /usr/local/datax/job/job.json",job.getName());
+        DataxUtil.transferFile(conn, "src/main/resources/static/file/"+job.getName()+".json", "/usr/local/datax/job");
+        String result = DataxUtil.execmd(conn, "python /usr/local/datax/bin/datax.py /usr/local/datax/job/"+job.getName()+".json",job.getName());
         return getJobLog(model, job.getName());
     }
     

@@ -43,14 +43,14 @@ public class JobUtil {
 		sb.append("\",\"password\":\"").append(sdatasource.getPassword());
 		sb.append("\",\"column\": [\"*\"],");
 		sb.append("\"connection\": [{\"table\": [\"").append(stable);
-		sb.append("\"],\"jdbcUrl\": [\"").append(sjdbcUrl);
+		sb.append("\"],\"jdbcUrl\": [\"").append(sjdbcUrl).append("?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone = GMT");
 		sb.append("\"]}]}},");
 		sb.append("\"writer\": {\"name\": \"").append(writer);
 		sb.append("\",\"parameter\":{\"username\":\"").append(tdatasource.getUsername());
 		sb.append("\",\"password\":\"").append(tdatasource.getPassword());
 		sb.append("\",\"column\": [\"*\"],");
 		sb.append("\"connection\": [{\"table\": [\"").append(ttable);
-		sb.append("\"],\"jdbcUrl\": [\"").append(tjdbcUrl);
+		sb.append("\"],\"jdbcUrl\": [\"").append(tjdbcUrl).append("?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone = GMT");;
 		sb.append("\"]}]}}}]}}");
 	
 		File file = new File("src/main/resources/static/file/"+jobName+".json");

@@ -98,7 +98,15 @@ public class DatasourceController {
     
     @ResponseBody
     @RequestMapping("/datasource/getTableList")
-    public Map<String,Integer> getTableList(Integer id) {
+    public Map<String,Integer> getTableList(String name) {
+    	Datasource datasource = datasourceService.findDatasourceByName(name);
+    	Connection conn = ConnectionUtil.getConn(datasource, datasource.getType());
+        return ConnectionUtil.getTables(conn);
+    }
+    
+    @ResponseBody
+    @RequestMapping("/datasource/getTableList2")
+    public Map<String,Integer> getTableList2(Integer id) {
     	Datasource datasource = datasourceService.getDatasource(id);
     	Connection conn = ConnectionUtil.getConn(datasource, datasource.getType());
         return ConnectionUtil.getTables(conn);
