@@ -23,7 +23,7 @@ public class Datasource {
     private String dbname;
     private String isConnection;
     private String type;
-    private Date createTime;
+
     private Date updateTime;
     private Integer userId;
 
@@ -115,13 +115,6 @@ public class Datasource {
         this.type = type;
     }
 
-    public Date getCreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
-    }
 
     public Date getUpdateTime() {
         return updateTime;
@@ -134,7 +127,7 @@ public class Datasource {
     public Datasource() {
     }
 
-    public Datasource(Integer id,String name, String description, String ip, String port, String username, String password, String dbname, String isConnection, String type, Date createTime, Date updateTime, Integer userId) {
+    public Datasource(Integer id,String name, String description, String ip, String port, String username, String password, String dbname, String isConnection, String type, Date updateTime, Integer userId) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -145,7 +138,7 @@ public class Datasource {
         this.dbname = dbname;
         this.isConnection = isConnection;
         this.type = type;
-        this.createTime = createTime;
+
         this.updateTime = updateTime;
         this.userId = userId;
     }
@@ -171,7 +164,7 @@ public class Datasource {
                 ", dbname='" + dbname + '\'' +
                 ", isConnection='" + isConnection + '\'' +
                 ", type='" + type + '\'' +
-                ", createTime=" + createTime +
+              
                 ", updateTime=" + updateTime +
                 ", userId=" + userId +
                 '}';

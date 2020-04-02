@@ -272,7 +272,7 @@
                                         <span class="line"></span>Type
                                     </th>
                                     <th class="span3">
-                                        <span class="line"></span>CreateTime
+                                        <span class="line"></span>UpdateTime
                                     </th> 
                                     <th class="span3">
                                         <span class="line"></span>Operate
@@ -297,7 +297,7 @@
                                     </td>
                                     <td class="description" th:text="${datasource.type}? ${datasource.type}:''">
                                     </td>
-                                    <td class="description" th:text="${datasource.createTime}? ${datasource.createTime}:''">
+                                    <td class="description" th:text="${datasource.updateTime}? ${datasource.updateTime}:''">
                                     </td>
                                     <td class="description">
                                         <ul class="action">
@@ -323,10 +323,10 @@
     <script th:src="@{/js/theme.js}"></script>
     <script th:inline="javascript">
 		var v = [[${model.conn_flag}]] ?  [[${model.conn_flag}]] :"";
-        if (v) {
+        if (v !="" && v) {
             alert("连接成功");
         }
-        if(!v){
+        if(v !="" && !v){
             alert("连接失败");
         }
 

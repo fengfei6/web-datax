@@ -15,7 +15,6 @@ public class DatasourceService {
     private DatasourceRepository datasourceRepository;
 
     public void save(Datasource datasource){
-        datasource.setCreateTime(new Date());
         datasource.setUpdateTime(new Date());
         datasourceRepository.save(datasource);
     }
