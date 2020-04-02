@@ -111,6 +111,12 @@
             <version>1.2.58</version>
         </dependency>
 
+		<!-- https://mvnrepository.com/artifact/com.oracle/ojdbc -->
+		<dependency>
+   			 <groupId>com.oracle</groupId>
+    		<artifactId>ojdbc</artifactId>
+    		<version>14</version>
+		</dependency>
 
     </dependencies>
 

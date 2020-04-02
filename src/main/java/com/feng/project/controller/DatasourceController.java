@@ -46,7 +46,7 @@ public class DatasourceController {
     @RequestMapping("/datasource/testConn/{id}")
     public ModelAndView testConn(HttpServletRequest request, HttpServletResponse response, @PathVariable String id,Model model){
         Datasource datasource = datasourceService.getDatasource(Integer.parseInt(id));
-        boolean flag = ConnectionUtil.isConn(datasource,"mysql");
+        boolean flag = ConnectionUtil.isConn(datasource,datasource.getType());
         if(flag) {
         	datasource.setIsConnection("1");
         }else {
@@ -75,6 +75,17 @@ public class DatasourceController {
     public ModelAndView showAllTables(@PathVariable Integer id,Model model) {
     	Datasource datasource = datasourceService.getDatasource(id);
     	Connection conn = ConnectionUtil.getConn(datasource, datasource.getType());
+    	model.addAttribute("id",id);
+    	model.addAttribute("tablemap",ConnectionUtil.getTables(conn));
+    	return new ModelAndView("admin/show-table","model",model);
+    }
+    
+    @RequestMapping("/datasource/deleteTable/{id}/{tableName}")
+    public ModelAndView deleteTable(@PathVariable String tableName,@PathVariable Integer id,Model model) {
+    	Datasource datasource = datasourceService.getDatasource(id);
+    	Connection conn = ConnectionUtil.getConn(datasource, datasource.getType());
+    	ConnectionUtil.executeSQL(conn, "drop table "+tableName);
+    	conn = ConnectionUtil.getConn(datasource, datasource.getType());
     	model.addAttribute("id",id);
     	model.addAttribute("tablemap",ConnectionUtil.getTables(conn));
     	return new ModelAndView("admin/show-table","model",model);
