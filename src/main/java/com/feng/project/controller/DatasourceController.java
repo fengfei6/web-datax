@@ -1,12 +1,13 @@
 package com.feng.project.controller;
 
 import java.sql.Connection;
-import java.util.List;
+import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.feng.project.util.OracleUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,9 +15,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.feng.project.domain.Datasource;
-import com.feng.project.domain.User;
 import com.feng.project.service.DatasourceService;
-import com.feng.project.util.ConnectionUtil;
+import com.feng.project.util.MysqlUtil;
 
 @Controller
 public class DatasourceController {
@@ -46,7 +46,12 @@ public class DatasourceController {
     @RequestMapping("/datasource/testConn/{id}")
     public ModelAndView testConn(HttpServletRequest request, HttpServletResponse response, @PathVariable String id,Model model){
         Datasource datasource = datasourceService.getDatasource(Integer.parseInt(id));
-        boolean flag = ConnectionUtil.isConn(datasource,datasource.getType());
+        boolean flag = false;
+        if(datasource.getType().equalsIgnoreCase("mysql")){
+            flag = MysqlUtil.isConn(datasource);
+        }else if(datasource.getType().equalsIgnoreCase("oracle")){
+            flag = OracleUtil.isConn(datasource);
+        }
         if(flag) {
         	datasource.setIsConnection("1");
         }else {
@@ -74,30 +79,57 @@ public class DatasourceController {
     @RequestMapping("/datasource/showAll/{id}")
     public ModelAndView showAllTables(@PathVariable Integer id,Model model) {
     	Datasource datasource = datasourceService.getDatasource(id);
-    	Connection conn = ConnectionUtil.getConn(datasource, datasource.getType());
+        Map<String, Integer> map = new HashMap<>();
+        if(datasource.getType().equalsIgnoreCase("mysql")){
+            Connection conn = MysqlUtil.getConn(datasource);
+            map = MysqlUtil.getTables(conn);
+        }else if(datasource.getType().equalsIgnoreCase("oracle")){
+            Connection conn = OracleUtil.getConn(datasource);
+            map = OracleUtil.getTables(conn,datasource.getUsername());
+        }
     	model.addAttribute("id",id);
-    	model.addAttribute("tablemap",ConnectionUtil.getTables(conn));
+    	model.addAttribute("tablemap", map);
     	return new ModelAndView("admin/show-table","model",model);
     }
     
     @RequestMapping("/datasource/deleteTable/{id}/{tableName}")
     public ModelAndView deleteTable(@PathVariable String tableName,@PathVariable Integer id,Model model) {
     	Datasource datasource = datasourceService.getDatasource(id);
-    	Connection conn = ConnectionUtil.getConn(datasource, datasource.getType());
-    	ConnectionUtil.executeSQL(conn, "drop table "+tableName);
-    	conn = ConnectionUtil.getConn(datasource, datasource.getType());
+        Connection conn = null;
+        if(datasource.getType().equalsIgnoreCase("mysql")){
+            conn = MysqlUtil.getConn(datasource);
+        }else if(datasource.getType().equalsIgnoreCase("oracle")){
+            conn = OracleUtil.getConn(datasource);
+        }
+    	MysqlUtil.executeSQL(conn, "drop table "+tableName);
+        Map<String, Integer> map = new HashMap<>();
+        if(datasource.getType().equalsIgnoreCase("mysql")){
+            conn = MysqlUtil.getConn(datasource);
+            map = MysqlUtil.getTables(conn);
+        }else if(datasource.getType().equalsIgnoreCase("oracle")){
+            conn = OracleUtil.getConn(datasource);
+            map = OracleUtil.getTables(conn,datasource.getUsername());
+        }
     	model.addAttribute("id",id);
-    	model.addAttribute("tablemap",ConnectionUtil.getTables(conn));
+    	model.addAttribute("tablemap", map);
     	return new ModelAndView("admin/show-table","model",model);
     }
     
     @RequestMapping("/datasource/showTableDesc/{id}/{name}")
     public ModelAndView showTableDesc(@PathVariable String name,@PathVariable Integer id,Model model) {
     	Datasource datasource = datasourceService.getDatasource(id);
-    	Connection conn = ConnectionUtil.getConn(datasource, datasource.getType());
-    	model.addAttribute("table",ConnectionUtil.getColumn(ConnectionUtil.getMetaDate(conn), name));
+        Connection conn = null;
+        Map<String, String> map = new HashMap<>();
+        if(datasource.getType().equalsIgnoreCase("mysql")){
+            conn = MysqlUtil.getConn(datasource);
+            map = MysqlUtil.getColumn(MysqlUtil.getMetaDate(conn), name);
+        }else if(datasource.getType().equalsIgnoreCase("oracle")){
+            conn = OracleUtil.getConn(datasource);
+            map = OracleUtil.getColumn(conn,name);
+        }
+    	model.addAttribute("table", map);
     	model.addAttribute("tableName", name);
-    	model.addAttribute("primaryKeys",ConnectionUtil.getPrimaryKey(ConnectionUtil.getMetaDate(conn), name));
+    	//model.addAttribute("primaryKeys", MysqlUtil.getPrimaryKey(MysqlUtil.getMetaDate(conn), name));
     	return new ModelAndView("admin/show-table-desc","model",model);
     }
     
@@ -111,29 +143,58 @@ public class DatasourceController {
     @RequestMapping("/datasource/getTableList")
     public Map<String,Integer> getTableList(String name) {
     	Datasource datasource = datasourceService.findDatasourceByName(name);
-    	Connection conn = ConnectionUtil.getConn(datasource, datasource.getType());
-        return ConnectionUtil.getTables(conn);
+        Connection conn = null;
+        Map<String, Integer> map = new HashMap<>();
+        if(datasource.getType().equalsIgnoreCase("mysql")){
+            conn = MysqlUtil.getConn(datasource);
+            map = MysqlUtil.getTables(conn);
+        }else if(datasource.getType().equalsIgnoreCase("oracle")){
+            conn = OracleUtil.getConn(datasource);
+            map = OracleUtil.getTables(conn,datasource.getUsername());
+        }
+        return map;
     }
     
     @ResponseBody
     @RequestMapping("/datasource/getTableList2")
     public Map<String,Integer> getTableList2(Integer id) {
     	Datasource datasource = datasourceService.getDatasource(id);
-    	Connection conn = ConnectionUtil.getConn(datasource, datasource.getType());
-        return ConnectionUtil.getTables(conn);
+        Connection conn = null;
+        Map<String, Integer> map = new HashMap<>();
+        if(datasource.getType().equalsIgnoreCase("mysql")){
+            conn = MysqlUtil.getConn(datasource);
+            map = MysqlUtil.getTables(conn);
+        }else if(datasource.getType().equalsIgnoreCase("oracle")){
+            conn = OracleUtil.getConn(datasource);
+            map = OracleUtil.getTables(conn,datasource.getUsername());
+        }
+        return map;
     }
     
     @RequestMapping("/datasource/copyTable")
     public ModelAndView copyTable(Model model,String sdatasource,String sname,String ddatasource,String dname) {
     	Datasource datasources = datasourceService.findDatasourceByName(sdatasource);
     	Datasource datasourced = datasourceService.findDatasourceByName(ddatasource);
-    	Connection conn = ConnectionUtil.getConn(datasources, datasources.getType());
-    	String createsql = ConnectionUtil.createTable(
-    			ConnectionUtil.getPrimaryKey(ConnectionUtil.getMetaDate(conn), sname), 
-    			dname, ConnectionUtil.getColumn(ConnectionUtil.getMetaDate(conn), sname));
-    	conn = ConnectionUtil.getConn(datasourced, datasourced.getType());
-    	boolean flag = ConnectionUtil.executeSQL(conn, createsql);
-    	model.addAttribute("create_flag", flag);
+        Connection conn = null;
+        String createsql = "";
+        if(datasources.getType().equalsIgnoreCase("mysql")) {
+            conn = MysqlUtil.getConn(datasources);
+            createsql = MysqlUtil.createTable(
+                    MysqlUtil.getPrimaryKey(MysqlUtil.getMetaDate(conn), sname),
+                    dname, MysqlUtil.getColumn(MysqlUtil.getMetaDate(conn), sname));
+        }else if(datasources.getType().equalsIgnoreCase("oracle")){
+            conn = OracleUtil.getConn(datasources);
+            createsql = OracleUtil.createTable(
+                    OracleUtil.getPrimaryKey(conn, sname),
+                    dname, OracleUtil.getColumn(conn, sname));
+        }
+        if(datasourced.getType().equalsIgnoreCase("mysql")) {
+            conn = MysqlUtil.getConn(datasourced);
+            MysqlUtil.executeSQL(conn, createsql);
+        }else if(datasourced.getType().equalsIgnoreCase("oracle")){
+            conn = OracleUtil.getConn(datasourced);
+            OracleUtil.executeSQL(conn,createsql);
+        }
     	model.addAttribute("datalist",datasourceService.findAll());
     	return new ModelAndView("admin/database-list","model",model);
     }

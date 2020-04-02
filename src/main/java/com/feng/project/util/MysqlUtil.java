@@ -22,22 +22,17 @@ import com.feng.project.domain.Datasource;
 
 
 
-public class ConnectionUtil {
+public class MysqlUtil {
 
 	/**
 	 * @param datasource
-	 * @param type
+	 * @param
 	 * @return
 	 * @throws Exception
 	 */
-	public static boolean isConn(Datasource datasource, String type){
-		Connector connector = null;
+	public static boolean isConn(Datasource datasource){
+		Connector connector = new MysqlConnector();
 		Connection conn = null;
-		if(type.equalsIgnoreCase("mysql")) {
-			connector = new MysqlConnector();
-		}else if(type.equalsIgnoreCase("oracle")) {
-			connector = new OracleConnector();
-		}
 		try {
 			Class.forName(connector.getDriver());
 			conn = DriverManager.getConnection(connector.getUrl(datasource),datasource.getUsername(),datasource.getPassword());
@@ -53,19 +48,14 @@ public class ConnectionUtil {
 	}
 	
 	/**
-	 * @param database
-	 * @param type
+	 * @param
+	 * @param
 	 * @return
 	 * @throws Exception
 	 */
-	public static Connection getConn(Datasource datasource,String type){
-		Connector connector = null;
+	public static Connection getConn(Datasource datasource){
+		Connector connector = new MysqlConnector();
 		Connection conn = null;
-		if(type.equalsIgnoreCase("mysql")) {
-			connector = new MysqlConnector();
-		}else if(type.equalsIgnoreCase("oracle")) {
-			connector = new OracleConnector();
-		}
 		try {
 			Class.forName(connector.getDriver());
 			conn = DriverManager.getConnection(connector.getUrl(datasource),datasource.getUsername(),datasource.getPassword());
@@ -94,7 +84,7 @@ public class ConnectionUtil {
 	}
 	
 	/**
-	 * @param metaData
+	 * @param
 	 * @return
 	 * @throws SQLException
 	 */
@@ -175,11 +165,11 @@ public class ConnectionUtil {
 		for(Entry<String, String> entry : map.entrySet()) {
 			count++;
 			if(keys.contains(entry.getKey()) && count == map.size()) {
-				sb.append(entry.getKey()+" "+entry.getValue()+" primary key );");
+				sb.append(entry.getKey()+" "+entry.getValue()+" primary key )");
 			}else if(keys.contains(entry.getKey()) && count < map.size()) {
 				sb.append(entry.getKey()+" "+entry.getValue()+" primary key,");
 			}else if(!keys.contains(entry.getKey()) && count == map.size()) {
-				sb.append(entry.getKey()+" "+entry.getValue()+");");
+				sb.append(entry.getKey()+" "+entry.getValue()+")");
 			}else{
 				sb.append(entry.getKey()+" "+entry.getValue()+",");
 			}
@@ -198,7 +188,7 @@ public class ConnectionUtil {
 		Statement stmt;
 		try {
 			stmt = conn.createStatement(); 
-			stmt.execute(createSql);
+			stmt.executeUpdate(createSql);
 			return true;
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -228,23 +218,6 @@ public class ConnectionUtil {
         	return count;
         }
 	}
-	
-	public static void main(String[] args) throws Exception {
-		// TODO Auto-generated method stub
-		Datasource database = new Datasource("192.144.129.188","3306","test","root","123456");
-		System.out.println(isConn(database, "mysql"));
-		Connection conn = getConn(database, "mysql");
-		
-		DatabaseMetaData metaData = conn.getMetaData();
-		
-		Map<String,Integer> tablemap = getTables(conn);
-		
-		
-		for(Entry<String, Integer> entry : tablemap.entrySet()) {
-			System.out.println(entry.getKey()+" "+entry.getValue());
-		}
-		
-		
-	}
+
 
 }
