@@ -1,37 +1,28 @@
 package com.feng.project.controller;
 
-import com.feng.project.domain.Job;
-import com.feng.project.domain.User;
-import com.feng.project.service.DatasourceService;
-import com.feng.project.service.JobService;
-import com.feng.project.util.DataxUtil;
-import com.feng.project.util.JobUtil;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.Date;
 
-import ch.ethz.ssh2.Connection;
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.servlet.http.HttpServletRequest;
+import com.feng.project.domain.Job;
+import com.feng.project.domain.JobLog;
+import com.feng.project.service.DatasourceService;
+import com.feng.project.service.JobLogService;
+import com.feng.project.service.JobService;
+import com.feng.project.util.DataxUtil;
+import com.feng.project.util.JobUtil;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import ch.ethz.ssh2.Connection;
 
 @Controller
 public class JobController {
@@ -39,7 +30,9 @@ public class JobController {
     private JobService jobService;
     @Autowired
     private DatasourceService datasourceService;
-
+    @Autowired
+    private JobLogService jobLogService;
+    
     @RequestMapping("/job/prepare")
     public ModelAndView findAllDatasource(Model model){
         model.addAttribute("datalist",datasourceService.findAll());
@@ -74,7 +67,10 @@ public class JobController {
         Connection conn = DataxUtil.login("192.144.129.188", "root", "FFei916#");
         DataxUtil.transferFile(conn, "src/main/resources/static/file/"+job.getName()+".json", "/root/datax/job");
         String result = DataxUtil.execmd(conn, "python /root/datax/bin/datax.py /root/datax/job/"+job.getName()+".json",job.getName());
-        return getJobLog(model, job.getName());
+        JobLog jobLog = new JobLog(id,job.getName(),result,new Date());
+        jobLogService.save(jobLog);
+        model.addAttribute("jobLog",result);
+        return new ModelAndView("admin/job-log","model",model);
     }
     
     public ModelAndView getJobLog(Model model,String name) throws IOException{
@@ -95,4 +91,10 @@ public class JobController {
         return new ModelAndView("admin/job-list","model",model);
     }
     
+    @RequestMapping("/job/delete/{id}")
+    public ModelAndView deleteJob(@PathVariable Integer id, Model model){
+        jobService.delete(id);
+        model.addAttribute("joblist",jobService.findAll());
+        return new ModelAndView("admin/job-list","model",model);
+    }
 }

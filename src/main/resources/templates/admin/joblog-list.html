@@ -256,16 +256,14 @@
                         <thead>
                             <tr>
                                 <th class="span4 sortable">
-                                    Name(Note)
+                                    JobLog
                                 </th>
                                 <th class="span3 sortable">
-                                    <span class="line"></span>Email
+                                    <span class="line"></span>JobName
                                 </th>
+                               
                                 <th class="span2 sortable">
-                                    <span class="line"></span>Phone
-                                </th>
-                                <th class="span2 sortable">
-                                    <span class="line"></span>Role
+                                    <span class="line"></span>Create-Time
                                 </th>
                                 <th class="span3 sortable align-right">
                                     <span class="line"></span>Operate
@@ -274,19 +272,18 @@
                         </thead>
                         <tbody>
                         <!-- row -->
-                        <tr class="first" th:each="user:${model.userlist}">
-                            <td th:text="${user.name}+'('+${user.note}+')'">
+                        <tr class="first" th:each="joblog:${model.joblogs}">
+                            <td th:text="${joblog.id} ? ${joblog.id}:''">
                             </td>
-                            <td th:text="${user.email}">
+                            <td th:text="${joblog.jobName} ?${joblog.jobName}:'' ">
                             </td>
-                            <td th:text="${user.phone}">
-                            </td>
-                            <td th:text="${user.role}">
+                            
+                            <td th:text="${joblog.createTime}?${joblog.createTime}:''">
                             </td>
                             <td class="align-right" >
-                                <a th:href="@{'/user/modifyRole/'+${user.id}}">modify role</a>
-                            	<a th:href="@{'/user/edit/'+${user.id}}">edit</a>
-                            	<a th:href="@{'/user/delete/'+${user.id}}">delete</a>
+                                <a th:href="@{'/joblog/getResult/'+${joblog.id}}">Result</a>
+                   
+                            	<a th:href="@{'/joblog/delete/'+${joblog.jobId}+'/'+${joblog.id}}">Delete</a>
                             </td>
                         </tr>
                         <!-- row -->

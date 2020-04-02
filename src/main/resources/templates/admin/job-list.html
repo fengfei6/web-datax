@@ -303,7 +303,8 @@
                                        
                                             <li><a th:href="@{'/job/execJob/'+${job.id}}">Execute</a></li>
                                          
-                                            <li class="last"><a th:href="@{'/job/jobLog/'+${job.id}}">Log</a></li>
+                                            <li class="last"><a th:href="@{'/joblog/joblogs/'+${job.id}}">Log</a></li>
+                                            <li class="last"><a th:href="@{'/job/delete/'+${job.id}}">Delete</a></li>
                                         </ul>
                                     </td>
                                 </tr>

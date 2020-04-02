@@ -32,10 +32,10 @@ public class JobUtil {
 		String tjdbcUrl= null;
 		if("mysql".equalsIgnoreCase(tdatasource.getType())){
 			writer = "mysqlwriter";
-			tjdbcUrl = Constants.MYSQL_JDBC_NAME+sdatasource.getIp()+":"+sdatasource.getPort()+"/"+sdatasource.getDbname();
+			tjdbcUrl = Constants.MYSQL_JDBC_NAME+tdatasource.getIp()+":"+tdatasource.getPort()+"/"+tdatasource.getDbname();
 		}else if("oracle".equalsIgnoreCase(tdatasource.getType())){
 			writer = "oraclewriter";
-			tjdbcUrl = Constants.ORACLE_THIN_JDBC_NAME+sdatasource.getIp()+":"+sdatasource.getPort()+"/"+sdatasource.getDbname();
+			tjdbcUrl = Constants.ORACLE_THIN_JDBC_NAME+tdatasource.getIp()+":"+tdatasource.getPort()+"/"+tdatasource.getDbname();
 		}
 		StringBuilder sb = new StringBuilder();
 		sb.append("{\"job\": {\"setting\": {\"speed\": {\"channel\": 3},\"errorLimit\": {\"record\": 0,\"percentage\": 0.02}}," +
@@ -44,15 +44,15 @@ public class JobUtil {
 		sb.append("\",\"password\":\"").append(sdatasource.getPassword());
 		sb.append("\",\"column\": [\"*\"],");
 		sb.append("\"connection\": [{\"table\": [\"").append(job.getReaderTable());
-		sb.append("\"],\"jdbcUrl\": [\"").append(sjdbcUrl).append("?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone = GMT");
+		sb.append("\"],\"jdbcUrl\": [\"").append(sjdbcUrl);
 		sb.append("\"]}]}},");
 		sb.append("\"writer\": {\"name\": \"").append(writer);
 		sb.append("\",\"parameter\":{\"writeMode\": \"insert\",\"username\":\"").append(tdatasource.getUsername());
 		sb.append("\",\"password\":\"").append(tdatasource.getPassword());
 		sb.append("\",\"column\": [\"*\"],");
 		sb.append("\"connection\": [{\"table\": [\"").append(job.getWriterTable());
-		sb.append("\"],\"jdbcUrl\": [\"").append(tjdbcUrl).append("?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone = GMT");;
-		sb.append("\"]}]}}}]}}");
+		sb.append("\"],\"jdbcUrl\": \"").append(tjdbcUrl);
+		sb.append("\"}]}}}]}}");
 	
 		File file = new File("src/main/resources/static/file/"+job.getName()+".json");
 		if(!file.exists()) {

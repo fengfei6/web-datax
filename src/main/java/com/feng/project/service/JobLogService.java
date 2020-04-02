@@ -35,4 +35,7 @@ public class JobLogService {
     	return jobLogRepository.findAll();
     }
     
+    public List<JobLog> findByJobId(Integer jobId){
+    	return jobLogRepository.findByJobId(jobId);
+    }
 }

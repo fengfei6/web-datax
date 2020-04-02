@@ -12,6 +12,7 @@ public class JobLog {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private Integer jobId;
+    private String jobName;
     private String logResult;
     private Date createTime;
 
@@ -30,6 +31,14 @@ public class JobLog {
     public void setJobId(Integer jobId) {
         this.jobId = jobId;
     }
+
+    public String getJobName() {
+		return jobName;
+	}
+
+	public void setJobName(String jobName) {
+		this.jobName = jobName;
+	}
 
     public String getLogResult() {
         return logResult;
@@ -50,18 +59,18 @@ public class JobLog {
     public JobLog() {
     }
 
-    public JobLog( String logResult, Date createTime) {
-        this.logResult = logResult;
-        this.createTime = createTime;
-    }
+	public JobLog(Integer jobId, String jobName, String logResult, Date createTime) {
+		this.jobId = jobId;
+		this.jobName = jobName;
+		this.logResult = logResult;
+		this.createTime = createTime;
+	}
 
-    @Override
-    public String toString() {
-        return "JobLog{" +
-                "id=" + id +
-                ", jobId=" + jobId +
-                ", logResult='" + logResult + '\'' +
-                ", createTime=" + createTime +
-                '}';
-    }
+	@Override
+	public String toString() {
+		return "JobLog [id=" + id + ", jobId=" + jobId + ", jobName=" + jobName + ", logResult=" + logResult
+				+ ", createTime=" + createTime + "]";
+	}
+
+    
 }
