@@ -4,15 +4,17 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 
 public class JsonUtil {
 
-	public static void testComplexJSONStrToJSONObject(String json) {
+	public static Map<String,String> testComplexJSONStrToJSONObject(String json) {
 	    JSONObject jsonObject = JSONObject.parseObject(json);
 	    JSONObject job = jsonObject.getJSONObject("job");
+		Map<String,String> map = new HashMap<String, String>();
 	     //获取JSONObject中的数据
 //	    JSONObject setting = job.getJSONObject("setting");
 //	    JSONObject speed = setting.getJSONObject("speed");   
@@ -22,28 +24,47 @@ public class JsonUtil {
 //	    Float percentage = errorLimit.getFloat("percentage");
 	    JSONArray content = job.getJSONArray("content");
 	    JSONObject object = (JSONObject)content.get(0);
-	    getParams(object,"reader");
-	    getParams(object,"writer");
+	    map.put("tabler",getTable(object,"reader"));
+		map.put("tablew",getTable(object,"writer"));
+	    map.put("reader",getParams(object,"reader"));
+	    map.put("writer",getParams(object,"writer"));
+	    return map;
 	}
 
-	private static Map<String,String> getParams(JSONObject object,String type){
-		Map<String,String> map = new HashMap<String, String>();
+	private static String getParams(JSONObject object,String type){
 		JSONObject reader = object.getJSONObject(type);
 		String readerType = reader.getString("name");
-		map.put("name", readerType);
+
 		JSONObject param1 = reader.getJSONObject("parameter");
 		String username = param1.getString("username");
-		map.put("username", username);
 		String password = param1.getString("password");
-		map.put("password", password);
+
 		JSONObject connection = param1.getJSONArray("connection").getJSONObject(0);
 		String table = connection.getJSONArray("table").getString(0);
-		map.put("table", table);
-		String jdbcUrl = connection.getJSONArray("jdbcUrl").getString(0);
-		map.put("jdbcUrl", splitUrl(jdbcUrl));
-		return map;
+
+		String jdbcUrl = "";
+		if(type.equalsIgnoreCase("reader")) {
+			jdbcUrl = connection.getJSONArray("jdbcUrl").getString(0);
+		}
+		if(type.equalsIgnoreCase("writer")) {
+			jdbcUrl = connection.getString("jdbcUrl");
+		}
+		return splitUrl(jdbcUrl);
 	}
-	
+
+	private static String getTable(JSONObject object,String type){
+		JSONObject reader = object.getJSONObject(type);
+		String readerType = reader.getString("name");
+
+		JSONObject param1 = reader.getJSONObject("parameter");
+		String username = param1.getString("username");
+		String password = param1.getString("password");
+
+		JSONObject connection = param1.getJSONArray("connection").getJSONObject(0);
+		String table = connection.getJSONArray("table").getString(0);
+		return table;
+	}
+
 	private static String splitUrl(String url) {
 		StringBuilder result = new StringBuilder();
 		String[] array1 = url.split("/");
@@ -53,14 +74,23 @@ public class JsonUtil {
 		result.append(array2[1]);
 		return result.toString();
 	}
-	
+
+	public static String[] getParamsArray(String params){
+		String[] array = params.split(",");
+		return array;
+	}
+
 	public static void main(String[] args) throws IOException {
-		FileReader fr = new FileReader("D:\\test.json"); 
+		FileReader fr = new FileReader("D://test.json");
 	     StringBuilder sb = new StringBuilder();
-	    	int ch = 0;  
-	    	while((ch = fr.read())!=-1 ){   
-	    		sb.append((char)ch);   
-	    	} 
-		JsonUtil.testComplexJSONStrToJSONObject(sb.toString());
+	    	int ch = 0;
+	    	while((ch = fr.read())!=-1 ){
+	    		sb.append((char)ch);
+	    	}
+		Map<String,String> map = JsonUtil.testComplexJSONStrToJSONObject(sb.toString());
+
+	    for(Map.Entry<String,String> entey:map.entrySet()){
+	    	System.out.println(entey.getKey()+" "+entey.getValue());
+		}
 	}
 }
