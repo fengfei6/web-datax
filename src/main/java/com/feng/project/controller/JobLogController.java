@@ -29,6 +29,6 @@ public class JobLogController {
     public ModelAndView deleteJobLog(@PathVariable Integer jobId,@PathVariable Integer id,Model model) {
     	jobLogService.delete(id);
     	model.addAttribute("joblogs",jobLogService.findByJobId(jobId));
-    	return new ModelAndView("admin/job-log","model",model);
+    	return new ModelAndView("admin/joblog-list","model",model);
     }
 }
