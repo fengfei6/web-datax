@@ -62,4 +62,14 @@ public class JobUtil {
 		bos.write(sb.toString().getBytes());
 		bos.close();
 	}
+
+	public static void getJsonFileByContent(Job job) throws IOException {
+		File file = new File("src/main/resources/static/file/"+job.getName()+".json");
+		if(!file.exists()) {
+			file.createNewFile();
+		}
+		BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(file));
+		bos.write(job.getJsonContent().getBytes());
+		bos.close();
+	}
 }
