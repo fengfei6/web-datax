@@ -198,5 +198,14 @@ public class DatasourceController {
     	model.addAttribute("datalist",datasourceService.findAll());
     	return new ModelAndView("admin/database-list","model",model);
     }
-    
+
+    @ResponseBody
+    @RequestMapping("/datasource/getDataSourceByName")
+    public String getDataSourceByName(String name){
+        if(datasourceService.findDatasourceByName(name) != null){
+            return "名称已存在，重新输入";
+        }else{
+            return "";
+        }
+    }
 }

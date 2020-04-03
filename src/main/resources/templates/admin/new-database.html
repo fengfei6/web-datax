@@ -231,7 +231,7 @@
         <div class="container-fluid">
             <div id="pad-wrapper" class="new-user">
                 <div class="row-fluid header">
-                    <h3>新增数据源</h3>
+                    <h3>新增数据源</h3><h5 id="show" style="color: red"></h5>
                 </div>
 
                 <div class="row-fluid form-wrapper">
@@ -241,7 +241,7 @@
                             <form class="new_user_form inline-input" method="post" action="/datasource/add">
                             <div class="span12 field-box">
                                 <label>数据源名称:</label>
-                                <input class="span9" type="text" name="name"/>
+                                <input class="span9" type="text" name="name" id="name"/>
                             </div>
                             <div class="span12 field-box">
                                 <label>数据源类型:</label>
@@ -338,6 +338,27 @@
                 }
             });
         });
+
+
+        $(document).ready(function(){
+            $("#name").change(function(){
+                var t = $("#name").val();
+                if(t ==''){
+                    return;
+                }
+
+                $.ajax({
+                    url:"/datasource/getDataSourceByName",
+                    async:true,
+                    type:'post',
+                    data:{name:t},
+                    success:function(data){
+                        var t2 = $("#show").empty();
+                        t2.append(data);
+                    }
+                })
+            });
+        })
     </script>
 
 </body>

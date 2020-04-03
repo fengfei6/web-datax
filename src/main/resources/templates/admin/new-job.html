@@ -313,7 +313,7 @@
                                                 <label>Presql:</label>
                                                 <input class="span8" type="text" name="writerPresql"/>
                                             </div>
-                                            <div class="field-box success">
+                                            <div class="field-box">
                                                 <label>Postsql:</label>
                                                 <input class="span8" type="text" name="writerPostsql"/>
                                             </div>
@@ -325,8 +325,8 @@
                                     <div class="row-fluid form-wrapper payment-info">
                                         <div class="span8">
                                             <div class="field-box">
-                                                <label>同步任务名:</label>
-                                                <input class="span8" type="text" name="name"/>
+                                                <label id="show">同步任务名:</label>
+                                                <input class="span8" type="text" name="name" id="name"/>
                                             </div>
                                             <div class="field-box">
                                                 <label>同步任务描述:</label>
@@ -440,6 +440,25 @@
             });
         })
 
+        $(document).ready(function(){
+            $("#name").change(function(){
+                var t = $("#name").val();
+                if(t ==''){
+                    return;
+                }
+
+                $.ajax({
+                    url:"/job/getJobByName",
+                    async:true,
+                    type:'post',
+                    data:{name:t},
+                    success:function(data){
+                        var t2 = $("#show");
+                        t2.append(data);
+                    }
+                })
+            });
+        })
     </script>
 
 </body>

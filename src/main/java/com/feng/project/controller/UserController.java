@@ -9,6 +9,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
@@ -99,5 +100,15 @@ public class UserController {
     public ModelAndView searchUsersByName(String name,Model model){
         model.addAttribute("userlist",userService.searchUsersByName(name));
         return new ModelAndView("admin/user-list","model",model);
+    }
+
+    @ResponseBody
+    @RequestMapping("/user/getUserByName")
+    public String getUserByName(String name){
+        if(userService.findUserByName(name) != null){
+            return "用户名已存在";
+        }else{
+            return "";
+        }
     }
 }

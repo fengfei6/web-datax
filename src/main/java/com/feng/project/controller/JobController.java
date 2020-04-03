@@ -15,6 +15,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.feng.project.domain.Job;
@@ -112,5 +113,15 @@ public class JobController {
         jobService.delete(id);
         model.addAttribute("joblist",jobService.findAll());
         return new ModelAndView("admin/job-list","model",model);
+    }
+
+    @ResponseBody
+    @RequestMapping("/job/getJobByName")
+    public String getJobByName(String name){
+        if(jobService.findJobByName(name) != null){
+            return "名称已存在";
+        }else{
+            return "";
+        }
     }
 }

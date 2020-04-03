@@ -58,4 +58,6 @@ public class UserService {
     public List<User> searchUsersByName(String name){
     	return userRepository.searchUsersByName(name);
     }
+
+    public User findUserByName(String name){ return userRepository.findUserByName(name);}
 }

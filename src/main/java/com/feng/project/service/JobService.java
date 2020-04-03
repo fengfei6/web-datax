@@ -36,5 +36,6 @@ public class JobService {
     public List<Job> findAll(){
     	return jobRepository.findAll();
     }
-    
+
+    public Job findJobByName(String name){ return jobRepository.findJobByName(name);}
 }
