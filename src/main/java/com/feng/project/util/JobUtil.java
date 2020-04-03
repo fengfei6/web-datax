@@ -47,7 +47,7 @@ public class JobUtil {
 		sb.append("\"],\"jdbcUrl\": [\"").append(sjdbcUrl);
 		sb.append("\"]}]}},");
 		sb.append("\"writer\": {\"name\": \"").append(writer);
-		sb.append("\",\"parameter\":{\"writeMode\": \"insert\",\"username\":\"").append(tdatasource.getUsername());
+		sb.append("\",\"parameter\":{\"username\":\"").append(tdatasource.getUsername());
 		sb.append("\",\"password\":\"").append(tdatasource.getPassword());
 		sb.append("\",\"column\": [\"*\"],");
 		sb.append("\"connection\": [{\"table\": [\"").append(job.getWriterTable());
