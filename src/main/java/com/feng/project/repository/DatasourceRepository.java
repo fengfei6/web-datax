@@ -8,4 +8,5 @@ import org.springframework.stereotype.Repository;
 public interface DatasourceRepository extends JpaRepository<Datasource,Integer> {
 	Datasource findDatasourceByName(String name);
 
+	Datasource findByDbnameAndIpAndPort(String dbname,String ip,String port);
 }

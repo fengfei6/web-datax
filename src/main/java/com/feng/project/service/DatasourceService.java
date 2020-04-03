@@ -39,4 +39,8 @@ public class DatasourceService {
     public Datasource findDatasourceByName(String name) {
     	return datasourceRepository.findDatasourceByName(name);
     }
+
+    public Datasource findDatasourceByDbnameAndIpAndPort(String dbname,String ip,String port){
+        return datasourceRepository.findByDbnameAndIpAndPort(dbname,ip,port);
+    }
 }
