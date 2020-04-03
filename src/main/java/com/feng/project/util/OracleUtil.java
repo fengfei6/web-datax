@@ -52,13 +52,30 @@ public class OracleUtil {
             ResultSet rs = stmt.executeQuery(createSql);
             while (rs.next()) {
                 String name = rs.getString("table_name");
-                int count = rs.getInt("num_rows");
+                int count = getTablesCount(conn,name);
                 map.put(name,count);
             }
         } catch (SQLException e) {
             return map;
         }finally {
             return map;
+        }
+    }
+
+    public static Integer getTablesCount(Connection conn,String name) {
+        PreparedStatement stmt;
+        String createSql = "SELECT count(1) as cou from "+name;
+        int count = 0;
+        try {
+            stmt = conn.prepareStatement(createSql);
+            ResultSet rs = stmt.executeQuery(createSql);
+            while (rs.next()) {
+                count = rs.getInt("cou");
+            }
+        } catch (SQLException e) {
+            return count;
+        }finally {
+            return count;
         }
     }
 
