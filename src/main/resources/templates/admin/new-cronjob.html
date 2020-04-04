@@ -341,7 +341,8 @@
                                             </div>
                                             <div class="field-box">
                                                 <label>调度周期:</label>
-                                                <input class="span8" type="text" name="cronExpress"/>
+                                                <input class="span8" type="text" name="cronExpress" id="cron"/>
+                                                <a href="javascript:show_child();">cron表达式生成</a>
                                             </div>
                                         </div>
                                     </div>
@@ -470,6 +471,11 @@
                 })
             });
         })
+
+        function show_child()
+        {
+            var child=window.open("/admin/iframe.html","child","height=300,width=700,status=yes,toolbar=no,menubar=no,location=no");
+        }
     </script>
 
 </body>

@@ -11,12 +11,14 @@
 
 	function getvalues(){
 	  document.getElementById("cronq").value=window.cron.getvalues();
-	}
+      window.opener.document.getElementById("cron").value=document.getElementById("cronq").value;
+      window.close();
+    }
 
 </SCRIPT>
  <BODY>
  <iframe name="cron" id="cron" width="610" height="230" frameborder="0" scrolling="no" th:src="@{/admin/cron.html}"></iframe>
  <input type="button" value="生成" onclick="getvalues()"/>
-<input type="text" id="cronq" value=""/>
+<input type="hidden" id="cronq" value=""/>
  </BODY>
 </HTML>
