@@ -119,14 +119,14 @@ public class XxlJobService {
         }
 
         public JSONObject getCronJobInfo (Integer taskId){
-                Map<String, String> map = Maps.newHashMap();
-                map.put("id", String.valueOf(taskId));
-                JSONObject jsonObject = XxlUtil.getJobInfo(map);
-                return jsonObject;
-        }
+        Map<String, String> map = Maps.newHashMap();
+        map.put("id", String.valueOf(taskId));
+        JSONObject jsonObject = XxlUtil.getJobInfo(map);
+        return jsonObject;
+    }
 
 
-        public JSONObject getExeclog (String executorAddress, String triggerTime, String execid,int offset){
+        public JSONObject getExeclog (String triggerTime, String execid,int offset){
                 Map<String, String> map = Maps.newHashMap();
                 map.put("executorAddress", "172.21.0.8:9999");
                 map.put("triggerTime", triggerTime);
@@ -159,4 +159,5 @@ public class XxlJobService {
         return jsonObject;
     }
 
-        }
+
+}
