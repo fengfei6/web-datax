@@ -8,6 +8,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 
 import com.feng.project.domain.Datasource;
+import com.feng.project.service.JobService;
 import com.feng.project.util.JsonUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -22,7 +23,6 @@ import com.feng.project.domain.Job;
 import com.feng.project.domain.JobLog;
 import com.feng.project.service.DatasourceService;
 import com.feng.project.service.JobLogService;
-import com.feng.project.service.JobService;
 import com.feng.project.util.DataxUtil;
 import com.feng.project.util.JobUtil;
 

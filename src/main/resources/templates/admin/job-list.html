@@ -287,7 +287,7 @@
                                    		 <div class="img">
                                             <img th:src="@{/img/logo.jpg}" />
                                         </div>
-                                        <a id="jobId" th:href="@{'/datasource/showAll/'+${job.id}}" th:value="${job.id}" th:text="${job.id}?${job.id}:''"></a>
+                                        <a id="jobId" href="#" th:value="${job.id}" th:text="${job.id}?${job.id}:''"></a>
                                     </td>
                                     <td class="description" th:text="${job.name}?${job.name}:''">
                                     </td>

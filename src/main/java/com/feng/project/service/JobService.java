@@ -3,11 +3,11 @@ package com.feng.project.service;
 import java.util.Date;
 import java.util.List;
 
+import com.feng.project.repository.JobRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.feng.project.domain.Job;
-import com.feng.project.repository.JobRepository;
 
 @Service
 public class JobService {
