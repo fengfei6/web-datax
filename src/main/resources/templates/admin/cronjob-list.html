@@ -1,38 +1,32 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-	<title>Home</title>
+	<title>Job List</title>
     
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
+	
     <!-- bootstrap -->
     <link th:href="@{/css/bootstrap/bootstrap.css}" rel="stylesheet" />
     <link th:href="@{/css/bootstrap/bootstrap-responsive.css}" rel="stylesheet" />
     <link th:href="@{/css/bootstrap/bootstrap-overrides.css}" type="text/css" rel="stylesheet" />
 
-    <!-- libraries -->
-    <link th:href="@{/css/lib/jquery-ui-1.10.2.custom.css}" rel="stylesheet" type="text/css" />
-    <link th:href="@{/css/lib/font-awesome.css}" type="text/css" rel="stylesheet" />
-
-
     <!-- global styles -->
     <link rel="stylesheet" type="text/css" th:href="@{/css/layout.css}" />
     <link rel="stylesheet" type="text/css" th:href="@{/css/elements.css}" />
     <link rel="stylesheet" type="text/css" th:href="@{/css/icons.css}" />
+
+    <!-- libraries -->
+    <link th:href="@{/css/lib/font-awesome.css}" type="text/css" rel="stylesheet" />
+    
     <!-- this page specific styles -->
-    <link rel="stylesheet" th:href="@{/css/compiled/index.css}" type="text/css" media="screen" />
+    <link rel="stylesheet" th:href="@{/css/compiled/tables.css}" type="text/css" media="screen" />
 
     <!-- open sans font -->
     <link href='http://fonts.useso.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css' />
 
-    <!-- lato font -->
-    <link href='http://fonts.useso.com/css?family=Lato:300,400,700,900,300italic,400italic,700italic,900italic' rel='stylesheet' type='text/css' />
-
     <!--[if lt IE 9]>
       <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
-
-
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" /></head>
 <body>
 
@@ -136,7 +130,8 @@
                     </div>
                 </li>
                 <li class="dropdown">
-                    <a href="#" class="dropdown-toggle hidden-phone" data-toggle="dropdown" th:text="${session.name} ? ${session.name}:'未登录'">
+                    <a href="#" class="dropdown-toggle hidden-phone" data-toggle="dropdown" th:text="${name} ? ${name}:'未登录'">
+                        Your account
                         <b class="caret"></b>
                     </a>
                     <ul class="dropdown-menu">
@@ -162,7 +157,7 @@
     </div>
     <!-- end navbar -->
 
-    <!-- sidebar -->
+        <!-- sidebar -->
     <div id="sidebar-nav">
         <ul id="dashboard-menu">
             <li class="active">
@@ -197,21 +192,13 @@
                     
                     <li><a href="/admin/job-file">文件上传</a></li>
                     <li><a href="/job/prepare">表格信息</a></li>
-                    <li><a href="/job/jobList">同步任务管理</a></li>
                 </ul>
             </li>
             <li>
-                <a class="dropdown-toggle">
-                    <i class="icon-edit"></i>
-                    <span>新增调度任务</span>
-                    <i class="icon-chevron-down"></i>
+                <a href="/job/jobList">
+                    <i class="icon-picture"></i>
+                    <span>同步任务管理</span>
                 </a>
-                <ul class="submenu">
-
-                    <li><a href="/admin/cronjob-file">文件上传</a></li>
-                    <li><a href="/cron/prepare">表格信息</a></li>
-                    <li><a href="/cron/cronjobList">调度任务管理</a></li>
-                </ul>
             </li>
             <li>
                 <a class="dropdown-toggle">
@@ -227,67 +214,141 @@
         </ul>
     </div>
     <!-- end sidebar -->
-
-
 	<!-- main container -->
     <div class="content">
-
+        
+        <!-- settings changer -->
+        <div class="skins-nav">
+            <a href="#" class="skin first_nav selected">
+                <span class="icon"></span><span class="text">Default</span>
+            </a>
+            <a href="#" class="skin second_nav" data-file="css/skins/dark.css">
+                <span class="icon"></span><span class="text">Dark skin</span>
+            </a>
+        </div>
+        
         <div class="container-fluid">
+            <div id="pad-wrapper">
 
-            <!-- upper main stats -->
-            <div id="main-stats">
-                <div class="row-fluid stats-row">
-                    <div class="span3 stat">
-                        <div class="data">
-                            <span class="number">2457</span>
-                            visits
+                <!-- products table-->
+                <!-- the script for the toggle all checkboxes from header is located in js/theme.js -->
+                <div class="table-wrapper products-table section">
+                    <div class="row-fluid head">
+                        <div class="span12">
+                            <h4>Job</h4>
                         </div>
-                        <span class="date">Today</span>
                     </div>
-                    <div class="span3 stat">
-                        <div class="data">
-                            <span class="number">3240</span>
-                            users
+
+                    <div class="row-fluid filter-block">
+                        <div class="pull-right">
+                            <div class="ui-select">
+                                <select>
+                                  <option />Filter users
+                                  <option />Signed last 30 days
+                                  <option />Active users
+                                </select>
+                            </div>
+                            <input type="text" class="search" />
+                            <a class="btn-flat success new-product" th:href="@{/job/prepare}">+ Add Job</a>
                         </div>
-                        <span class="date">February 2014</span>
                     </div>
-                    <div class="span3 stat">
-                        <div class="data">
-                            <span class="number">322</span>
-                            orders
-                        </div>
-                        <span class="date">This week</span>
-                    </div>
-                    <div class="span3 stat last">
-                        <div class="data">
-                            <span class="number">$2,340</span>
-                            sales
-                        </div>
-                        <span class="date">last 30 days</span>
+                    <div class="row-fluid">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th class="span3">
+                                       Job
+                                    </th>
+                                    <th class="span3">
+                                        <span class="line"></span>Name
+                                    </th>
+                                    <th class="span3">
+                                        <span class="line"></span>Description
+                                    </th> 
+                                    <th class="span3">
+                                        <span class="line"></span>Source Table
+                                    </th>
+                                    <th class="span3">
+                                        <span class="line"></span>Target Table
+                                    </th>
+                                    <th class="span3">
+                                        <span class="line"></span>CreateTime
+                                    </th>
+                                    <th class="span3">
+                                        <span class="line"></span>Is Running
+                                    </th>
+                                    <th class="span3">
+                                        <span class="line"></span>Operate
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- row -->
+                        
+                                <tr class="first" th:each="job:${model.joblist}">
+                                    <td>
+                                   		 <div class="img">
+                                            <img th:src="@{/img/logo.jpg}" />
+                                        </div>
+                                        <a id="jobId" href="#" th:value="${job.id}" th:text="${job.id}?${job.id}:''"></a>
+                                    </td>
+                                    <td class="description" th:text="${job.name}?${job.name}:''">
+                                    </td>
+                                    <td class="description" th:text="${job.description}?${job.description}:''">
+                                    </td>
+                                    <td class="description" th:text="${job.readerTable}? ${job.readerTable}:''">
+                                    </td>
+                                    <td class="description" th:text="${job.writerTable}? ${job.writerTable}:''">
+                                    </td>
+                                    <td class="description" th:text="${job.createTime}? ${job.createTime}:''">
+                                    </td>
+                                    <td class="description" th:text="${job.isRunning}==1? 'start':'stop'">
+                                    </td>
+                                    <td class="description">
+                                        <ul class="action">
+                                       
+                                            <li><a th:href="@{'/cron/status/'+${job.id}}" th:text="${job.isRunning}==1? 'stop':'start'"></a></li>
+                                         
+                                            <li class="last"><a th:href="@{'/joblog/joblogs/'+${job.id}}">Log</a></li>
+                                            <li class="last"><a th:href="@{'/cron/delete/'+${job.id}}">Delete</a></li>
+                                        </ul>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
-            </div>
-            <!-- end upper main stats -->
-
-            <div id="pad-wrapper">
-               <img th:src="@{/img/show.jpg}" alt="步骤" class="display" style="width: 80%;height: 60%"/>
+                <!-- end products table -->
             </div>
         </div>
     </div>
-
+    <!-- end main container -->
 
 	<!-- scripts -->
     <script th:src="@{/js/jquery-latest.js}"></script>
     <script th:src="@{/js/bootstrap.min.js}"></script>
-    <script th:src="@{/js/jquery-ui-1.10.2.custom.min.js}"></script>
-    <!-- knob -->
-    <script th:src="@{/js/jquery.knob.js}"></script>
-    <!-- flot charts -->
-    <script th:src="@{/js/jquery.flot.js}"></script>
-    <script th:src="@{/js/jquery.flot.stack.js}"></script>
-    <script th:src="@{/js/jquery.flot.resize.js}"></script>
     <script th:src="@{/js/theme.js}"></script>
+    <script th:inline="javascript">
+        $(document).ready(function(){
+            $("#exec").click(function(){
+                var t = $("#jobId").attr("value");
+                if(t ==''){
+                    return;
+                }
 
+                $.ajax({
+                    url:"/job/execJob",
+                    async:true,
+                    type:'post',
+                    data:{id:t},
+                    success:function(data){
+                        alert(data[0]);
+                    }
+                })
+            });
+        })
 
+	</script>
+  
 </body>
 </html>
