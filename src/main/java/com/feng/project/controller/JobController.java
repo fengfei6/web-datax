@@ -80,18 +80,7 @@ public class JobController {
         model.addAttribute("jobLog",result);
         return new ModelAndView("admin/job-log","model",model);
     }
-    
-    public ModelAndView getJobLog(Model model,String name) throws IOException{
-    	FileReader fr = new FileReader("src/main/resources/static/log/"+name+".log"); 
-    	StringBuilder sb = new StringBuilder();
-    	int ch = 0;  
-    	while((ch = fr.read())!=-1 ){   
-    		sb.append((char)ch);   
-    	} 
-        model.addAttribute("jobLog",sb.toString());
-        return new ModelAndView("admin/job-log","model",model);
-    }
-    
+
     @RequestMapping("/job/addFileJob")
     public ModelAndView addFileJob(Job job, Model model){
         Map<String,String> map = JsonUtil.testComplexJSONStrToJSONObject(job.getJsonContent());

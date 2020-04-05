@@ -1,10 +1,13 @@
 package com.feng.project.controller;
 
+import ch.ethz.ssh2.Connection;
 import com.feng.project.domain.CronJob;
 import com.feng.project.domain.Datasource;
 import com.feng.project.service.CronJobService;
 import com.feng.project.service.DatasourceService;
 import com.feng.project.service.XxlJobService;
+import com.feng.project.util.DataxUtil;
+import com.feng.project.util.JobUtil;
 import com.feng.project.util.JsonUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -14,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.io.IOException;
 import java.util.Map;
 
 @Controller
@@ -26,11 +30,12 @@ public class CronJobController {
     @Autowired
     private DatasourceService datasourceService;
     @RequestMapping("/cron/add")
-    public ModelAndView save(CronJob cronJob, Model model){
+    public ModelAndView save(CronJob cronJob, Model model) throws IOException {
         String taskId = xxlJobService.submitCronJob(cronJob);
         cronJob.setTaskId(Integer.parseInt(taskId));
         cronJob.setIsRunning(0);
         cronJobService.save(cronJob);
+        JobUtil.getJsonfileForCronJob(datasourceService.getDatasource(cronJob.getReaderDbId()),datasourceService.getDatasource(cronJob.getWriterDbId()),cronJob);
         model.addAttribute("joblist",cronJobService.finAll());
         return new ModelAndView("admin/cronjob-list","model",model);
     }
@@ -76,9 +81,11 @@ public class CronJobController {
     }
 
     @RequestMapping("/cron/status/{id}")
-    public ModelAndView changeStatus(@PathVariable Integer id,Model model){
+    public ModelAndView changeStatus(@PathVariable Integer id,Model model) throws IOException {
         CronJob cronJob = cronJobService.getOne(id);
         if(cronJob.getIsRunning() == 0){
+            Connection conn = DataxUtil.login("192.144.129.188", "root", "FFei916#");
+            DataxUtil.transferFile(conn, "src/main/resources/static/file/"+cronJob.getName()+".json", "/root/datax/job");
             xxlJobService.onScheduling(cronJob);
             cronJob.setIsRunning(1);
             cronJobService.update(cronJob);

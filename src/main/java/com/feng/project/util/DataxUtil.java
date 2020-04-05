@@ -98,7 +98,7 @@ public class DataxUtil {
                 System.out.println(line);
             }
             br.close();
-            writeLog(buffer.toString(),name);
+            //writeLog(buffer.toString(),name);
         } catch (UnsupportedEncodingException e) {
             System.out.println("解析脚本出错：" + e.getMessage());
             e.printStackTrace();
