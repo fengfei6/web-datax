@@ -37,4 +37,8 @@ public class CronJobService {
     }
 
     public CronJob findJobByName(String name){ return cronJobRepository.findCronJobByName(name);}
+
+    public List<CronJob> findJobsByName(String name){return cronJobRepository.findCronJobsByName(name);}
+
+    public List<CronJob> findJobsByNameAndIsRunning(String name,Integer isRunning){return cronJobRepository.findCronJobsByNameAndIsRunning(name,isRunning);}
 }

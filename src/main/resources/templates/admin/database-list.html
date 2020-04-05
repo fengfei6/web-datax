@@ -247,17 +247,24 @@
                     </div>
 
                     <div class="row-fluid filter-block">
+                        <form action="/datasource/search" method="post">
                         <div class="pull-right">
+
                             <div class="ui-select">
-                                <select>
-                                  <option />Filter users
-                                  <option />Signed last 30 days
-                                  <option />Active users
+                                <select name="type">
+                                    <option value="MYSQL"/>MYSQL
+                                    <option value="ORACLE"/>ORACLE
+                                    <option value="ALL"/>ALL
                                 </select>
                             </div>
-                            <input type="text" class="search" />
+                            <input type="text" class="search" name="name"/>
+                             <div class="ui-dropdown" data-toggle="tooltip" title="Click me!">
+                                 <input type="submit" class="btn-flat" value="search">
+                             </div>
+
                             <a class="btn-flat success new-product" th:href="@{/admin/new-database}">+ Add Datasource</a>
                         </div>
+                        </form>
                     </div>
 
                     <div class="row-fluid">

@@ -38,4 +38,6 @@ public class JobService {
     }
 
     public Job findJobByName(String name){ return jobRepository.findJobByName(name);}
+
+    public List<Job> findJobsByName(String name){ return jobRepository.findJobsByName(name);}
 }

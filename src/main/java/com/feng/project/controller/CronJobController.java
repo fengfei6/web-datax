@@ -100,4 +100,14 @@ public class CronJobController {
             return "";
         }
     }
+
+    @RequestMapping("/cron/search")
+    public ModelAndView search(String name,String isRunning,Model model){
+        if(isRunning.equalsIgnoreCase("all")){
+            model.addAttribute("joblist",cronJobService.findJobsByName(name));
+        }else {
+            model.addAttribute("joblist", cronJobService.findJobsByNameAndIsRunning(name,Integer.parseInt(isRunning)));
+        }
+        return new ModelAndView("admin/cronjob-list","model",model);
+    }
 }

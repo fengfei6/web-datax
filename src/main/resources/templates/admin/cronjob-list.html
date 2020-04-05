@@ -247,17 +247,22 @@
                     </div>
 
                     <div class="row-fluid filter-block">
+                        <form action="/cron/search" method="post">
                         <div class="pull-right">
                             <div class="ui-select">
-                                <select>
-                                  <option />Filter users
-                                  <option />Signed last 30 days
-                                  <option />Active users
+                                <select name="isRunning">
+                                  <option value="all"/>ALL
+                                  <option value="0"/>Stop
+                                  <option value="1"/>Start
                                 </select>
                             </div>
-                            <input type="text" class="search" />
+                            <input type="text" class="search" name="name"/>
+                            <div class="ui-dropdown" data-toggle="tooltip" title="Click me!">
+                                <input type="submit" class="btn-flat" value="search">
+                            </div>
                             <a class="btn-flat success new-product" th:href="@{/job/prepare}">+ Add Job</a>
                         </div>
+                        </form>
                     </div>
                     <div class="row-fluid">
                         <table class="table table-hover">

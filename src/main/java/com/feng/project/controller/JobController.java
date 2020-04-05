@@ -124,4 +124,10 @@ public class JobController {
             return "";
         }
     }
+
+    @RequestMapping("/job/search")
+    public ModelAndView search(String name,Model model){
+        model.addAttribute("joblist",jobService.findJobsByName(name));
+        return new ModelAndView("admin/job-list","model",model);
+    }
 }

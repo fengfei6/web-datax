@@ -248,6 +248,7 @@
                     </div>
 
                     <div class="row-fluid filter-block">
+                        <form action="/job/search" method="post">
                         <div class="pull-right">
                             <div class="ui-select">
                                 <select>
@@ -256,9 +257,13 @@
                                   <option />Active users
                                 </select>
                             </div>
-                            <input type="text" class="search" />
+                            <input type="text" class="search" name="name"/>
+                            <div class="ui-dropdown" data-toggle="tooltip" title="Click me!">
+                                <input type="submit" class="btn-flat" value="search">
+                            </div>
                             <a class="btn-flat success new-product" th:href="@{/job/prepare}">+ Add Job</a>
                         </div>
+                        </form>
                     </div>
                     <div class="row-fluid">
                         <table class="table table-hover">

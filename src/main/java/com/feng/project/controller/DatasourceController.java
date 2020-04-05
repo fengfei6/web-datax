@@ -2,6 +2,7 @@ package com.feng.project.controller;
 
 import java.sql.Connection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -207,5 +208,15 @@ public class DatasourceController {
         }else{
             return "";
         }
+    }
+
+    @RequestMapping("/datasource/search")
+    public ModelAndView search(String name,String type,Model model){
+        if(type.equalsIgnoreCase("all")){
+            model.addAttribute("datalist",datasourceService.findDatasourcesByName(name));
+        }else {
+            model.addAttribute("datalist",datasourceService.findDatasourcesByTypeAndName(type, name));
+        }
+        return new ModelAndView("admin/database-list","model",model);
     }
 }
