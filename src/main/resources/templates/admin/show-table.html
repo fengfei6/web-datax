@@ -248,17 +248,12 @@
                     </div>
 
                     <div class="row-fluid filter-block">
+
                         <div class="pull-right">
-                            <div class="ui-select">
-                                <select>
-                                  <option />Filter users
-                                  <option />Signed last 30 days
-                                  <option />Active users
-                                </select>
-                            </div>
-                            <input type="text" class="search" />
+                            <a class="btn-flat success new-product" th:onclick="go()">Go Back</a>
                             <a class="btn-flat success new-product" th:href="@{/datasource/copyTableForm}">copy table</a>
                         </div>
+
                     </div>
 
                     <div class="row-fluid">
@@ -308,7 +303,9 @@
     <script th:src="@{/js/bootstrap.min.js}"></script>
     <script th:src="@{/js/theme.js}"></script>
    <script th:inline="javascript" >
-
+       function go(){
+           window.history.back();
+       }
 	</script>
 </body>
 </html>

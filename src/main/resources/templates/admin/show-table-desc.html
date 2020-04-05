@@ -249,16 +249,8 @@
 
                     <div class="row-fluid filter-block">
                         <div class="pull-right">
-                            <div class="ui-select">
-                                <select>
-                                  <option />Filter users
-                                  <option />Signed last 30 days
-                                  <option />Active users
-                                </select>
-                            </div>
-                            <input type="text" class="search" />
                             <a class="btn-flat success new-product" th:onclick="go()">Go Back</a>
-                            <a class="btn-flat success new-product" href="new-user.html">复制表</a>
+                            <a class="btn-flat success new-product" th:href="@{/datasource/copyTableForm}">copy table</a>
                         </div>
                     </div>
 
