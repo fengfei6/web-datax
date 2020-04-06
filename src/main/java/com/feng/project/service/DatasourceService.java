@@ -51,4 +51,17 @@ public class DatasourceService {
     public List<Datasource> findDatasourcesByName(String name){
         return datasourceRepository.findDatasourcesByName(name);
     }
+
+    public List<Datasource> findDatasourcesByTypeAndNameAndUserId(String type,String name,Integer userId){
+        return datasourceRepository.findDatasourcesByNameAndTypeAndUserId(type,name,userId);
+    }
+
+    public List<Datasource> findDatasourcesByNameAndUserId(String name,Integer userId){
+        return datasourceRepository.findDatasourcesByNameAndUserId(name,userId);
+    }
+
+
+    public List<Datasource> findDatasourcesByUserId(Integer userId){
+        return datasourceRepository.findDatasourcesByUserId(userId);
+    }
 }

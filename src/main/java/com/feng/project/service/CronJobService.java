@@ -41,4 +41,10 @@ public class CronJobService {
     public List<CronJob> findJobsByName(String name){return cronJobRepository.findCronJobsByName(name);}
 
     public List<CronJob> findJobsByNameAndIsRunning(String name,Integer isRunning){return cronJobRepository.findCronJobsByNameAndIsRunning(name,isRunning);}
+
+    public List<CronJob> findJobsByUserId(Integer userId){return cronJobRepository.findCronJobsByUserId(userId);}
+
+    public List<CronJob> findJobsByNameAndUserId(String name,Integer userId){return cronJobRepository.findCronJobsByNameAndUserId(name,userId);}
+
+    public List<CronJob> findJobsByNameAndIsRunningAndUserId(String name,Integer isRunning,Integer userId){return cronJobRepository.findCronJobsByNameAndIsRunningAndUserId(name,isRunning,userId);}
 }

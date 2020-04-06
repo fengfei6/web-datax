@@ -40,4 +40,8 @@ public class JobService {
     public Job findJobByName(String name){ return jobRepository.findJobByName(name);}
 
     public List<Job> findJobsByName(String name){ return jobRepository.findJobsByName(name);}
+
+    public List<Job> findJobsByNameAndUserId(String name,Integer userId){return jobRepository.findJobsByNameAndUserId(name,userId);}
+
+    public List<Job> findJobsByUserId(Integer userId){return jobRepository.findJobsByUserId(userId);}
 }

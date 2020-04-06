@@ -2,12 +2,16 @@ package com.feng.project.controller;
 
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import com.feng.project.domain.Datasource;
+import com.feng.project.domain.User;
 import com.feng.project.service.JobService;
 import com.feng.project.util.JsonUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,16 +42,23 @@ public class JobController {
     private JobLogService jobLogService;
     
     @RequestMapping("/job/prepare")
-    public ModelAndView findAllDatasource(Model model){
-        model.addAttribute("datalist",datasourceService.findAll());
+    public ModelAndView findAllDatasource(Model model,HttpSession session){
+        User user = (User)session.getAttribute("user");
+        List<Job> list = new ArrayList<>();
+        if(user.getRole().equalsIgnoreCase("admin")) {
+            list = jobService.findAll();
+        }else if(user.getRole().equalsIgnoreCase("user")){
+            list = jobService.findJobsByUserId(user.getId());
+        }
+        model.addAttribute("joblist",list);
         return new ModelAndView("admin/new-job","model",model);
     }
 
     @PostMapping("/job/saveJob")
-    public ModelAndView saveOrUpdate(Job job, HttpServletRequest request, Model model){
-        //User user = (User)request.getSession().getAttribute("user");
+    public ModelAndView saveOrUpdate(Job job, HttpSession session, Model model){
+        User user = (User)session.getAttribute("user");
         if(job.getId()==null) {
-            //job.setUserId(user.getId());
+            job.setUserId(user.getId());
             jobService.save(job);
         }else {
             jobService.save(job);
@@ -57,8 +68,15 @@ public class JobController {
     }
 
     @RequestMapping("/job/jobList")
-    public ModelAndView findAllJob(Model model){
-        model.addAttribute("joblist",jobService.findAll());
+    public ModelAndView findAllJob(Model model,HttpSession session){
+        User user = (User)session.getAttribute("user");
+        List<Job> list = new ArrayList<>();
+        if(user.getRole().equalsIgnoreCase("admin")) {
+            list = jobService.findAll();
+        }else if(user.getRole().equalsIgnoreCase("user")){
+            list = jobService.findJobsByUserId(user.getId());
+        }
+        model.addAttribute("joblist",list);
         return new ModelAndView("admin/job-list","model",model);
     }
 
@@ -82,7 +100,7 @@ public class JobController {
     }
 
     @RequestMapping("/job/addFileJob")
-    public ModelAndView addFileJob(Job job, Model model){
+    public ModelAndView addFileJob(Job job, Model model,HttpSession session){
         Map<String,String> map = JsonUtil.testComplexJSONStrToJSONObject(job.getJsonContent());
         job.setReaderTable(map.get("tabler"));
         job.setWriterTable(map.get("tablew"));
@@ -92,15 +110,30 @@ public class JobController {
         params = JsonUtil.getParamsArray(map.get("writer"));
         datasource = datasourceService.findDatasourceByDbnameAndIpAndPort(params[0],params[1],params[2]);
         job.setWriterDbId(datasource.getId());
+        User user = (User)session.getAttribute("user");
+        job.setUserId(user.getId());
         jobService.save(job);
-        model.addAttribute("joblist",jobService.findAll());
+        List<Job> list = new ArrayList<>();
+        if(user.getRole().equalsIgnoreCase("admin")) {
+            list = jobService.findAll();
+        }else if(user.getRole().equalsIgnoreCase("user")){
+            list = jobService.findJobsByUserId(user.getId());
+        }
+        model.addAttribute("joblist",list);
         return new ModelAndView("admin/job-list","model",model);
     }
 
     @RequestMapping("/job/delete/{id}")
-    public ModelAndView deleteJob(@PathVariable Integer id, Model model){
+    public ModelAndView deleteJob(@PathVariable Integer id, Model model,HttpSession session){
         jobService.delete(id);
-        model.addAttribute("joblist",jobService.findAll());
+        User user = (User)session.getAttribute("user");
+        List<Job> list = new ArrayList<>();
+        if(user.getRole().equalsIgnoreCase("admin")) {
+            list = jobService.findAll();
+        }else if(user.getRole().equalsIgnoreCase("user")){
+            list = jobService.findJobsByUserId(user.getId());
+        }
+        model.addAttribute("joblist",list);
         return new ModelAndView("admin/job-list","model",model);
     }
 
@@ -115,8 +148,15 @@ public class JobController {
     }
 
     @RequestMapping("/job/search")
-    public ModelAndView search(String name,Model model){
-        model.addAttribute("joblist",jobService.findJobsByName(name));
+    public ModelAndView search(String name,Model model,HttpSession session){
+        User user = (User)session.getAttribute("user");
+        List<Job> list = new ArrayList<>();
+        if(user.getRole().equalsIgnoreCase("admin")) {
+            list = jobService.findJobsByName(name);
+        }else if(user.getRole().equalsIgnoreCase("user")){
+            list = jobService.findJobsByNameAndUserId(name,user.getId());
+        }
+        model.addAttribute("joblist",list);
         return new ModelAndView("admin/job-list","model",model);
     }
 }

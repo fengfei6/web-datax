@@ -3,6 +3,7 @@ package com.feng.project.controller;
 import ch.ethz.ssh2.Connection;
 import com.feng.project.domain.CronJob;
 import com.feng.project.domain.Datasource;
+import com.feng.project.domain.User;
 import com.feng.project.service.CronJobService;
 import com.feng.project.service.DatasourceService;
 import com.feng.project.service.XxlJobService;
@@ -17,7 +18,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 @Controller
@@ -30,13 +34,21 @@ public class CronJobController {
     @Autowired
     private DatasourceService datasourceService;
     @RequestMapping("/cron/add")
-    public ModelAndView save(CronJob cronJob, Model model) throws IOException {
+    public ModelAndView save(CronJob cronJob, Model model, HttpSession session) throws IOException {
+        User user = (User) session.getAttribute("user");
+        cronJob.setUserId(user.getId());
         String taskId = xxlJobService.submitCronJob(cronJob);
         cronJob.setTaskId(Integer.parseInt(taskId));
         cronJob.setIsRunning(0);
         cronJobService.save(cronJob);
         JobUtil.getJsonfileForCronJob(datasourceService.getDatasource(cronJob.getReaderDbId()),datasourceService.getDatasource(cronJob.getWriterDbId()),cronJob);
-        model.addAttribute("joblist",cronJobService.finAll());
+        List<CronJob> list = new ArrayList<>();
+        if(user.getRole().equalsIgnoreCase("admin")) {
+            list = cronJobService.finAll();
+        }else if(user.getRole().equalsIgnoreCase("user")){
+            list = cronJobService.findJobsByUserId(user.getId());
+        }
+        model.addAttribute("joblist",list);
         return new ModelAndView("admin/cronjob-list","model",model);
     }
 
@@ -47,22 +59,36 @@ public class CronJobController {
     }
 
     @RequestMapping("/cron/delete/{id}")
-    public ModelAndView delete(@PathVariable Integer id, Model model){
+    public ModelAndView delete(@PathVariable Integer id, Model model,HttpSession session){
         CronJob cronJob = cronJobService.getOne(id);
         cronJobService.delete(cronJob);
         xxlJobService.delete(cronJob.getTaskId());
-        model.addAttribute("joblist",cronJobService.finAll());
+        User user = (User) session.getAttribute("user");
+        List<CronJob> list = new ArrayList<>();
+        if(user.getRole().equalsIgnoreCase("admin")) {
+            list = cronJobService.finAll();
+        }else if(user.getRole().equalsIgnoreCase("user")){
+            list = cronJobService.findJobsByUserId(user.getId());
+        }
+        model.addAttribute("joblist",list);
         return new ModelAndView("admin/cronjob-list","model",model);
     }
 
     @RequestMapping("/cron/cronjobList")
-    public ModelAndView finAll(Model model){
-        model.addAttribute("joblist",cronJobService.finAll());
+    public ModelAndView finAll(Model model,HttpSession session){
+        User user = (User)session.getAttribute("user");
+        List<CronJob> list = new ArrayList<>();
+        if(user.getRole().equalsIgnoreCase("admin")) {
+            list = cronJobService.finAll();
+        }else if(user.getRole().equalsIgnoreCase("user")){
+            list = cronJobService.findJobsByUserId(user.getId());
+        }
+        model.addAttribute("joblist",list);
         return new ModelAndView("admin/cronjob-list","model",model);
     }
 
     @RequestMapping("/cron/addFileJob")
-    public ModelAndView addFileJob(CronJob cronJob, Model model){
+    public ModelAndView addFileJob(CronJob cronJob, Model model,HttpSession session){
         Map<String,String> map = JsonUtil.testComplexJSONStrToJSONObject(cronJob.getJsonContent());
         cronJob.setReaderTable(map.get("tabler"));
         cronJob.setWriterTable(map.get("tablew"));
@@ -75,13 +101,21 @@ public class CronJobController {
         String taskId = xxlJobService.submitCronJob(cronJob);
         cronJob.setTaskId(Integer.parseInt(taskId));
         cronJob.setIsRunning(0);
+        User user = (User)session.getAttribute("user");
+        cronJob.setUserId(user.getId());
         cronJobService.save(cronJob);
-        model.addAttribute("joblist",cronJobService.finAll());
+        List<CronJob> list = new ArrayList<>();
+        if(user.getRole().equalsIgnoreCase("admin")) {
+            list = cronJobService.finAll();
+        }else if(user.getRole().equalsIgnoreCase("user")){
+            list = cronJobService.findJobsByUserId(user.getId());
+        }
+        model.addAttribute("joblist",list);
         return new ModelAndView("admin/cronjob-list","model",model);
     }
 
     @RequestMapping("/cron/status/{id}")
-    public ModelAndView changeStatus(@PathVariable Integer id,Model model) throws IOException {
+    public ModelAndView changeStatus(@PathVariable Integer id,Model model,HttpSession session) throws IOException {
         CronJob cronJob = cronJobService.getOne(id);
         if(cronJob.getIsRunning() == 0){
             Connection conn = DataxUtil.login("192.144.129.188", "root", "FFei916#");
@@ -94,7 +128,14 @@ public class CronJobController {
             cronJob.setIsRunning(0);
             cronJobService.update(cronJob);
         }
-        model.addAttribute("joblist",cronJobService.finAll());
+        User user = (User) session.getAttribute("user");
+        List<CronJob> list = new ArrayList<>();
+        if(user.getRole().equalsIgnoreCase("admin")) {
+            list = cronJobService.finAll();
+        }else if(user.getRole().equalsIgnoreCase("user")){
+            list = cronJobService.findJobsByUserId(user.getId());
+        }
+        model.addAttribute("joblist",list);
         return new ModelAndView("admin/cronjob-list","model",model);
     }
 
@@ -109,12 +150,23 @@ public class CronJobController {
     }
 
     @RequestMapping("/cron/search")
-    public ModelAndView search(String name,String isRunning,Model model){
+    public ModelAndView search(String name,String isRunning,Model model,HttpSession session){
+        User user = (User) session.getAttribute("user");
+        List<CronJob> list = new ArrayList<>();
         if(isRunning.equalsIgnoreCase("all")){
-            model.addAttribute("joblist",cronJobService.findJobsByName(name));
+            if(user.getRole().equalsIgnoreCase("admin")) {
+               list = cronJobService.findJobsByName(name);
+            }else if(user.getRole().equalsIgnoreCase("user")){
+                list = cronJobService.findJobsByNameAndUserId(name,user.getId());
+            }
         }else {
-            model.addAttribute("joblist", cronJobService.findJobsByNameAndIsRunning(name,Integer.parseInt(isRunning)));
+            if(user.getRole().equalsIgnoreCase("admin")) {
+                list = cronJobService.findJobsByNameAndIsRunning(name,Integer.parseInt(isRunning));
+            }else if(user.getRole().equalsIgnoreCase("user")){
+                list = cronJobService.findJobsByNameAndIsRunningAndUserId(name,Integer.parseInt(isRunning),user.getId());
+            }
         }
+        model.addAttribute("joblist",list);
         return new ModelAndView("admin/cronjob-list","model",model);
     }
 }

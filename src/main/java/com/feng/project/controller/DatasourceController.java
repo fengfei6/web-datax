@@ -1,6 +1,7 @@
 package com.feng.project.controller;
 
 import java.sql.Connection;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -36,18 +37,31 @@ public class DatasourceController {
         }else {
             datasourceService.update(datasource);
         }
-        model.addAttribute("datalist",datasourceService.findAll());
+        List<Datasource> list = new ArrayList<>();
+        if(user.getRole().equalsIgnoreCase("admin")) {
+            list = datasourceService.findAll();
+        }else if(user.getRole().equalsIgnoreCase("user")){
+            list = datasourceService.findDatasourcesByUserId(user.getId());
+        }
+        model.addAttribute("datalist", list);
         return new ModelAndView("admin/database-list","model",model);
     }
 
     @RequestMapping("/datasource/list")
-    public ModelAndView findAll(Model model){
-    	model.addAttribute("datalist",datasourceService.findAll());
+    public ModelAndView findAll(Model model,HttpSession session){
+        User user = (User)session.getAttribute("user");
+        List<Datasource> list = new ArrayList<>();
+        if(user.getRole().equalsIgnoreCase("admin")) {
+            list = datasourceService.findAll();
+        }else if(user.getRole().equalsIgnoreCase("user")){
+            list = datasourceService.findDatasourcesByUserId(user.getId());
+        }
+        model.addAttribute("datalist", list);
         return new ModelAndView("admin/database-list","model",model);
     }
 
     @RequestMapping("/datasource/testConn/{id}")
-    public ModelAndView testConn(HttpServletRequest request, HttpServletResponse response, @PathVariable String id,Model model){
+    public ModelAndView testConn(@PathVariable String id,Model model,HttpSession session){
         Datasource datasource = datasourceService.getDatasource(Integer.parseInt(id));
         boolean flag = false;
         if(datasource.getType().equalsIgnoreCase("mysql")){
@@ -61,7 +75,14 @@ public class DatasourceController {
         	datasource.setIsConnection("0");
         }
         datasourceService.update(datasource);
-        model.addAttribute("datalist", datasourceService.findAll());
+        User user = (User)session.getAttribute("user");
+        List<Datasource> list = new ArrayList<>();
+        if(user.getRole().equalsIgnoreCase("admin")) {
+            list = datasourceService.findAll();
+        }else if(user.getRole().equalsIgnoreCase("user")){
+            list = datasourceService.findDatasourcesByUserId(user.getId());
+        }
+        model.addAttribute("datalist", list);
         model.addAttribute("conn_flag", flag);
         return new ModelAndView("admin/database-list","model",model);
     }
@@ -73,9 +94,16 @@ public class DatasourceController {
     }
     
     @RequestMapping("/datasource/delete/{id}")
-    public ModelAndView deleteDatesource(@PathVariable Integer id,Model model) {
+    public ModelAndView deleteDatesource(@PathVariable Integer id,Model model,HttpSession session) {
         datasourceService.delete(id);
-    	model.addAttribute("datalist", datasourceService.findAll());
+        User user = (User)session.getAttribute("user");
+        List<Datasource> list = new ArrayList<>();
+        if(user.getRole().equalsIgnoreCase("admin")) {
+            list = datasourceService.findAll();
+        }else if(user.getRole().equalsIgnoreCase("user")){
+            list = datasourceService.findDatasourcesByUserId(user.getId());
+        }
+        model.addAttribute("datalist", list);
     	return new ModelAndView("admin/database-list","model",model);
     }
     
@@ -137,8 +165,15 @@ public class DatasourceController {
     }
     
     @RequestMapping("/datasource/copyTableForm")
-    public ModelAndView copyTableForm(Model model) {
-    	model.addAttribute("datalist",datasourceService.findAll());
+    public ModelAndView copyTableForm(Model model,HttpSession session) {
+        User user = (User)session.getAttribute("user");
+        List<Datasource> list = new ArrayList<>();
+        if(user.getRole().equalsIgnoreCase("admin")) {
+            list = datasourceService.findAll();
+        }else if(user.getRole().equalsIgnoreCase("user")){
+            list = datasourceService.findDatasourcesByUserId(user.getId());
+        }
+        model.addAttribute("datalist", list);
         return new ModelAndView("admin/copy-table","model",model);
     }
     
@@ -175,7 +210,7 @@ public class DatasourceController {
     }
     
     @RequestMapping("/datasource/copyTable")
-    public ModelAndView copyTable(Model model,String sdatasource,String sname,String ddatasource,String dname) {
+    public ModelAndView copyTable(Model model,String sdatasource,String sname,String ddatasource,String dname,HttpSession session) {
     	Datasource datasources = datasourceService.findDatasourceByName(sdatasource);
     	Datasource datasourced = datasourceService.findDatasourceByName(ddatasource);
         Connection conn = null;
@@ -201,7 +236,14 @@ public class DatasourceController {
             conn = OracleUtil.getConn(datasourced);
             OracleUtil.executeSQL(conn,createsql);
         }
-    	model.addAttribute("datalist",datasourceService.findAll());
+        User user = (User)session.getAttribute("user");
+        List<Datasource> list = new ArrayList<>();
+        if(user.getRole().equalsIgnoreCase("admin")) {
+            list = datasourceService.findAll();
+        }else if(user.getRole().equalsIgnoreCase("user")){
+            list = datasourceService.findDatasourcesByUserId(user.getId());
+        }
+        model.addAttribute("datalist", list);
     	return new ModelAndView("admin/database-list","model",model);
     }
 
@@ -216,12 +258,23 @@ public class DatasourceController {
     }
 
     @RequestMapping("/datasource/search")
-    public ModelAndView search(String name,String type,Model model){
+    public ModelAndView search(String name,String type,Model model,HttpSession session){
+        User user = (User)session.getAttribute("user");
+        List<Datasource> list = new ArrayList<>();
         if(type.equalsIgnoreCase("all")){
-            model.addAttribute("datalist",datasourceService.findDatasourcesByName(name));
+            if(user.getRole().equalsIgnoreCase("admin")) {
+                list = datasourceService.findDatasourcesByName(name);
+            }else if(user.getRole().equalsIgnoreCase("user")){
+                list = datasourceService.findDatasourcesByNameAndUserId(name,user.getId());
+            }
         }else {
-            model.addAttribute("datalist",datasourceService.findDatasourcesByTypeAndName(type, name));
+            if(user.getRole().equalsIgnoreCase("admin")) {
+                list = datasourceService.findDatasourcesByTypeAndName(type, name);
+            }else if(user.getRole().equalsIgnoreCase("user")){
+                list = datasourceService.findDatasourcesByTypeAndNameAndUserId(type,name,user.getId());
+            }
         }
+        model.addAttribute("datalist", list);
         return new ModelAndView("admin/database-list","model",model);
     }
 }
