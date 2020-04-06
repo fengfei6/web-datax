@@ -44,13 +44,13 @@ public class JobController {
     @RequestMapping("/job/prepare")
     public ModelAndView findAllDatasource(Model model,HttpSession session){
         User user = (User)session.getAttribute("user");
-        List<Job> list = new ArrayList<>();
+        List<Datasource> list = new ArrayList<>();
         if(user.getRole().equalsIgnoreCase("admin")) {
-            list = jobService.findAll();
+            list = datasourceService.findAll();
         }else if(user.getRole().equalsIgnoreCase("user")){
-            list = jobService.findJobsByUserId(user.getId());
+            list = datasourceService.findDatasourcesByUserId(user.getId());
         }
-        model.addAttribute("joblist",list);
+        model.addAttribute("datalist", list);
         return new ModelAndView("admin/new-job","model",model);
     }
 

@@ -53,8 +53,15 @@ public class CronJobController {
     }
 
     @RequestMapping("/cron/prepare")
-    public ModelAndView findAllDatasource(Model model){
-        model.addAttribute("datalist",datasourceService.findAll());
+    public ModelAndView findAllDatasource(Model model,HttpSession session){
+        User user = (User)session.getAttribute("user");
+        List<Datasource> list = new ArrayList<>();
+        if(user.getRole().equalsIgnoreCase("admin")) {
+            list = datasourceService.findAll();
+        }else if(user.getRole().equalsIgnoreCase("user")){
+            list = datasourceService.findDatasourcesByUserId(user.getId());
+        }
+        model.addAttribute("datalist", list);
         return new ModelAndView("admin/new-cronjob","model",model);
     }
 
