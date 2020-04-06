@@ -44,7 +44,7 @@ public class JobUtil {
 		sb.append("\",\"parameter\":{\"username\":\"").append(sdatasource.getUsername());
 		sb.append("\",\"password\":\"").append(sdatasource.getPassword()).append("\",");
 		if(job.getReaderTable() != null && !job.getReaderTable().trim().equals("null")) {
-			sb.append("\"column\": [\"*\"],");
+			sb.append("\"column\": [").append(splitColumns(job.getReaderColumn())).append("],");
 		}
 		sb.append("\"connection\": [{");
 		if(job.getReaderTable() != null && !job.getReaderTable().trim().equals("null")) {
@@ -58,7 +58,7 @@ public class JobUtil {
 		sb.append("\"writer\": {\"name\": \"").append(writer);
 		sb.append("\",\"parameter\":{\"username\":\"").append(tdatasource.getUsername());
 		sb.append("\",\"password\":\"").append(tdatasource.getPassword()).append("\",");
-		sb.append("\"column\": [\"*\"],");
+		sb.append("\"column\": [").append(splitColumns(job.getReaderColumn())).append("],");
 		if(job.getWriterPresql() != null) {
 			sb.append("\"preSql\": [\"").append(job.getWriterPresql()).append("\"],");
 		}
@@ -113,7 +113,7 @@ public class JobUtil {
 		sb.append("\",\"parameter\":{\"username\":\"").append(sdatasource.getUsername());
 		sb.append("\",\"password\":\"").append(sdatasource.getPassword()).append("\",");
 		if(cronJob.getReaderTable() != null && !cronJob.getReaderTable().trim().equals("null")) {
-			sb.append("\"column\": [\"*\"],");
+			sb.append("\"column\": [").append(splitColumns(cronJob.getReaderColumn())).append("],");
 		}
 		sb.append("\"connection\": [{");
 		if(cronJob.getReaderTable() != null && !cronJob.getReaderTable().trim().equals("null")) {
@@ -127,7 +127,7 @@ public class JobUtil {
 		sb.append("\"writer\": {\"name\": \"").append(writer);
 		sb.append("\",\"parameter\":{\"username\":\"").append(tdatasource.getUsername());
 		sb.append("\",\"password\":\"").append(tdatasource.getPassword()).append("\",");
-		sb.append("\"column\": [\"*\"],");
+		sb.append("\"column\": [").append(splitColumns(cronJob.getReaderColumn())).append("],");
 		if(cronJob.getWriterPresql() != null) {
 			sb.append("\"preSql\": [\"").append(cronJob.getWriterPresql()).append("\"],");
 		}
@@ -142,5 +142,18 @@ public class JobUtil {
 		BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(file));
 		bos.write(sb.toString().getBytes());
 		bos.close();
+	}
+
+	private static String splitColumns(String column){
+		StringBuffer sb = new StringBuffer();
+		String[] array = column.split(",");
+		for(int i = 0;i<array.length;i++){
+			if(i == array.length-1){
+				sb.append("\"").append(array[i]).append("\"");
+				break;
+			}
+			sb.append("\"").append(array[i]).append("\",");
+		}
+		return sb.toString();
 	}
 }
