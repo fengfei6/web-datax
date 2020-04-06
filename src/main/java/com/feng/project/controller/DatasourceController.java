@@ -190,6 +190,9 @@ public class DatasourceController {
                     dname, OracleUtil.getColumn(conn, sname));
         }
         if(datasourced.getType().equalsIgnoreCase("mysql")) {
+            if(datasources.getType().equalsIgnoreCase("oracle")){
+                createsql=createsql.replace("VARCHAR2(255)","varchar(255)").replace("NUMBER","int");
+            }
             conn = MysqlUtil.getConn(datasourced);
             MysqlUtil.executeSQL(conn, createsql);
         }else if(datasourced.getType().equalsIgnoreCase("oracle")){

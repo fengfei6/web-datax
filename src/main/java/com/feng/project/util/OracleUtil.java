@@ -143,8 +143,7 @@ public class OracleUtil {
                 sb.append(entry.getKey()+" "+entry.getValue()+",");
             }
         }
-        return sb.toString().replace("varchar", "varchar(255)")
-                .replace("VARCHAR", "VARCHAR(255)");
+        return sb.toString().replace("VARCHAR2","VARCHAR2(255)");
     }
 
     /**

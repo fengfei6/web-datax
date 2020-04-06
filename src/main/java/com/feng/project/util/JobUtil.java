@@ -39,18 +39,29 @@ public class JobUtil {
 			tjdbcUrl = Constants.ORACLE_THIN_JDBC_NAME+tdatasource.getIp()+":"+tdatasource.getPort()+"/"+tdatasource.getDbname();
 		}
 		StringBuilder sb = new StringBuilder();
-		sb.append("{\"job\": {\"setting\": {\"speed\": {\"channel\": 3},\"errorLimit\": {\"record\": 0,\"percentage\": 0.02}}," +
+		sb.append("{\"job\": {\"setting\": {\"speed\": {\"channel\": 3},\"errorLimit\": {\"record\": 5,\"percentage\": 0.02}}," +
 				"\"content\": [{ \"reader\":{\"name\": \"").append(reader);
 		sb.append("\",\"parameter\":{\"username\":\"").append(sdatasource.getUsername());
-		sb.append("\",\"password\":\"").append(sdatasource.getPassword());
-		sb.append("\",\"column\": [\"*\"],");
-		sb.append("\"connection\": [{\"table\": [\"").append(job.getReaderTable());
-		sb.append("\"],\"jdbcUrl\": [\"").append(sjdbcUrl);
+		sb.append("\",\"password\":\"").append(sdatasource.getPassword()).append("\",");
+		if(job.getReaderTable() != null && !job.getReaderTable().trim().equals("null")) {
+			sb.append("\"column\": [\"*\"],");
+		}
+		sb.append("\"connection\": [{");
+		if(job.getReaderTable() != null && !job.getReaderTable().trim().equals("null")) {
+			sb.append("\"table\": [\"").append(job.getReaderTable()).append("\"],");
+		}
+		if(job.getQuerySql() != null && job.getQuerySql().trim() != ""){
+			sb.append("\"querySql\": [\"").append(job.getQuerySql()).append("\"],");
+		}
+		sb.append("\"jdbcUrl\": [\"").append(sjdbcUrl);
 		sb.append("\"]}]}},");
 		sb.append("\"writer\": {\"name\": \"").append(writer);
 		sb.append("\",\"parameter\":{\"username\":\"").append(tdatasource.getUsername());
-		sb.append("\",\"password\":\"").append(tdatasource.getPassword());
-		sb.append("\",\"column\": [\"*\"],");
+		sb.append("\",\"password\":\"").append(tdatasource.getPassword()).append("\",");
+		sb.append("\"column\": [\"*\"],");
+		if(job.getWriterPresql() != null) {
+			sb.append("\"preSql\": [\"").append(job.getWriterPresql()).append("\"],");
+		}
 		sb.append("\"connection\": [{\"table\": [\"").append(job.getWriterTable());
 		sb.append("\"],\"jdbcUrl\": \"").append(tjdbcUrl);
 		sb.append("\"}]}}}]}}");
@@ -97,18 +108,29 @@ public class JobUtil {
 			tjdbcUrl = Constants.ORACLE_THIN_JDBC_NAME+tdatasource.getIp()+":"+tdatasource.getPort()+"/"+tdatasource.getDbname();
 		}
 		StringBuilder sb = new StringBuilder();
-		sb.append("{\"job\": {\"setting\": {\"speed\": {\"channel\": 3},\"errorLimit\": {\"record\": 0,\"percentage\": 0.02}}," +
+		sb.append("{\"job\": {\"setting\": {\"speed\": {\"channel\": 3},\"errorLimit\": {\"record\": 5,\"percentage\": 0.02}}," +
 				"\"content\": [{ \"reader\":{\"name\": \"").append(reader);
 		sb.append("\",\"parameter\":{\"username\":\"").append(sdatasource.getUsername());
-		sb.append("\",\"password\":\"").append(sdatasource.getPassword());
-		sb.append("\",\"column\": [\"*\"],");
-		sb.append("\"connection\": [{\"table\": [\"").append(cronJob.getReaderTable());
-		sb.append("\"],\"jdbcUrl\": [\"").append(sjdbcUrl);
+		sb.append("\",\"password\":\"").append(sdatasource.getPassword()).append("\",");
+		if(cronJob.getReaderTable() != null) {
+			sb.append("\"column\": [\"*\"],");
+		}
+		sb.append("\"connection\": [{");
+		if(cronJob.getReaderTable() != null) {
+			sb.append("\"table\": [\"").append(cronJob.getReaderTable()).append("\"],");
+		}
+		if(cronJob.getQuerySql() != null){
+			sb.append("\"querySql\": [\"").append(cronJob.getQuerySql()).append("\"],");
+		}
+		sb.append("\"jdbcUrl\": [\"").append(sjdbcUrl);
 		sb.append("\"]}]}},");
 		sb.append("\"writer\": {\"name\": \"").append(writer);
 		sb.append("\",\"parameter\":{\"username\":\"").append(tdatasource.getUsername());
-		sb.append("\",\"password\":\"").append(tdatasource.getPassword());
-		sb.append("\",\"column\": [\"*\"],");
+		sb.append("\",\"password\":\"").append(tdatasource.getPassword()).append("\",");
+		sb.append("\"column\": [\"*\"],");
+		if(cronJob.getWriterPresql() != null) {
+			sb.append("\"preSql\": [\"").append(cronJob.getWriterPresql()).append("\"],");
+		}
 		sb.append("\"connection\": [{\"table\": [\"").append(cronJob.getWriterTable());
 		sb.append("\"],\"jdbcUrl\": \"").append(tjdbcUrl);
 		sb.append("\"}]}}}]}}");

@@ -95,7 +95,7 @@ public class DataxUtil {
             String line = null;
             while ((line = br.readLine()) != null) {
                 buffer.append(line + "\n");
-                System.out.println(line);
+                //System.out.println(line);
             }
             br.close();
             //writeLog(buffer.toString(),name);

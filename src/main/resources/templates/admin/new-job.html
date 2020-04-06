@@ -288,6 +288,9 @@
 
                                                 </select>
                                             </div>
+                                            <div class="field-box">
+                                                <h6>若需要筛选数据，可以不选择原表，下一步指出原表</h6>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -416,7 +419,7 @@
                     data:{id:t},
                     success:function(data){
                         var t2 = $("#start_select2").empty();
-                        t2.append("<option >--请选择--</option>");
+                        t2.append("<option value='null'>--请选择--</option>");
                         for ( var key in data) {
 				             t2.append("<option value='"+key+"'>"+key+"</option>"); 
 				         } 
@@ -439,7 +442,7 @@
                     data:{id:t},
                     success:function(data){
                         var t2 = $("#start_select4").empty();
-                        t2.append("<option >--请选择--</option>");
+                        t2.append("<option value='null'>--请选择--</option>");
                         for ( var key in data) {
 				             t2.append("<option value='"+key+"'>"+key+"</option>"); 
 				         } 
