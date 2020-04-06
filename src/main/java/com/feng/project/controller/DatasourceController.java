@@ -7,7 +7,9 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
+import com.feng.project.domain.User;
 import com.feng.project.util.OracleUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -25,10 +27,10 @@ public class DatasourceController {
     private DatasourceService datasourceService;
 
     @RequestMapping("/datasource/add")
-    public ModelAndView saveDB(Datasource datasource, HttpServletRequest request,Model model){
-        //User user = (User)request.getSession().getAttribute("user");
+    public ModelAndView saveDB(Datasource datasource, HttpSession session, Model model){
+        User user = (User)session.getAttribute("user");
         if(datasource.getId()==null) {
-	        //datasource.setUserId(user.getId());
+	        datasource.setUserId(user.getId());
 	        datasource.setIsConnection("0");
             datasourceService.save(datasource);
         }else {

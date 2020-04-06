@@ -15,6 +15,7 @@ import org.springframework.web.servlet.ModelAndView;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 
 @Controller
@@ -26,15 +27,15 @@ public class UserController {
     private MailService mailService;
 
     @PostMapping("/user/login")
-    public ModelAndView login(String name, String password, Model model, HttpServletRequest request){
+    public ModelAndView login(String name, String password, Model model, HttpSession session){
         User user = userService.findUserByNameAndPass(name,password);
         if(user == null){
             model.addAttribute("msg","error");
             return new ModelAndView("login","error",model);
         }
-        request.getSession().setAttribute("user",user);
+        session.setAttribute("user",user);
         model.addAttribute("name",user.getName());
-        return new ModelAndView("index","user",model);
+        return new ModelAndView("index","model",model);
     }
 
     @PostMapping("/user/register")

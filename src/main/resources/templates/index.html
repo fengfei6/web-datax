@@ -63,6 +63,10 @@
                             <div class="notifications">
                                 <h3>平台使用的一些提示</h3>
                                 <a href="#" class="item">
+                                    <i class="icon-signin"></i> 必须在谷歌浏览器使用
+                                    <span class="time"><i class="icon-time"></i> 9 min.</span>
+                                </a>
+                                <a href="#" class="item">
                                     <i class="icon-signin"></i> 不要轻易的按下Enter键
                                     <span class="time"><i class="icon-time"></i> 13 min.</span>
                                 </a>
@@ -71,32 +75,21 @@
                                     <span class="time"><i class="icon-time"></i> 18 min.</span>
                                 </a>
                                 <a href="#" class="item">
-                                    <i class="icon-envelope-alt"></i> New message from Alejandra
+                                    <i class="icon-envelope-alt"></i> 调度平台的密码为admin/123456
                                     <span class="time"><i class="icon-time"></i> 28 min.</span>
                                 </a>
                                 <a href="#" class="item">
-                                    <i class="icon-signin"></i> New user registration
+                                    <i class="icon-signin"></i> 删除任务前先删除日志
                                     <span class="time"><i class="icon-time"></i> 49 min.</span>
-                                </a>
-                                <a href="#" class="item">
-                                    <i class="icon-download-alt"></i> New order placed
-                                    <span class="time"><i class="icon-time"></i> 1 day.</span>
                                 </a>
                             </div>
                         </div>
                     </div>
                 </li>
                 <li class="dropdown">
-                    <a href="#" class="dropdown-toggle hidden-phone" data-toggle="dropdown" th:text="${session.name} ? ${session.name}:'未登录'">
+                    <a href="#" class="dropdown-toggle hidden-phone" data-toggle="dropdown" th:text="${session.user.name} ? ${session.user.name}:'未登录'">
                         <b class="caret"></b>
                     </a>
-                    <ul class="dropdown-menu">
-                        <li><a href="/admin/personal-info">Personal info</a></li>
-                        <li><a href="#">Account settings</a></li>
-                        <li><a href="#">Billing</a></li>
-                        <li><a href="#">Export your data</a></li>
-                        <li><a href="#">Send feedback</a></li>
-                    </ul>
                 </li>
                 <li class="settings hidden-phone">
                     <a href="/login" role="button">
@@ -160,6 +153,12 @@
                 </ul>
             </li>
             <li>
+                <a th:href="@{'/user/edit/'+${session.user.id}}">
+                    <i class="icon-cog"></i>
+                    <span>个人信息</span>
+                </a>
+            </li>
+            <li th:if="${session.user.role} == 'admin'">
                 <a class="dropdown-toggle">
                     <i class="icon-cog"></i>
                     <span>用户管理</span>
