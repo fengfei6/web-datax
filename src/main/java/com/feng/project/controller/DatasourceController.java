@@ -1,6 +1,7 @@
 package com.feng.project.controller;
 
 import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -342,5 +343,30 @@ public class DatasourceController {
         }
         model.addAttribute("datalist", list);
         return new ModelAndView("admin/database-list","model",model);
+    }
+    
+    @RequestMapping("/datasource/showTableData/{id}/{name}")
+    public ModelAndView getTableData(@PathVariable String name,@PathVariable Integer id,Model model) throws Exception {
+    	Datasource datasource = datasourceService.getDatasource(id);
+        Connection conn = null;
+        Map<String, String> map = new HashMap<>();
+        if(datasource.getType().equalsIgnoreCase("mysql")){
+            conn = MysqlUtil.getConn(datasource);
+            map = MysqlUtil.getColumn(MysqlUtil.getMetaDate(conn), name);
+        }else if(datasource.getType().equalsIgnoreCase("oracle")){
+            conn = OracleUtil.getConn(datasource);
+            map = OracleUtil.getColumn(conn,name);
+        }else if(datasource.getType().equalsIgnoreCase("sqlserver")){
+            conn = SqlServerUtil.getConn(datasource);
+            map = SqlServerUtil.getColumn(conn,name);
+        }else if(datasource.getType().equalsIgnoreCase("postgresql")){
+            conn = PostgreSqlUtil.getConn(datasource);
+            map = PostgreSqlUtil.getColumn(conn, name);
+        }
+        List<List<Object>> data = MysqlUtil.showTableData(conn, name, map.keySet());
+        model.addAttribute("datas", data);
+        model.addAttribute("tableName", name);
+        model.addAttribute("columns", map.keySet());
+        return new ModelAndView("admin/show-table-data","model",model);
     }
 }

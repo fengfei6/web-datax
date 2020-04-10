@@ -249,9 +249,9 @@
                                     </td>
                                     <td class="description" th:text="${job.description}?${job.description}:''">
                                     </td>
-                                    <td class="description" th:text="${job.readerTable}? ${job.readerTable}:''">
+                                    <td class="description" th:text="${job.readerTable}? ${job.readerDbType}+'['+${job.readerTable}+']':${job.readerDbType}">
                                     </td>
-                                    <td class="description" th:text="${job.writerTable}? ${job.writerTable}:''">
+                                    <td class="description" th:text="${job.writerTable}? ${job.writerDbType}+'['+${job.writerTable}+']':${job.writerDbType}">
                                     </td>
                                     <td class="description" th:text="${job.createTime}? ${job.createTime}:''">
                                     </td>

@@ -24,13 +24,21 @@ public class JsonUtil {
 //	    Float percentage = errorLimit.getFloat("percentage");
 	    JSONArray content = job.getJSONArray("content");
 	    JSONObject object = (JSONObject)content.get(0);
-	    map.put("tabler",getTable(object,"reader"));
-		map.put("tablew",getTable(object,"writer"));
-	    map.put("reader",getParams(object,"reader"));
-	    map.put("writer",getParams(object,"writer"));
+//	    map.put("tabler",getTable(object,"reader"));
+//		map.put("tablew",getTable(object,"writer"));
+//	    map.put("reader",getParams(object,"reader"));
+//	    map.put("writer",getParams(object,"writer"));
+	    map.put("reader", getDbType(object, "reader"));
+	    map.put("writer", getDbType(object, "writer"));
 	    return map;
 	}
 
+	private static String getDbType(JSONObject object,String type){
+		JSONObject reader = object.getJSONObject(type);
+		String dbtype = reader.getString("name");
+		return dbtype;
+	}
+	
 	private static String getParams(JSONObject object,String type){
 		JSONObject reader = object.getJSONObject(type);
 		String readerType = reader.getString("name");

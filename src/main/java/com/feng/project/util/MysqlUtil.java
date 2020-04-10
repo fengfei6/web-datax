@@ -10,9 +10,11 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import com.feng.project.connector.Connector;
 import com.feng.project.connector.MysqlConnector;
@@ -218,6 +220,30 @@ public class MysqlUtil {
         	return count;
         }
 	}
-
+	
+	public static List<List<Object>> showTableData(Connection conn,String name,Set<String> set) throws SQLException{
+		List<List<Object>> result = new ArrayList<>();
+		List<Object> list = new ArrayList<>();
+		PreparedStatement stmt = conn.prepareStatement("select * from "+name+" limit 10");
+		ResultSet rs = stmt.executeQuery();
+		for(String column:set) {
+        	list.add(column);
+        }
+		list = new ArrayList<>();
+		while (rs.next()) {
+            for(String column:set) {
+            	Object obj = rs.getObject(column);
+            	list.add(obj);
+            }
+            result.add(list);
+            list = new ArrayList<>();
+        }
+		return result;
+	}
+	
+	public static void main(String[] args) throws SQLException {
+		Datasource ds = new Datasource("192.144.129.188","3306","test","root","FFei916#");
+		System.out.println(isConn(ds));
+	}
 
 }

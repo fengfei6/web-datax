@@ -59,6 +59,8 @@ public class JobController {
         User user = (User)session.getAttribute("user");
         if(job.getId()==null) {
             job.setUserId(user.getId());
+            job.setReaderDbType(datasourceService.getDatasource(job.getReaderDbId()).getType());
+            job.setWriterDbType(datasourceService.getDatasource(job.getWriterDbId()).getType());
             jobService.save(job);
         }else {
             jobService.save(job);
@@ -102,14 +104,8 @@ public class JobController {
     @RequestMapping("/job/addFileJob")
     public ModelAndView addFileJob(Job job, Model model,HttpSession session){
         Map<String,String> map = JsonUtil.testComplexJSONStrToJSONObject(job.getJsonContent());
-        job.setReaderTable(map.get("tabler"));
-        job.setWriterTable(map.get("tablew"));
-        String[] params = JsonUtil.getParamsArray(map.get("reader"));
-        Datasource datasource = datasourceService.findDatasourceByDbnameAndIpAndPort(params[0],params[1],params[2]);
-        job.setReaderDbId(datasource.getId());
-        params = JsonUtil.getParamsArray(map.get("writer"));
-        datasource = datasourceService.findDatasourceByDbnameAndIpAndPort(params[0],params[1],params[2]);
-        job.setWriterDbId(datasource.getId());
+        job.setReaderDbType(map.get("reader").replace("reader", ""));
+        job.setWriterDbType(map.get("writer").replace("writer", ""));
         User user = (User)session.getAttribute("user");
         job.setUserId(user.getId());
         jobService.save(job);
