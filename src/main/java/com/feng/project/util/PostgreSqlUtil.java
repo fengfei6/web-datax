@@ -160,7 +160,7 @@ public class PostgreSqlUtil {
 				sb.append(entry.getKey()+" "+entry.getValue()+",");
 			}
 		}
-		return sb.toString().replace("VARCHAR","VARCHAR(255)")
+		return sb.toString().replace("varchar","varchar(255)")
 				.replace("int4","int");
 	}
 

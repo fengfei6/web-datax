@@ -185,7 +185,7 @@ public class SqlServerUtil {
 				sb.append(entry.getKey()+" "+entry.getValue()+",");
 			}
 		}
-		return sb.toString();
+		return sb.toString().replace("varchar", "varchar(255)");
 	}
 
 	/**
@@ -236,6 +236,6 @@ public class SqlServerUtil {
 
 		System.out.println(createTable(list,"user2",map1));
 
-		executeSQL(conn,createTable(list,"user2",map1));
+		//executeSQL(conn,createTable(list,"user2",map1));
 	}
 }
