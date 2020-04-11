@@ -262,7 +262,7 @@
                                     </td>
                                     <td class="description">
                                         <ul class="action">
-                                       
+                                            <li class="last"><a th:href="@{'/cron/trigger/'+${job.id}}">trigger once</a></li>
                                             <li><a th:href="@{'/cron/status/'+${job.id}}" th:text="${job.isRunning}==1? 'stop':'start'"></a></li>
                                          
                                             <li class="last"><a th:href="@{'http://192.144.129.188:8081/xxl-job-admin/joblog?jobId='+${job.taskId}}" target="_blank">Log</a></li>

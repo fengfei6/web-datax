@@ -27,6 +27,12 @@ public class JobUtil {
 		}else if("oracle".equalsIgnoreCase(sdatasource.getType())){
 			reader = "oraclereader";
 			sjdbcUrl = Constants.ORACLE_THIN_JDBC_NAME+sdatasource.getIp()+":"+sdatasource.getPort()+"/"+sdatasource.getDbname();
+		}else if("postgresql".equalsIgnoreCase(sdatasource.getType())){
+			reader = "postgresqlreader";
+			sjdbcUrl = Constants.POSTGRESQL_JDBC_NAME+sdatasource.getIp()+":"+sdatasource.getPort()+"/"+sdatasource.getDbname();
+		}else if("sqlserver".equalsIgnoreCase(sdatasource.getType())){
+			reader = "sqlserverreader";
+			sjdbcUrl = Constants.MSSQL_JDBC_NAME+sdatasource.getIp()+":"+sdatasource.getPort()+";DatabaseName="+sdatasource.getDbname();
 		}
 
 		String writer= null;
@@ -37,7 +43,14 @@ public class JobUtil {
 		}else if("oracle".equalsIgnoreCase(tdatasource.getType())){
 			writer = "oraclewriter";
 			tjdbcUrl = Constants.ORACLE_THIN_JDBC_NAME+tdatasource.getIp()+":"+tdatasource.getPort()+"/"+tdatasource.getDbname();
+		}else if("postgresql".equalsIgnoreCase(tdatasource.getType())){
+			writer = "postgresqlwriter";
+			tjdbcUrl = Constants.POSTGRESQL_JDBC_NAME+tdatasource.getIp()+":"+tdatasource.getPort()+"/"+tdatasource.getDbname();
+		}else if("sqlserver".equalsIgnoreCase(tdatasource.getType())){
+			writer = "sqlserverwriter";
+			tjdbcUrl = Constants.MSSQL_JDBC_NAME+tdatasource.getIp()+":"+tdatasource.getPort()+";DatabaseName="+tdatasource.getDbname();
 		}
+		
 		StringBuilder sb = new StringBuilder();
 		sb.append("{\"job\": {\"setting\": {\"speed\": {\"channel\": 3},\"errorLimit\": {\"record\": 5,\"percentage\": 0.02}}," +
 				"\"content\": [{ \"reader\":{\"name\": \"").append(reader);
@@ -96,6 +109,12 @@ public class JobUtil {
 		}else if("oracle".equalsIgnoreCase(sdatasource.getType())){
 			reader = "oraclereader";
 			sjdbcUrl = Constants.ORACLE_THIN_JDBC_NAME+sdatasource.getIp()+":"+sdatasource.getPort()+"/"+sdatasource.getDbname();
+		}else if("postgresql".equalsIgnoreCase(sdatasource.getType())){
+			reader = "postgresqlreader";
+			sjdbcUrl = Constants.POSTGRESQL_JDBC_NAME+sdatasource.getIp()+":"+sdatasource.getPort()+"/"+sdatasource.getDbname();
+		}else if("sqlserver".equalsIgnoreCase(sdatasource.getType())){
+			reader = "sqlserverreader";
+			sjdbcUrl = Constants.MSSQL_JDBC_NAME+sdatasource.getIp()+":"+sdatasource.getPort()+";DatabaseName="+sdatasource.getDbname();
 		}
 
 		String writer= null;
@@ -106,7 +125,14 @@ public class JobUtil {
 		}else if("oracle".equalsIgnoreCase(tdatasource.getType())){
 			writer = "oraclewriter";
 			tjdbcUrl = Constants.ORACLE_THIN_JDBC_NAME+tdatasource.getIp()+":"+tdatasource.getPort()+"/"+tdatasource.getDbname();
+		}else if("postgresql".equalsIgnoreCase(tdatasource.getType())){
+			writer = "postgresqlwriter";
+			tjdbcUrl = Constants.POSTGRESQL_JDBC_NAME+tdatasource.getIp()+":"+tdatasource.getPort()+"/"+tdatasource.getDbname();
+		}else if("sqlserver".equalsIgnoreCase(tdatasource.getType())){
+			writer = "sqlserverwriter";
+			tjdbcUrl = Constants.MSSQL_JDBC_NAME+tdatasource.getIp()+":"+tdatasource.getPort()+";DatabaseName="+tdatasource.getDbname();
 		}
+
 		StringBuilder sb = new StringBuilder();
 		sb.append("{\"job\": {\"setting\": {\"speed\": {\"channel\": 3},\"errorLimit\": {\"record\": 5,\"percentage\": 0.02}}," +
 				"\"content\": [{ \"reader\":{\"name\": \"").append(reader);

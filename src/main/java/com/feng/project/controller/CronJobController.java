@@ -176,4 +176,25 @@ public class CronJobController {
         model.addAttribute("joblist",list);
         return new ModelAndView("admin/cronjob-list","model",model);
     }
+
+    @RequestMapping("/cron/trigger/{id}")
+    public ModelAndView trigger(@PathVariable Integer id,Model model,HttpSession session){
+        CronJob cronJob = cronJobService.getOne(id);
+        xxlJobService.executeUnder(cronJob.getTaskId(),"");
+        User user = (User) session.getAttribute("user");
+        List<CronJob> list = new ArrayList<>();
+        if(user.getRole().equalsIgnoreCase("admin")) {
+            list = cronJobService.finAll();
+        }else if(user.getRole().equalsIgnoreCase("user")){
+            list = cronJobService.findJobsByUserId(user.getId());
+        }
+        model.addAttribute("joblist",list);
+        return new ModelAndView("admin/cronjob-list","model",model);
+    }
+
+    @RequestMapping("/cron/log/{id}")
+    public void log(@PathVariable Integer id){
+        CronJob cronJob = cronJobService.getOne(id);
+        System.out.println(xxlJobService.getHandleInfo(cronJob.getTaskId()));
+    }
 }

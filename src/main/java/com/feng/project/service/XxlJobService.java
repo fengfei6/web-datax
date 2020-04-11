@@ -4,9 +4,6 @@ import com.alibaba.fastjson.JSONObject;
 import com.feng.project.domain.CronJob;
 import com.feng.project.util.XxlUtil;
 import com.google.common.collect.Maps;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
@@ -96,7 +93,7 @@ public class XxlJobService {
         return "1";
     }
 
-        public String cancelScheduling(CronJob cronJob) {
+    public String cancelScheduling(CronJob cronJob) {
             Map<String, String> map = Maps.newHashMap();
             if (cronJob.getCronExpress() != null) {
                 //定时任务
@@ -109,45 +106,32 @@ public class XxlJobService {
             return "1";
         }
 
-        public JSONObject getHandleInfo(Integer taskId){
-                Map<String, String> map = Maps.newHashMap();
-                map.put("jobId", String.valueOf(taskId));
-                JSONObject jsonObject = XxlUtil.getHandleInfo(map);
-                if (!jsonObject.get("code").toString().equals("200")) {
-                    System.out.println("fail");
-                }
-                return jsonObject;
-        }
+    public JSONObject getHandleInfo(Integer taskId){
+           Map<String, String> map = Maps.newHashMap();
+           map.put("jobId", String.valueOf(taskId));
+           JSONObject jsonObject = XxlUtil.getHandleInfo(map);
+           if (!jsonObject.get("code").toString().equals("200")) {
+               System.out.println("fail");
+           }
+           return jsonObject;
+    }
 
-        public JSONObject getCronJobInfo (Integer taskId){
+     public JSONObject getCronJobInfo (Integer taskId){
         Map<String, String> map = Maps.newHashMap();
         map.put("id", String.valueOf(taskId));
         JSONObject jsonObject = XxlUtil.getJobInfo(map);
         return jsonObject;
     }
 
-
-        public JSONObject getExeclog (String triggerTime, String execid,int offset){
-                Map<String, String> map = Maps.newHashMap();
-                map.put("executorAddress", "172.21.0.8:9999");
-                map.put("triggerTime", triggerTime);
-                map.put("logId", execid);
-                map.put("fromLineNum", String.valueOf(offset));
-                JSONObject jsonObject = XxlUtil.getExeclog(map);
-                if (!jsonObject.get("code").toString().equals("200")) {
-                    System.out.println("fail");
-                }
-                return (JSONObject) jsonObject.get("content");
-         }
-        public JSONObject delete (Integer taskId){
-                Map<String, String> map = Maps.newHashMap();
-                map.put("id", String.valueOf(taskId));
-                JSONObject jsonObject = XxlUtil.delete(map);
-                if (!jsonObject.get("code").toString().equals("200")) {
-                    System.out.println("fail");
-                }
-                return jsonObject;
+    public JSONObject delete (Integer taskId){
+        Map<String, String> map = Maps.newHashMap();
+        map.put("id", String.valueOf(taskId));
+        JSONObject jsonObject = XxlUtil.delete(map);
+        if (!jsonObject.get("code").toString().equals("200")) {
+            System.out.println("fail");
         }
+        return jsonObject;
+    }
 
     public JSONObject executeUnder(Integer taskId, String executorParam) {
         Map<String, String> map = Maps.newHashMap();
