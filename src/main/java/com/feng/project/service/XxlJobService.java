@@ -35,7 +35,7 @@ public class XxlJobService {
         linkedMultiValueMap.add("executorParam", "");
 
         linkedMultiValueMap.add("glueRemark", "job");
-        linkedMultiValueMap.add("glueSource",setGlueSource(cronJob.getName()));
+        linkedMultiValueMap.add("glueSource",setGlueSource(cronJob.getName(),cronJob.getUserId()));
         if(cronJob.getTaskId() == null){
             return CronJobinfoWithAdd(cronJob,linkedMultiValueMap);
         }else{
@@ -64,7 +64,7 @@ public class XxlJobService {
         return "0";
     }
 
-    private String setGlueSource(String cronJobName){
+    private String setGlueSource(String cronJobName,Integer userId){
         String source = "#!/bin/bash\n" +
                 "echo \"xxl-job: hello shell\"\n" +
                 "\n" +
@@ -73,7 +73,7 @@ public class XxlJobService {
                 "echo \"分片序号 = $2\"\n" +
                 "echo \"分片总数 = $3\"\n" +
                 "\n" +
-                "python /root/datax/bin/datax.py /root/datax/job/"+cronJobName+".json\n" +
+                "python /root/datax/bin/datax.py /root/datax/job/"+cronJobName+"_"+userId+".json\n" +
                 "\n" +
                 "echo \"Good bye!\"\n" +
                 "exit 0\n";

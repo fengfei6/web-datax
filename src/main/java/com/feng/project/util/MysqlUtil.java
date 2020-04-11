@@ -244,6 +244,22 @@ public class MysqlUtil {
 	public static void main(String[] args) throws SQLException {
 		Datasource ds = new Datasource("192.144.129.188","3306","test","root","FFei916#");
 		System.out.println(isConn(ds));
+
+		Connection conn = getConn(ds);
+		Map<String,Integer> map = getTables(conn);
+		for(Map.Entry<String,Integer> entry:map.entrySet()){
+			System.out.println(entry.getKey()+":"+entry.getValue());
+		}
+
+		Map<String,String> map1 = getColumn(getMetaDate(conn),"student");
+		for(Map.Entry<String,String> entry:map1.entrySet()){
+			System.out.println(entry.getKey()+":"+entry.getValue());
+		}
+
+		List<String> list = getPrimaryKey(getMetaDate(conn),"student");
+		System.out.println(Arrays.toString(list.toArray()));
+
+		System.out.println(createTable(list,"student2",map1));
 	}
 
 }

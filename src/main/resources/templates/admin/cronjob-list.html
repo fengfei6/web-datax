@@ -122,27 +122,23 @@
         <li>
             <a class="dropdown-toggle">
                 <i class="icon-edit"></i>
-                <span>新增同步任务</span>
+                <span>同步/调度任务</span>
                 <i class="icon-chevron-down"></i>
             </a>
             <ul class="submenu">
-
-                <li><a href="/admin/job-file">文件上传</a></li>
-                <li><a href="/job/prepare">表格信息</a></li>
-                <li><a href="/job/jobList">同步任务管理</a></li>
+                <li><a href="/cron/prepare">新建任务</a></li>
+                <li><a href="/cron/cronjobList">任务管理</a></li>
             </ul>
         </li>
         <li>
             <a class="dropdown-toggle">
                 <i class="icon-edit"></i>
-                <span>新增调度任务</span>
+                <span>其他任务</span>
                 <i class="icon-chevron-down"></i>
             </a>
             <ul class="submenu">
-
-                <li><a href="/admin/cronjob-file">文件上传</a></li>
-                <li><a href="/cron/prepare">表格信息</a></li>
-                <li><a href="/cron/cronjobList">调度任务管理</a></li>
+                <li><a href="/admin/job-file">文件上传</a></li>
+                <li><a href="/job/jobList">任务管理</a></li>
             </ul>
         </li>
         <li>
@@ -167,16 +163,7 @@
 <!-- end sidebar -->
 	<!-- main container -->
     <div class="content">
-        
-        <!-- settings changer -->
-        <div class="skins-nav">
-            <a href="#" class="skin first_nav selected">
-                <span class="icon"></span><span class="text">Default</span>
-            </a>
-            <a href="#" class="skin second_nav" data-file="css/skins/dark.css">
-                <span class="icon"></span><span class="text">Dark skin</span>
-            </a>
-        </div>
+
         
         <div class="container-fluid">
             <div id="pad-wrapper">
@@ -186,7 +173,7 @@
                 <div class="table-wrapper products-table section">
                     <div class="row-fluid head">
                         <div class="span12">
-                            <h4>Job</h4>
+                            <h4>任务</h4>
                         </div>
                     </div>
 
@@ -195,16 +182,16 @@
                         <div class="pull-right">
                             <div class="ui-select">
                                 <select name="isRunning">
-                                  <option value="all"/>ALL
-                                  <option value="0"/>Stop
-                                  <option value="1"/>Start
+                                  <option value="all"/>所有
+                                  <option value="0"/>已停止
+                                  <option value="1"/>已启动
                                 </select>
                             </div>
                             <input type="text" class="search" name="name"/>
                             <div class="ui-dropdown" data-toggle="tooltip" title="Click me!">
-                                <input type="submit" class="btn-flat" value="search">
+                                <input type="submit" class="btn-flat" value="搜索">
                             </div>
-                            <a class="btn-flat success new-product" th:href="@{/job/prepare}">+ Add Job</a>
+                            <a class="btn-flat success new-product" th:href="@{/cron/prepare}">创建任务</a>
                         </div>
                         </form>
                     </div>
@@ -213,37 +200,36 @@
                             <thead>
                                 <tr>
                                     <th class="span3">
-                                       Job
+                                       任务
                                     </th>
                                     <th class="span3">
-                                        <span class="line"></span>Name
+                                        <span class="line"></span>名称
                                     </th>
                                     <th class="span3">
-                                        <span class="line"></span>Description
+                                        <span class="line"></span>描述
                                     </th> 
                                     <th class="span3">
-                                        <span class="line"></span>Source Table
+                                        <span class="line"></span>源数据源
                                     </th>
                                     <th class="span3">
-                                        <span class="line"></span>Target Table
+                                        <span class="line"></span>目的数据源
                                     </th>
                                     <th class="span3">
-                                        <span class="line"></span>CreateTime
+                                        <span class="line"></span>创建时间
                                     </th>
                                     <th class="span3">
-                                        <span class="line"></span>Is Running
+                                        <span class="line"></span>是否运行
                                     </th>
                                     <th class="span3">
-                                        <span class="line"></span>Operate
+                                        <span class="line"></span>操作
                                     </th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <!-- row -->
-                        
                                 <tr class="first" th:each="job:${model.joblist}">
                                     <td>
-                                   		 <div class="img">
+                                        <div class="img">
                                             <img th:src="@{/img/logo.jpg}" />
                                         </div>
                                         <a id="jobId" href="#" th:value="${job.id}" th:text="${job.id}?${job.id}:''"></a>
@@ -252,21 +238,21 @@
                                     </td>
                                     <td class="description" th:text="${job.description}?${job.description}:''">
                                     </td>
-                                    <td class="description" th:text="${job.readerTable}? ${job.readerTable}:''">
+                                    <td class="description" th:text="${job.readerTable}? ${job.readerDbType}+'['+${job.readerTable}+']':${job.readerDbType}">
                                     </td>
-                                    <td class="description" th:text="${job.writerTable}? ${job.writerTable}:''">
+                                    <td class="description" th:text="${job.writerTable}? ${job.writerDbType}+'['+${job.writerTable}+']':${job.writerDbType}">
                                     </td>
                                     <td class="description" th:text="${job.createTime}? ${job.createTime}:''">
                                     </td>
-                                    <td class="description" th:text="${job.isRunning}==1? 'start':'stop'">
+                                    <td class="description" th:text="${job.isRunning}==1? '已启动':'停止中'">
                                     </td>
                                     <td class="description">
                                         <ul class="action">
-                                            <li class="last"><a th:href="@{'/cron/trigger/'+${job.id}}">trigger once</a></li>
-                                            <li><a th:href="@{'/cron/status/'+${job.id}}" th:text="${job.isRunning}==1? 'stop':'start'"></a></li>
+                                            <li class="last"><a th:href="@{'/cron/trigger/'+${job.id}}">执行一次</a></li>
+                                            <li><a th:href="@{'/cron/status/'+${job.id}}" th:text="${job.isRunning}==1? '停止任务':'启动任务'"></a></li>
                                          
-                                            <li class="last"><a th:href="@{'http://192.144.129.188:8081/xxl-job-admin/joblog?jobId='+${job.taskId}}" target="_blank">Log</a></li>
-                                            <li class="last"><a th:href="@{'/cron/delete/'+${job.id}}">Delete</a></li>
+                                            <li class="last"><a th:href="@{'http://192.144.129.188:8081/xxl-job-admin/joblog?jobId='+${job.taskId}}" target="_blank">日志列表</a></li>
+                                            <li class="last"><a th:href="@{'/cron/delete/'+${job.id}}">删除任务</a></li>
                                         </ul>
                                     </td>
                                 </tr>

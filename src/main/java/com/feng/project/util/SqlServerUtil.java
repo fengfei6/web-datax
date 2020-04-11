@@ -226,15 +226,15 @@ public class SqlServerUtil {
 			System.out.println(entry.getKey()+":"+entry.getValue());
 		}
 
-		Map<String,String> map1 = getColumn(conn,"user");
+		Map<String,String> map1 = getColumn(conn,"student");
 		for(Map.Entry<String,String> entry:map1.entrySet()){
 			System.out.println(entry.getKey()+":"+entry.getValue());
 		}
 
-		List<String> list = getPrimaryKey(conn,"user");
+		List<String> list = getPrimaryKey(conn,"student");
 		System.out.println(Arrays.toString(list.toArray()));
 
-		System.out.println(createTable(list,"user2",map1));
+		System.out.println(createTable(list,"student2",map1));
 
 		//executeSQL(conn,createTable(list,"user2",map1));
 	}

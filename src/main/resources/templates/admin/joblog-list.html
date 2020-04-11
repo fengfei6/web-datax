@@ -122,27 +122,23 @@
         <li>
             <a class="dropdown-toggle">
                 <i class="icon-edit"></i>
-                <span>新增同步任务</span>
+                <span>同步/调度任务</span>
                 <i class="icon-chevron-down"></i>
             </a>
             <ul class="submenu">
-
-                <li><a href="/admin/job-file">文件上传</a></li>
-                <li><a href="/job/prepare">表格信息</a></li>
-                <li><a href="/job/jobList">同步任务管理</a></li>
+                <li><a href="/cron/prepare">新建任务</a></li>
+                <li><a href="/cron/cronjobList">任务管理</a></li>
             </ul>
         </li>
         <li>
             <a class="dropdown-toggle">
                 <i class="icon-edit"></i>
-                <span>新增调度任务</span>
+                <span>其他任务</span>
                 <i class="icon-chevron-down"></i>
             </a>
             <ul class="submenu">
-
-                <li><a href="/admin/cronjob-file">文件上传</a></li>
-                <li><a href="/cron/prepare">表格信息</a></li>
-                <li><a href="/cron/cronjobList">调度任务管理</a></li>
+                <li><a href="/admin/job-file">文件上传</a></li>
+                <li><a href="/job/jobList">任务管理</a></li>
             </ul>
         </li>
         <li>
@@ -167,21 +163,12 @@
 <!-- end sidebar -->
 	<!-- main container -->
     <div class="content">
-        
-        <!-- settings changer -->
-        <div class="skins-nav">
-            <a href="#" class="skin first_nav selected">
-                <span class="icon"></span><span class="text">Default</span>
-            </a>
-            <a href="#" class="skin second_nav" data-file="css/skins/dark.css">
-                <span class="icon"></span><span class="text">Dark skin</span>
-            </a>
-        </div>
+
         
         <div class="container-fluid">
             <div id="pad-wrapper" class="users-list">
                 <div class="row-fluid header">
-                    <h3>Users</h3>
+                    <h3>任务日志</h3>
                     <div class="span10 pull-right">
                     	<form action="/user/search" method="post">
                         <input type="text" class="span5 search" placeholder="Type a user's name..." name="name"/>
@@ -207,17 +194,17 @@
                         <thead>
                             <tr>
                                 <th class="span4 sortable">
-                                    JobLog
+                                    任务日志
                                 </th>
                                 <th class="span3 sortable">
-                                    <span class="line"></span>JobName
+                                    <span class="line"></span>任务名称
                                 </th>
                                
                                 <th class="span2 sortable">
-                                    <span class="line"></span>Create-Time
+                                    <span class="line"></span>开始时间
                                 </th>
                                 <th class="span3 sortable align-right">
-                                    <span class="line"></span>Operate
+                                    <span class="line"></span>操作
                                 </th>
                             </tr>
                         </thead>
@@ -232,25 +219,14 @@
                             <td th:text="${joblog.createTime}?${joblog.createTime}:''">
                             </td>
                             <td class="align-right" >
-                                <a th:href="@{'/joblog/getResult/'+${joblog.id}}">Result</a>
+                                <a th:href="@{'/joblog/getResult/'+${joblog.id}}">日志结果</a>
                    
-                            	<a th:href="@{'/joblog/delete/'+${joblog.jobId}+'/'+${joblog.id}}">Delete</a>
+                            	<a th:href="@{'/joblog/delete/'+${joblog.jobId}+'/'+${joblog.id}}">删除</a>
                             </td>
                         </tr>
                         <!-- row -->
                         </tbody>
                     </table>
-                </div>
-                <div class="pagination pull-right">
-                    <ul>
-                        <li><a href="#">&#8249;</a></li>
-                        <li><a class="active" href="#">1</a></li>
-                        <li><a href="#">2</a></li>
-                        <li><a href="#">3</a></li>
-                        <li><a href="#">4</a></li>
-                        <li><a href="#">5</a></li>
-                        <li><a href="#">&#8250;</a></li>
-                    </ul>
                 </div>
                 <!-- end users table -->
             </div>

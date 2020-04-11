@@ -94,39 +94,12 @@ public class CronJobController {
         return new ModelAndView("admin/cronjob-list","model",model);
     }
 
-    @RequestMapping("/cron/addFileJob")
-    public ModelAndView addFileJob(CronJob cronJob, Model model,HttpSession session){
-        Map<String,String> map = JsonUtil.testComplexJSONStrToJSONObject(cronJob.getJsonContent());
-        cronJob.setReaderTable(map.get("tabler"));
-        cronJob.setWriterTable(map.get("tablew"));
-        String[] params = JsonUtil.getParamsArray(map.get("reader"));
-        Datasource datasource = datasourceService.findDatasourceByDbnameAndIpAndPort(params[0],params[1],params[2]);
-        cronJob.setReaderDbId(datasource.getId());
-        params = JsonUtil.getParamsArray(map.get("writer"));
-        datasource = datasourceService.findDatasourceByDbnameAndIpAndPort(params[0],params[1],params[2]);
-        cronJob.setWriterDbId(datasource.getId());
-        String taskId = xxlJobService.submitCronJob(cronJob);
-        cronJob.setTaskId(Integer.parseInt(taskId));
-        cronJob.setIsRunning(0);
-        User user = (User)session.getAttribute("user");
-        cronJob.setUserId(user.getId());
-        cronJobService.save(cronJob);
-        List<CronJob> list = new ArrayList<>();
-        if(user.getRole().equalsIgnoreCase("admin")) {
-            list = cronJobService.finAll();
-        }else if(user.getRole().equalsIgnoreCase("user")){
-            list = cronJobService.findJobsByUserId(user.getId());
-        }
-        model.addAttribute("joblist",list);
-        return new ModelAndView("admin/cronjob-list","model",model);
-    }
-
     @RequestMapping("/cron/status/{id}")
     public ModelAndView changeStatus(@PathVariable Integer id,Model model,HttpSession session) throws IOException {
         CronJob cronJob = cronJobService.getOne(id);
         if(cronJob.getIsRunning() == 0){
             Connection conn = DataxUtil.login("192.144.129.188", "root", "FFei916#");
-            DataxUtil.transferFile(conn, "src/main/resources/static/file/"+cronJob.getName()+".json", "/root/datax/job");
+            DataxUtil.transferFile(conn, "src/main/resources/static/file/"+cronJob.getName()+"_"+cronJob.getUserId()+".json", "/root/datax/job");
             xxlJobService.onScheduling(cronJob);
             cronJob.setIsRunning(1);
             cronJobService.update(cronJob);
@@ -148,9 +121,10 @@ public class CronJobController {
 
     @ResponseBody
     @RequestMapping("/cron/getJobByName")
-    public String getJobByName(String name){
-        if(cronJobService.findJobByName(name) != null){
-            return "名称已存在";
+    public String getJobByName(String name,HttpSession session){
+        User user = (User)session.getAttribute("user");
+        if(cronJobService.getJobByNameAndUserId(name,user.getId()) != null){
+            return "名称已存在，重新输入";
         }else{
             return "";
         }

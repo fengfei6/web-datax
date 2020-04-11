@@ -287,11 +287,17 @@ public class DatasourceController {
         }else if(datasourced.getType().equalsIgnoreCase("oracle")){
             conn = OracleUtil.getConn(datasourced);
             OracleUtil.executeSQL(conn,createsql);
-        }else if(datasources.getType().equalsIgnoreCase("sqlserver")) {
-            conn = SqlServerUtil.getConn(datasources);
+        }else if(datasourced.getType().equalsIgnoreCase("sqlserver")) {
+            if(datasources.getType().equalsIgnoreCase("oracle")){
+                createsql=createsql.replace("VARCHAR2(255)","varchar(255)").replace("NUMBER","int");
+            }
+            conn = SqlServerUtil.getConn(datasourced);
             SqlServerUtil.executeSQL(conn, createsql);
-        }else if(datasources.getType().equalsIgnoreCase("postgresql")){
-            conn = PostgreSqlUtil.getConn(datasources);
+        }else if(datasourced.getType().equalsIgnoreCase("postgresql")){
+            if(datasources.getType().equalsIgnoreCase("oracle")){
+                createsql=createsql.replace("VARCHAR2(255)","varchar(255)").replace("NUMBER","int");
+            }
+            conn = PostgreSqlUtil.getConn(datasourced);
             PostgreSqlUtil.executeSQL(conn, createsql);
         }
         User user = (User)session.getAttribute("user");

@@ -15,9 +15,11 @@ public class CronJob {
     private String description;
     private String querySql;
     private Integer readerDbId;
+    private String readerDbType;
     private String readerTable;
     private String readerColumn;
     private Integer writerDbId;
+    private String writerDbType;
     private String writerTable;
     private String writerColumn;
     private String writerPresql;
@@ -29,6 +31,22 @@ public class CronJob {
     private Date updateTime;
     private Integer userId;
     private Integer taskId;
+
+    public String getReaderDbType() {
+        return readerDbType;
+    }
+
+    public void setReaderDbType(String readerDbType) {
+        this.readerDbType = readerDbType;
+    }
+
+    public String getWriterDbType() {
+        return writerDbType;
+    }
+
+    public void setWriterDbType(String writerDbType) {
+        this.writerDbType = writerDbType;
+    }
 
     public Integer getTaskId() {
         return taskId;
