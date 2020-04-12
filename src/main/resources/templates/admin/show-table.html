@@ -132,13 +132,19 @@
         <li>
             <a class="dropdown-toggle">
                 <i class="icon-edit"></i>
-                <span>其他任务</span>
+                <span>其他同步任务</span>
                 <i class="icon-chevron-down"></i>
             </a>
             <ul class="submenu">
                 <li><a href="/admin/job-file">文件上传</a></li>
                 <li><a href="/job/jobList">任务管理</a></li>
             </ul>
+        </li>
+        <li>
+            <a th:href="@{'/instance/list'}">
+                <i class="icon-cog"></i>
+                <span>实例管理</span>
+            </a>
         </li>
         <li>
             <a th:href="@{'/user/edit/'+${session.user.id}}">

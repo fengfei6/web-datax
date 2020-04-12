@@ -1,11 +1,13 @@
 package com.feng.project.controller;
 
 import ch.ethz.ssh2.Connection;
+import com.alibaba.fastjson.JSONObject;
 import com.feng.project.domain.CronJob;
 import com.feng.project.domain.Datasource;
 import com.feng.project.domain.User;
 import com.feng.project.service.CronJobService;
 import com.feng.project.service.DatasourceService;
+import com.feng.project.service.InstanceService;
 import com.feng.project.service.XxlJobService;
 import com.feng.project.util.DataxUtil;
 import com.feng.project.util.JobUtil;
@@ -20,6 +22,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -30,6 +33,8 @@ public class CronJobController {
     private CronJobService cronJobService;
     @Autowired
     private XxlJobService xxlJobService;
+    @Autowired
+    private InstanceService instanceService;
 
     @Autowired
     private DatasourceService datasourceService;
@@ -38,10 +43,16 @@ public class CronJobController {
         User user = (User) session.getAttribute("user");
         cronJob.setUserId(user.getId());
         String taskId = xxlJobService.submitCronJob(cronJob);
+        Datasource datasources = datasourceService.getDatasource(cronJob.getReaderDbId());
+        Datasource datasourcet = datasourceService.getDatasource(cronJob.getWriterDbId());
         cronJob.setTaskId(Integer.parseInt(taskId));
         cronJob.setIsRunning(0);
+        cronJob.setReaderDbType(datasources.getType());
+        cronJob.setWriterDbType(datasourcet.getType());
         cronJobService.save(cronJob);
         JobUtil.getJsonfileForCronJob(datasourceService.getDatasource(cronJob.getReaderDbId()),datasourceService.getDatasource(cronJob.getWriterDbId()),cronJob);
+        Connection conn = DataxUtil.login("192.144.129.188", "root", "FFei916#");
+        DataxUtil.transferFile(conn, "src/main/resources/static/file/"+cronJob.getName()+"_"+cronJob.getUserId()+".json", "/root/datax/job");
         List<CronJob> list = new ArrayList<>();
         if(user.getRole().equalsIgnoreCase("admin")) {
             list = cronJobService.finAll();
@@ -98,8 +109,6 @@ public class CronJobController {
     public ModelAndView changeStatus(@PathVariable Integer id,Model model,HttpSession session) throws IOException {
         CronJob cronJob = cronJobService.getOne(id);
         if(cronJob.getIsRunning() == 0){
-            Connection conn = DataxUtil.login("192.144.129.188", "root", "FFei916#");
-            DataxUtil.transferFile(conn, "src/main/resources/static/file/"+cronJob.getName()+"_"+cronJob.getUserId()+".json", "/root/datax/job");
             xxlJobService.onScheduling(cronJob);
             cronJob.setIsRunning(1);
             cronJobService.update(cronJob);
@@ -166,9 +175,4 @@ public class CronJobController {
         return new ModelAndView("admin/cronjob-list","model",model);
     }
 
-    @RequestMapping("/cron/log/{id}")
-    public void log(@PathVariable Integer id){
-        CronJob cronJob = cronJobService.getOne(id);
-        System.out.println(xxlJobService.getHandleInfo(cronJob.getTaskId()));
-    }
 }

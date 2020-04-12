@@ -26,4 +26,6 @@ public interface CronJobRepository extends JpaRepository<CronJob,Integer> {
     List<CronJob> findCronJobsByUserId(Integer userId);
 
     CronJob getCronJobByNameAndUserId(String name,Integer userId);
+
+    CronJob getCronJobByTaskId(Integer taskId);
 }

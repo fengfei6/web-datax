@@ -133,13 +133,19 @@
         <li>
             <a class="dropdown-toggle">
                 <i class="icon-edit"></i>
-                <span>其他任务</span>
+                <span>其他同步任务</span>
                 <i class="icon-chevron-down"></i>
             </a>
             <ul class="submenu">
                 <li><a href="/admin/job-file">文件上传</a></li>
                 <li><a href="/job/jobList">任务管理</a></li>
             </ul>
+        </li>
+        <li>
+            <a th:href="@{'/instance/list'}">
+                <i class="icon-cog"></i>
+                <span>实例管理</span>
+            </a>
         </li>
         <li>
             <a th:href="@{'/user/edit/'+${session.user.id}}">
@@ -251,7 +257,7 @@
                                             <li class="last"><a th:href="@{'/cron/trigger/'+${job.id}}">执行一次</a></li>
                                             <li><a th:href="@{'/cron/status/'+${job.id}}" th:text="${job.isRunning}==1? '停止任务':'启动任务'"></a></li>
                                          
-                                            <li class="last"><a th:href="@{'http://192.144.129.188:8081/xxl-job-admin/joblog?jobId='+${job.taskId}}" target="_blank">日志列表</a></li>
+                                            <li class="last"><a th:href="@{'/instance/listByTaskId/'+${job.taskId}}">查看实例</a></li>
                                             <li class="last"><a th:href="@{'/cron/delete/'+${job.id}}">删除任务</a></li>
                                         </ul>
                                     </td>
