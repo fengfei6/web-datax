@@ -19,5 +19,5 @@ public interface InstanceRepository extends JpaRepository<Instance,Integer> {
     @Query(value = "select * from instance order by handle_time desc", nativeQuery = true)
     List<Instance> findInstances();
 
-    List<Instance> findAllByTaskId(Integer taskId);
+    List<Instance> findAllByCronjobId(Integer cronjobId);
 }

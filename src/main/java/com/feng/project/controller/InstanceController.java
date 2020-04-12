@@ -61,9 +61,9 @@ public class InstanceController {
         return new ModelAndView("admin/instance-list","model",model);
     }
 
-    @RequestMapping("/instance/listByTaskId/{taskId}")
-    public ModelAndView findListByTaskId(@PathVariable Integer taskId,Model model){
-        model.addAttribute("list",instanceService.findAllByTaskId(taskId));
+    @RequestMapping("/instance/listByJobId/{id}")
+    public ModelAndView findListByTaskId(@PathVariable Integer id,Model model){
+        model.addAttribute("list",instanceService.findAllByCronjobId(id));
         return new ModelAndView("admin/instance-list","model",model);
     }
 }

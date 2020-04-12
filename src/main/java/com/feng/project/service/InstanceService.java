@@ -124,5 +124,5 @@ public class InstanceService {
         return instanceRepository.getOne(id);
     }
 
-    public List<Instance> findAllByTaskId(Integer taskId){return instanceRepository.findAllByTaskId(taskId);}
+    public List<Instance> findAllByCronjobId(Integer cronjobId){return instanceRepository.findAllByCronjobId(cronjobId);}
 }

@@ -257,7 +257,7 @@
                                             <li class="last"><a th:href="@{'/cron/trigger/'+${job.id}}">执行一次</a></li>
                                             <li><a th:href="@{'/cron/status/'+${job.id}}" th:text="${job.isRunning}==1? '停止任务':'启动任务'"></a></li>
                                          
-                                            <li class="last"><a th:href="@{'/instance/listByTaskId/'+${job.taskId}}">查看实例</a></li>
+                                            <li class="last"><a th:href="@{'/instance/listByJobId/'+${job.id}}">查看实例</a></li>
                                             <li class="last"><a th:href="@{'/cron/delete/'+${job.id}}">删除任务</a></li>
                                         </ul>
                                     </td>
