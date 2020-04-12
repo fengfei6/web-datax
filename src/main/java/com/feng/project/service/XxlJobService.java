@@ -33,7 +33,7 @@ public class XxlJobService {
         //一致性HASH
         linkedMultiValueMap.add("executorRouteStrategy", "CONSISTENT_HASH");
 
-        linkedMultiValueMap.add("glueType", "GLUE_PYTHON");
+        linkedMultiValueMap.add("glueType", "GLUE_SHELL");
 
         linkedMultiValueMap.add("executorParam", "");
 
