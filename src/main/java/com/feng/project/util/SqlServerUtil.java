@@ -213,6 +213,34 @@ public class SqlServerUtil {
 		}
 	}
 
+	public static List<List<Object>> getTableData(Connection conn,String name){
+		if(conn == null) {return null;}
+		List<List<Object>> result = new ArrayList<>();
+		List<Object> list = new ArrayList<>();
+		for(String column:getColumn(conn, name).keySet()) {
+        	list.add(column);
+        }
+		result.add(list);
+		list = new ArrayList<>();
+		PreparedStatement stmt;
+        try {
+            stmt = conn.prepareStatement("select top 10 * from "+name);
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                for(String col:getColumn(conn, name).keySet()) {
+                	Object data = rs.getObject(col);
+                	list.add(data);
+                }
+                result.add(list);
+                list = new ArrayList<>();
+            }
+        } catch (SQLException e) {
+            return null;
+        }finally {
+        	return result;
+        }
+	}
+	
 	public static void main(String[] args) {
 		Datasource ds = new Datasource("192.144.129.188","1433","demo","sa","FFei916#");
 		System.out.println(isConn(ds));

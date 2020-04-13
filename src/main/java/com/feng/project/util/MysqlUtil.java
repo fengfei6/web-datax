@@ -220,25 +220,34 @@ public class MysqlUtil {
         	return count;
         }
 	}
+
 	
-	public static List<List<Object>> showTableData(Connection conn,String name,Set<String> set) throws SQLException{
+	public static List<List<Object>> getTableData(Connection conn,String name){
+		if(conn == null) {return null;}
 		List<List<Object>> result = new ArrayList<>();
 		List<Object> list = new ArrayList<>();
-		PreparedStatement stmt = conn.prepareStatement("select * from "+name+" limit 10");
-		ResultSet rs = stmt.executeQuery();
-		for(String column:set) {
+		for(String column:getColumn(getMetaDate(conn), name).keySet()) {
         	list.add(column);
         }
+		result.add(list);
 		list = new ArrayList<>();
-		while (rs.next()) {
-            for(String column:set) {
-            	Object obj = rs.getObject(column);
-            	list.add(obj);
+		PreparedStatement stmt;
+        try {
+            stmt = conn.prepareStatement("select * from "+name+" limit 10");
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                for(String col:getColumn(getMetaDate(conn), name).keySet()) {
+                	Object data = rs.getObject(col);
+                	list.add(data);
+                }
+                result.add(list);
+                list = new ArrayList<>();
             }
-            result.add(list);
-            list = new ArrayList<>();
+        } catch (SQLException e) {
+            return null;
+        }finally {
+        	return result;
         }
-		return result;
 	}
 	
 	public static void main(String[] args) throws SQLException {

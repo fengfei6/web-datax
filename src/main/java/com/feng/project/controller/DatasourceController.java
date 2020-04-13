@@ -351,28 +351,20 @@ public class DatasourceController {
         return new ModelAndView("admin/database-list","model",model);
     }
     
-    @RequestMapping("/datasource/showTableData/{id}/{name}")
-    public ModelAndView getTableData(@PathVariable String name,@PathVariable Integer id,Model model) throws Exception {
+    @RequestMapping("/datasource/showTableData/{id}/{tableName}")
+    public ModelAndView getTableDate(@PathVariable Integer id,@PathVariable String tableName,Model model) {
     	Datasource datasource = datasourceService.getDatasource(id);
-        Connection conn = null;
-        Map<String, String> map = new HashMap<>();
-        if(datasource.getType().equalsIgnoreCase("mysql")){
-            conn = MysqlUtil.getConn(datasource);
-            map = MysqlUtil.getColumn(MysqlUtil.getMetaDate(conn), name);
-        }else if(datasource.getType().equalsIgnoreCase("oracle")){
-            conn = OracleUtil.getConn(datasource);
-            map = OracleUtil.getColumn(conn,name);
-        }else if(datasource.getType().equalsIgnoreCase("sqlserver")){
-            conn = SqlServerUtil.getConn(datasource);
-            map = SqlServerUtil.getColumn(conn,name);
-        }else if(datasource.getType().equalsIgnoreCase("postgresql")){
-            conn = PostgreSqlUtil.getConn(datasource);
-            map = PostgreSqlUtil.getColumn(conn, name);
-        }
-        List<List<Object>> data = MysqlUtil.showTableData(conn, name, map.keySet());
-        model.addAttribute("datas", data);
-        model.addAttribute("tableName", name);
-        model.addAttribute("columns", map.keySet());
-        return new ModelAndView("admin/show-table-data","model",model);
+    	List<List<Object>> result = new ArrayList<>();
+    	if(datasource.getType().equalsIgnoreCase("mysql")) {
+    		result = MysqlUtil.getTableData(MysqlUtil.getConn(datasource), tableName);
+    	}else if(datasource.getType().equalsIgnoreCase("oracle")) {
+    		result = OracleUtil.getTableData(OracleUtil.getConn(datasource), tableName);
+    	}else if(datasource.getType().equalsIgnoreCase("sqlserver")) {
+    		result = SqlServerUtil.getTableData(SqlServerUtil.getConn(datasource), tableName);
+    	}else if(datasource.getType().equalsIgnoreCase("postgresql")) {
+    		result = PostgreSqlUtil.getTableData(PostgreSqlUtil.getConn(datasource), tableName);
+    	}
+    	model.addAttribute("result", result);
+    	return new ModelAndView("admin/show-table-data","model",model);
     }
 }
