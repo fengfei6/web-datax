@@ -57,7 +57,7 @@ public class JobController {
         Job job = jobService.getOne(id);
         JobUtil.getJsonFileByContent(job);
         Connection conn = DataxUtil.login("192.144.129.188", "root", "FFei916#");
-        DataxUtil.transferFile(conn, "src/main/resources/static/file/"+job.getName()+".json", "/root/datax/job");
+        DataxUtil.transferFile(conn, "src/main/resources/static/file/"+job.getName()+"_"+job.getUserId()+".json", "/root/datax/job");
         String result = DataxUtil.execmd(conn, "python /root/datax/bin/datax.py /root/datax/job/"+job.getName()+"_"+job.getUserId()+".json");
         JobLog jobLog = new JobLog(id,job.getName(),result,new Date());
         jobLogService.save(jobLog);
