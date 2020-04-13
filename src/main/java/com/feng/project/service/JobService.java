@@ -16,7 +16,6 @@ public class JobService {
     
     public void save(Job job) {
     	job.setCreateTime(new Date());
-    	job.setUpdateTime(new Date());
     	jobRepository.save(job);
     }
     
@@ -25,7 +24,6 @@ public class JobService {
     }
     
     public void update(Job job) {
-    	job.setUpdateTime(new Date());
     	jobRepository.save(job);
     }
     
@@ -44,4 +42,6 @@ public class JobService {
     public List<Job> findJobsByNameAndUserId(String name,Integer userId){return jobRepository.findJobsByNameAndUserId(name,userId);}
 
     public List<Job> findJobsByUserId(Integer userId){return jobRepository.findJobsByUserId(userId);}
+
+    public Job getJobByNameAndUserId(String name,Integer userId){ return jobRepository.getJobByNameAndUserId(name,userId);}
 }

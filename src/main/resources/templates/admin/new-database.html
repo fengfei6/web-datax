@@ -122,28 +122,30 @@
         <li>
             <a class="dropdown-toggle">
                 <i class="icon-edit"></i>
-                <span>新增同步任务</span>
+                <span>同步/调度任务</span>
                 <i class="icon-chevron-down"></i>
             </a>
             <ul class="submenu">
-
-                <li><a href="/admin/job-file">文件上传</a></li>
-                <li><a href="/job/prepare">表格信息</a></li>
-                <li><a href="/job/jobList">同步任务管理</a></li>
+                <li><a href="/cron/prepare">新建任务</a></li>
+                <li><a href="/cron/cronjobList">任务管理</a></li>
             </ul>
         </li>
         <li>
             <a class="dropdown-toggle">
                 <i class="icon-edit"></i>
-                <span>新增调度任务</span>
+                <span>其他同步任务</span>
                 <i class="icon-chevron-down"></i>
             </a>
             <ul class="submenu">
-
-                <li><a href="/admin/cronjob-file">文件上传</a></li>
-                <li><a href="/cron/prepare">表格信息</a></li>
-                <li><a href="/cron/cronjobList">调度任务管理</a></li>
+                <li><a href="/admin/job-file">文件上传</a></li>
+                <li><a href="/job/jobList">任务管理</a></li>
             </ul>
+        </li>
+        <li>
+            <a th:href="@{'/instance/list'}">
+                <i class="icon-cog"></i>
+                <span>实例管理</span>
+            </a>
         </li>
         <li>
             <a th:href="@{'/user/edit/'+${session.user.id}}">
@@ -167,16 +169,7 @@
 <!-- end sidebar -->
 	<!-- main container -->
     <div class="content">
-        
-        <!-- settings changer -->
-        <div class="skins-nav">
-            <a href="#" class="skin first_nav selected">
-                <span class="icon"></span><span class="text">Default</span>
-            </a>
-            <a href="#" class="skin second_nav" data-file="css/skins/dark.css">
-                <span class="icon"></span><span class="text">Dark skin</span>
-            </a>
-        </div>
+
 
         <div class="container-fluid">
             <div id="pad-wrapper" class="new-user">

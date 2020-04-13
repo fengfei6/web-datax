@@ -126,28 +126,30 @@
         <li>
             <a class="dropdown-toggle">
                 <i class="icon-edit"></i>
-                <span>新增同步任务</span>
+                <span>同步/调度任务</span>
                 <i class="icon-chevron-down"></i>
             </a>
             <ul class="submenu">
-
-                <li><a href="/admin/job-file">文件上传</a></li>
-                <li><a href="/job/prepare">表格信息</a></li>
-                <li><a href="/job/jobList">同步任务管理</a></li>
+                <li><a href="/cron/prepare">新建任务</a></li>
+                <li><a href="/cron/cronjobList">任务管理</a></li>
             </ul>
         </li>
         <li>
             <a class="dropdown-toggle">
                 <i class="icon-edit"></i>
-                <span>新增调度任务</span>
+                <span>其他同步任务</span>
                 <i class="icon-chevron-down"></i>
             </a>
             <ul class="submenu">
-
-                <li><a href="/admin/cronjob-file">文件上传</a></li>
-                <li><a href="/cron/prepare">表格信息</a></li>
-                <li><a href="/cron/cronjobList">调度任务管理</a></li>
+                <li><a href="/admin/job-file">文件上传</a></li>
+                <li><a href="/job/jobList">任务管理</a></li>
             </ul>
+        </li>
+        <li>
+            <a th:href="@{'/instance/list'}">
+                <i class="icon-cog"></i>
+                <span>实例管理</span>
+            </a>
         </li>
         <li>
             <a th:href="@{'/user/edit/'+${session.user.id}}">
@@ -171,16 +173,6 @@
 <!-- end sidebar -->
 	<!-- main container -->
     <div class="content">
-        
-        <!-- settings changer -->
-        <div class="skins-nav">
-            <a href="#" class="skin first_nav selected">
-                <span class="icon"></span><span class="text">Default</span>
-            </a>
-            <a href="#" class="skin second_nav" data-file="css/skins/dark.css">
-                <span class="icon"></span><span class="text">Dark skin</span>
-            </a>
-        </div>
         
         <div class="container-fluid">
             <div id="pad-wrapper">
@@ -232,6 +224,7 @@
                                                 <label>文件内容显示,请确定:</label>
                                                 <textarea class="span4" id="content" style="width:1000px;height:500px" disabled ></textarea>
                                                 <input type="hidden" name="jsonContent" id="con"/>
+                                                <input type="button"  value="check" onclick="check()" id="button"/>
                                             </div>
                                         
                                     </div>
@@ -356,6 +349,43 @@
                 })
             });
         })
+
+            function check(){
+                var text_value = document.getElementById('content').value;
+                if(text_value == ""){
+                    alert("不能为空");
+                    return false;
+                } else {
+                    var res="";
+                    for(var i=0,j=0,k=0,ii,ele;i<text_value.length;i++)
+                    {//k:缩进，j:""个数
+                        ele=text_value.charAt(i);
+                        if(j%2==0&&ele=="}")
+                        {
+                            k--;
+                            for(ii=0;ii<k;ii++) ele="    "+ele;
+                            ele="\n"+ele;
+                        }
+                        else if(j%2==0&&ele=="{")
+                        {
+                            ele+="\n";
+                            k++;
+                            debugger;
+                            for(ii=0;ii<k;ii++) ele+="    ";
+                        }
+                        else if(j%2==0&&ele==",")
+                        {
+                            ele+="\n";
+                            for(ii=0;ii<k;ii++) ele+="    ";
+                        }
+                        else if(ele=="\"") j++;
+                        res+=ele;
+                    }
+                    document.getElementById('content').value = res;
+                    document.getElementById('jsonContent').value = res;
+                    document.getElementById('button').setAttribute("disabled","disabled");
+                }
+            }
     </script>
 
 </body>

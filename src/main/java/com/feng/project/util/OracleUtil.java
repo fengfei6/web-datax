@@ -171,6 +171,34 @@ public class OracleUtil {
         }
     }
 
+	public static List<List<Object>> getTableData(Connection conn,String name){
+		if(conn == null) {return null;}
+		List<List<Object>> result = new ArrayList<>();
+		List<Object> list = new ArrayList<>();
+		for(String column:getColumn(conn, name).keySet()) {
+        	list.add(column);
+        }
+		result.add(list);
+		list = new ArrayList<>();
+		PreparedStatement stmt;
+        try {
+            stmt = conn.prepareStatement("select rownum,x.* from "+name+" x where rownum <=10");
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                for(String col:getColumn(conn, name).keySet()) {
+                	Object data = rs.getObject(col);
+                	list.add(data);
+                }
+                result.add(list);
+                list = new ArrayList<>();
+            }
+        } catch (SQLException e) {
+            return null;
+        }finally {
+        	return result;
+        }
+	}
+    
     public static void main(String[] args) throws Exception {
         // TODO Auto-generated method stub
         Datasource database = new Datasource("192.144.129.188","1521","xe","FENGFEI","FFei916#");

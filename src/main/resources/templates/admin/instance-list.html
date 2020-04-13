@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-	<title>Job List</title>
+	<title>Instance List</title>
     
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 	
@@ -179,7 +179,7 @@
                 <div class="table-wrapper products-table section">
                     <div class="row-fluid head">
                         <div class="span12">
-                            <h4>任务</h4>
+                            <h4>实例</h4>
                         </div>
                     </div>
 
@@ -190,7 +190,7 @@
                             <div class="ui-dropdown" data-toggle="tooltip" title="Click me!">
                                 <input type="submit" class="btn-flat" value="搜索">
                             </div>
-                            <a class="btn-flat success new-product" th:href="@{/admin/job-file}">创建任务</a>
+                            <a class="btn-flat success new-product" th:href="@{/instance/flush}">刷新实例</a>
                         </div>
                         </form>
                     </div>
@@ -199,22 +199,22 @@
                             <thead>
                                 <tr>
                                     <th class="span3">
-                                       任务
+                                       实例
                                     </th>
                                     <th class="span3">
-                                        <span class="line"></span>名称
+                                        <span class="line"></span>任务名称
                                     </th>
                                     <th class="span3">
-                                        <span class="line"></span>描述
+                                        <span class="line"></span>调度cron
                                     </th> 
                                     <th class="span3">
-                                        <span class="line"></span>来源数据源
+                                        <span class="line"></span>触发时间
                                     </th>
                                     <th class="span3">
-                                        <span class="line"></span>目的数据源
+                                        <span class="line"></span>执行完时间
                                     </th>
                                     <th class="span3">
-                                        <span class="line"></span>创建时间
+                                        <span class="line"></span>状态
                                     </th> 
                                     <th class="span3">
                                         <span class="line"></span>操作
@@ -224,31 +224,25 @@
                             <tbody>
                                 <!-- row -->
                         
-                                <tr class="first" th:each="job:${model.joblist}">
+                                <tr class="first" th:each="instance,stat:${model.list}">
                                     <td>
                                    		 <div class="img">
                                             <img th:src="@{/img/logo.jpg}" />
                                         </div>
-                                        <a id="jobId" href="#" th:value="${job.id}" th:text="${job.id}?${job.id}:''"></a>
+                                        <a id="jobId" href="#" th:text="${stat.index}+1"></a>
                                     </td>
-                                    <td class="description" th:text="${job.name}?${job.name}:''">
+                                    <td class="description" th:text="${instance.name}?${instance.name}:''">
                                     </td>
-                                    <td class="description" th:text="${job.description}?${job.description}:''">
+                                    <td class="description" th:text="${instance.cronExpression}?${instance.cronExpression}:''">
                                     </td>
-                                    <td class="description" th:text="${job.readerDbType}? ${job.readerDbType}:''">
+                                    <td class="description" th:text="${instance.triggerTime}? ${instance.triggerTime}:''">
                                     </td>
-                                    <td class="description" th:text="${job.writerDbType}? ${job.writerDbType}:''">
+                                    <td class="description" th:text="${instance.handleTime}? ${instance.handleTime}:''">
                                     </td>
-                                    <td class="description" th:text="${job.createTime}? ${job.createTime}:''">
+                                    <td class="description" th:text="${instance.status}? ${instance.status}:''">
                                     </td>
                                     <td class="description">
-                                        <ul class="action">
-                                       
-                                            <li><a th:href="@{'/job/execJob/'+${job.id}}">开始执行</a></li>
-                                         
-                                            <li class="last"><a th:href="@{'/joblog/joblogs/'+${job.id}}">日志列表</a></li>
-                                            <li class="last"><a th:href="@{'/job/delete/'+${job.id}}">删除任务</a></li>
-                                        </ul>
+                                        <li class="last"><a th:href="@{'/instance/content/'+${instance.id}}">查看日志</a></li>
                                     </td>
                                 </tr>
                             </tbody>

@@ -13,29 +13,11 @@ public class Job {
     private Integer id;
     private String name;
     private String description;
-    private String querySql;
-    private Integer readerDbId;
-    private String readerTable;
-    private String readerColumn;
-    private Integer writerDbId;
-    private String writerTable;
-    private String writerColumn;
-    private String writerPresql;
-    private String writerPostsql;
-    private String isSchedule;
-    private String cronExpress;
+    private String readerDbType;
+    private String writerDbType;
     private String jsonContent;
     private Date createTime;
-    private Date updateTime;
     private Integer userId;
-
-    public Integer getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Integer userId) {
-        this.userId = userId;
-    }
 
     public Integer getId() {
         return id;
@@ -61,92 +43,20 @@ public class Job {
         this.description = description;
     }
 
-    public String getQuerySql() {
-        return querySql;
+    public String getReaderDbType() {
+        return readerDbType;
     }
 
-    public void setQuerySql(String querySql) {
-        this.querySql = querySql;
+    public void setReaderDbType(String readerDbType) {
+        this.readerDbType = readerDbType;
     }
 
-    public Integer getReaderDbId() {
-        return readerDbId;
+    public String getWriterDbType() {
+        return writerDbType;
     }
 
-    public void setReaderDbId(Integer readerDbId) {
-        this.readerDbId = readerDbId;
-    }
-
-    public String getReaderTable() {
-        return readerTable;
-    }
-
-    public void setReaderTable(String readerTable) {
-        this.readerTable = readerTable;
-    }
-
-    public String getReaderColumn() {
-        return readerColumn;
-    }
-
-    public void setReaderColumn(String readerColumn) {
-        this.readerColumn = readerColumn;
-    }
-
-    public Integer getWriterDbId() {
-        return writerDbId;
-    }
-
-    public void setWriterDbId(Integer writerDbId) {
-        this.writerDbId = writerDbId;
-    }
-
-    public String getWriterTable() {
-        return writerTable;
-    }
-
-    public void setWriterTable(String writerTable) {
-        this.writerTable = writerTable;
-    }
-
-    public String getWriterColumn() {
-        return writerColumn;
-    }
-
-    public void setWriterColumn(String writerColumn) {
-        this.writerColumn = writerColumn;
-    }
-
-    public String getWriterPresql() {
-        return writerPresql;
-    }
-
-    public void setWriterPresql(String writerPresql) {
-        this.writerPresql = writerPresql;
-    }
-
-    public String getWriterPostsql() {
-        return writerPostsql;
-    }
-
-    public void setWriterPostsql(String writerPostsql) {
-        this.writerPostsql = writerPostsql;
-    }
-
-    public String getIsSchedule() {
-        return isSchedule;
-    }
-
-    public void setIsSchedule(String isSchedule) {
-        this.isSchedule = isSchedule;
-    }
-
-    public String getCronExpress() {
-        return cronExpress;
-    }
-
-    public void setCronExpress(String cronExpress) {
-        this.cronExpress = cronExpress;
+    public void setWriterDbType(String writerDbType) {
+        this.writerDbType = writerDbType;
     }
 
     public String getJsonContent() {
@@ -165,34 +75,11 @@ public class Job {
         this.createTime = createTime;
     }
 
-    public Date getUpdateTime() {
-        return updateTime;
+    public Integer getUserId() {
+        return userId;
     }
 
-    public void setUpdateTime(Date updateTime) {
-        this.updateTime = updateTime;
-    }
-
-    public Job() {
-    }
-
-    public Job(String name, String description, String querySql, Integer readerDbId, String readerTable, String readerColumn, Integer writerDbId, String writerTable, String writerColumn, String writerPresql, String writerPostsql, String isSchedule, String cronExpress, String jsonContent, Date createTime, Date updateTime, Integer userId) {
-        this.name = name;
-        this.description = description;
-        this.querySql = querySql;
-        this.readerDbId = readerDbId;
-        this.readerTable = readerTable;
-        this.readerColumn = readerColumn;
-        this.writerDbId = writerDbId;
-        this.writerTable = writerTable;
-        this.writerColumn = writerColumn;
-        this.writerPresql = writerPresql;
-        this.writerPostsql = writerPostsql;
-        this.isSchedule = isSchedule;
-        this.cronExpress = cronExpress;
-        this.jsonContent = jsonContent;
-        this.createTime = createTime;
-        this.updateTime = updateTime;
+    public void setUserId(Integer userId) {
         this.userId = userId;
     }
 
@@ -202,21 +89,24 @@ public class Job {
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", description='" + description + '\'' +
-                ", querySql='" + querySql + '\'' +
-                ", readerDbId=" + readerDbId +
-                ", readerTable='" + readerTable + '\'' +
-                ", readerColumn='" + readerColumn + '\'' +
-                ", writerDbId=" + writerDbId +
-                ", writerTable='" + writerTable + '\'' +
-                ", writerColumn='" + writerColumn + '\'' +
-                ", writerPresql='" + writerPresql + '\'' +
-                ", writerPostsql='" + writerPostsql + '\'' +
-                ", isSchedule='" + isSchedule + '\'' +
-                ", cronExpress='" + cronExpress + '\'' +
+                ", readerDbType='" + readerDbType + '\'' +
+                ", writerDbType='" + writerDbType + '\'' +
                 ", jsonContent='" + jsonContent + '\'' +
                 ", createTime=" + createTime +
-                ", updateTime=" + updateTime +
                 ", userId=" + userId +
                 '}';
+    }
+
+    public Job() {
+    }
+
+    public Job(String name, String description, String readerDbType, String writerDbType, String jsonContent, Date createTime, Integer userId) {
+        this.name = name;
+        this.description = description;
+        this.readerDbType = readerDbType;
+        this.writerDbType = writerDbType;
+        this.jsonContent = jsonContent;
+        this.createTime = createTime;
+        this.userId = userId;
     }
 }

@@ -37,35 +37,7 @@ public class JobController {
     @Autowired
     private JobService jobService;
     @Autowired
-    private DatasourceService datasourceService;
-    @Autowired
     private JobLogService jobLogService;
-    
-    @RequestMapping("/job/prepare")
-    public ModelAndView findAllDatasource(Model model,HttpSession session){
-        User user = (User)session.getAttribute("user");
-        List<Datasource> list = new ArrayList<>();
-        if(user.getRole().equalsIgnoreCase("admin")) {
-            list = datasourceService.findAll();
-        }else if(user.getRole().equalsIgnoreCase("user")){
-            list = datasourceService.findDatasourcesByUserId(user.getId());
-        }
-        model.addAttribute("datalist", list);
-        return new ModelAndView("admin/new-job","model",model);
-    }
-
-    @PostMapping("/job/saveJob")
-    public ModelAndView saveOrUpdate(Job job, HttpSession session, Model model){
-        User user = (User)session.getAttribute("user");
-        if(job.getId()==null) {
-            job.setUserId(user.getId());
-            jobService.save(job);
-        }else {
-            jobService.save(job);
-        }
-        model.addAttribute("joblist",jobService.findAll());
-        return new ModelAndView("admin/job-list","model",model);
-    }
 
     @RequestMapping("/job/jobList")
     public ModelAndView findAllJob(Model model,HttpSession session){
@@ -83,16 +55,10 @@ public class JobController {
     @RequestMapping("/job/execJob/{id}")
     public ModelAndView doJobOnce(@PathVariable Integer id,Model model) throws IOException {
         Job job = jobService.getOne(id);
-        if(job.getJsonContent() == null) {
-            JobUtil.getJsonfile(datasourceService.getDatasource(
-                    job.getReaderDbId()), datasourceService.getDatasource(job.getWriterDbId()),
-                    job);
-        }else{
-            JobUtil.getJsonFileByContent(job);
-        }
+        JobUtil.getJsonFileByContent(job);
         Connection conn = DataxUtil.login("192.144.129.188", "root", "FFei916#");
         DataxUtil.transferFile(conn, "src/main/resources/static/file/"+job.getName()+".json", "/root/datax/job");
-        String result = DataxUtil.execmd(conn, "python /root/datax/bin/datax.py /root/datax/job/"+job.getName()+".json",job.getName());
+        String result = DataxUtil.execmd(conn, "python /root/datax/bin/datax.py /root/datax/job/"+job.getName()+"_"+job.getUserId()+".json");
         JobLog jobLog = new JobLog(id,job.getName(),result,new Date());
         jobLogService.save(jobLog);
         model.addAttribute("jobLog",result);
@@ -102,14 +68,8 @@ public class JobController {
     @RequestMapping("/job/addFileJob")
     public ModelAndView addFileJob(Job job, Model model,HttpSession session){
         Map<String,String> map = JsonUtil.testComplexJSONStrToJSONObject(job.getJsonContent());
-        job.setReaderTable(map.get("tabler"));
-        job.setWriterTable(map.get("tablew"));
-        String[] params = JsonUtil.getParamsArray(map.get("reader"));
-        Datasource datasource = datasourceService.findDatasourceByDbnameAndIpAndPort(params[0],params[1],params[2]);
-        job.setReaderDbId(datasource.getId());
-        params = JsonUtil.getParamsArray(map.get("writer"));
-        datasource = datasourceService.findDatasourceByDbnameAndIpAndPort(params[0],params[1],params[2]);
-        job.setWriterDbId(datasource.getId());
+        job.setReaderDbType(map.get("reader").replace("reader", ""));
+        job.setWriterDbType(map.get("writer").replace("writer", ""));
         User user = (User)session.getAttribute("user");
         job.setUserId(user.getId());
         jobService.save(job);
@@ -139,9 +99,10 @@ public class JobController {
 
     @ResponseBody
     @RequestMapping("/job/getJobByName")
-    public String getJobByName(String name){
-        if(jobService.findJobByName(name) != null){
-            return "名称已存在";
+    public String getJobByName(String name,HttpSession session){
+        User user = (User)session.getAttribute("user");
+        if(jobService.getJobByNameAndUserId(name,user.getId()) != null){
+            return "名称已存在，重新输入";
         }else{
             return "";
         }

@@ -64,4 +64,8 @@ public class DatasourceService {
     public List<Datasource> findDatasourcesByUserId(Integer userId){
         return datasourceRepository.findDatasourcesByUserId(userId);
     }
+    
+    public Datasource getDatasourceByDbnameAndUserId(String dbname,Integer userId){
+        return datasourceRepository.getDatasourceByDbnameAndUserId(dbname,userId);
+    }
 }

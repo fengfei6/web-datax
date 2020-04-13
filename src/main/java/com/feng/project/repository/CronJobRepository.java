@@ -1,7 +1,6 @@
 package com.feng.project.repository;
 
 import com.feng.project.domain.CronJob;
-import org.checkerframework.checker.units.qual.C;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -25,4 +24,8 @@ public interface CronJobRepository extends JpaRepository<CronJob,Integer> {
     List<CronJob> findCronJobsByNameAndIsRunningAndUserId(String name,Integer isRunning,Integer userId);
 
     List<CronJob> findCronJobsByUserId(Integer userId);
+
+    CronJob getCronJobByNameAndUserId(String name,Integer userId);
+
+    CronJob getCronJobByTaskId(Integer taskId);
 }

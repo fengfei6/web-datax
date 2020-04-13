@@ -1,30 +1,14 @@
 package com.feng.project.util;
 
-import java.sql.Connection;
-import java.sql.DatabaseMetaData;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Set;
+import java.sql.*;
+import java.util.*;
 
 import com.feng.project.connector.Connector;
-import com.feng.project.connector.MysqlConnector;
-import com.feng.project.connector.OracleConnector;
+import com.feng.project.connector.PostgreSQLConnector;
+import com.feng.project.connector.SqlServerConnector;
 import com.feng.project.domain.Datasource;
 
-
-
-
-public class MysqlUtil {
+public class SqlServerUtil {
 
 	/**
 	 * @param datasource
@@ -33,7 +17,7 @@ public class MysqlUtil {
 	 * @throws Exception
 	 */
 	public static boolean isConn(Datasource datasource){
-		Connector connector = new MysqlConnector();
+		Connector connector = new SqlServerConnector();
 		Connection conn = null;
 		try {
 			Class.forName(connector.getDriver());
@@ -48,7 +32,7 @@ public class MysqlUtil {
 		}
 		return false;
 	}
-	
+
 	/**
 	 * @param
 	 * @param
@@ -56,7 +40,7 @@ public class MysqlUtil {
 	 * @throws Exception
 	 */
 	public static Connection getConn(Datasource datasource){
-		Connector connector = new MysqlConnector();
+		Connector connector = new SqlServerConnector();
 		Connection conn = null;
 		try {
 			Class.forName(connector.getDriver());
@@ -67,7 +51,7 @@ public class MysqlUtil {
 		}
 		return conn;
 	}
-	
+
 	/**
 	 * @param conn
 	 * @return
@@ -84,87 +68,112 @@ public class MysqlUtil {
 		}
 		return databaseMetaData;
 	}
-	
+
+	public static Map<String,Integer> getTables(Connection conn,String dbname) {
+		Map<String, Integer> map = new HashMap<>();
+		PreparedStatement stmt;
+		String createSql = "SELECT name FROM "+dbname+"..sysobjects Where xtype='U' ORDER BY name";
+		try {
+			stmt = conn.prepareStatement(createSql);
+			ResultSet rs = stmt.executeQuery();
+			while (rs.next()) {
+				String name = rs.getString("name");
+				int count = getTablesCount(conn,name);
+				map.put(name,count);
+			}
+		} catch (SQLException e) {
+			e.getMessage();
+		}finally {
+			return map;
+		}
+	}
+
+	public static Integer getTablesCount(Connection conn,String name) {
+		PreparedStatement stmt;
+		String createSql = "SELECT count(1) as cou from ["+name+"]";
+		int count = 0;
+		try {
+			stmt = conn.prepareStatement(createSql);
+			ResultSet rs = stmt.executeQuery();
+			while (rs.next()) {
+				count = rs.getInt("cou");
+			}
+		} catch (SQLException e) {
+			return count;
+		}finally {
+			return count;
+		}
+	}
+
+	public static Map<String,String> getColumn(Connection conn,String tableName) {
+		Map<String,String> map = new HashMap<>();
+		PreparedStatement stmt;
+		String createSql = "SELECT a.name name,b.name type\n" +
+				"FROM  syscolumns a \n" +
+				"left join systypes b on a.xtype=b.xusertype  \n" +
+				"inner join sysobjects d on a.id=d.id and d.xtype='U' and d.name<>'dtproperties' \n" +
+				"where b.name is not null and d.name='"+tableName+"'";
+		try {
+			stmt = conn.prepareStatement(createSql);
+			ResultSet rs = stmt.executeQuery();
+			while (rs.next()) {
+				String name = rs.getString("name");
+				String type = rs.getString("type");
+				map.put(name,type);
+			}
+		} catch (SQLException e) {
+			return map;
+		}finally {
+			return map;
+		}
+	}
+
 	/**
 	 * @param
-	 * @return
-	 * @throws SQLException
-	 */
-	public static Map<String,Integer> getTables(Connection conn){
-		if(conn == null ) {return null;}
-		DatabaseMetaData metaData = getMetaDate(conn);
-		Map<String,Integer> map = new HashMap<String,Integer>();
-		ResultSet tables;
-		try {
-			tables = metaData.getTables(null, null, "%", new String[] { "TABLE" });
-			while (tables.next()) {
-				String TABLE_NAME = tables.getString("TABLE_NAME");
-				Integer count = execute(conn, "select * from "+TABLE_NAME);
-				map.put(TABLE_NAME, count);
-			}
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return map;
-	}
-	
-	/**
-	 * @param metaData
 	 * @param tableName
 	 * @return
 	 * @throws SQLException
 	 */
-	public static Map<String,String> getColumn(DatabaseMetaData metaData,String tableName){
-		if(metaData == null ) {return null;}
-		Map<String,String> map = new HashMap<>();
-		ResultSet columns;
+	public static List<String> getPrimaryKey(Connection conn,String tableName){
+		List<String> PrimaryKeysist = new ArrayList<String>();
+		String createSql = "select name from (SELECT a.name name,\n" +
+				"(case when (SELECT count(*) FROM sysobjects  \n" +
+				"WHERE (name in (SELECT name FROM sysindexes  \n" +
+				"WHERE (id = a.id) AND (indid in  \n" +
+				"(SELECT indid FROM sysindexkeys  \n" +
+				"WHERE (id = a.id) AND (colid in  \n" +
+				"(SELECT colid FROM syscolumns WHERE (id = a.id) AND (name = a.name)))))))  \n" +
+				"AND (xtype = 'PK'))>0 then 'y' else 'n' end) pk\n" +
+				"FROM  syscolumns a \n" +
+				"left join systypes b on a.xtype=b.xusertype  \n" +
+				"inner join sysobjects d on a.id=d.id and d.xtype='U' and d.name<>'dtproperties' \n" +
+				"where b.name is not null and d.name='"+tableName+"') x where x.pk='y'";
+		PreparedStatement stmt;
 		try {
-			columns = metaData.getColumns(null, "%", tableName, "%");
-			while (columns.next()) {
-				String COLUMN_NAME = columns.getString("COLUMN_NAME");
-				String TYPE_NAME = columns.getString("TYPE_NAME");
-				map.put(COLUMN_NAME,TYPE_NAME);
+			stmt = conn.prepareStatement(createSql);
+			ResultSet rs = stmt.executeQuery();
+			while (rs.next()) {
+				String COLUMN_NAME = rs.getString("name");
+				PrimaryKeysist.add(COLUMN_NAME);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		return map;
-	}
-	
-	/**
-	 * @param metaData
-	 * @param tableName
-	 * @return
-	 * @throws SQLException
-	 */
-	public static List<String> getPrimaryKey(DatabaseMetaData metaData,String tableName){
-		if(metaData == null ) {return null;}
-		List<String> PrimaryKeysist = new ArrayList<String>();	
-		ResultSet PrimaryKeys;
-		try {
-			PrimaryKeys = metaData.getPrimaryKeys(null, "%", tableName);
-			while (PrimaryKeys.next()) {			
-				String COLUMN_NAME = PrimaryKeys.getString("COLUMN_NAME");	
-				PrimaryKeysist.add(COLUMN_NAME);	
-			}	
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}	
 		return PrimaryKeysist;
 	}
-	
+
+
 	/**
 	 * @param name
 	 * @param map
 	 * @return
-	 * @throws SQLException 
+	 * @throws SQLException
 	 */
 	public static String createTable(List<String> keys,String name,Map<String,String> map){
 		int count = 0;
 		StringBuilder sb = new StringBuilder();
 		sb.append("create table "+name+" (");
-		for(Entry<String, String> entry : map.entrySet()) {
+		for(Map.Entry<String, String> entry : map.entrySet()) {
 			count++;
 			if(keys.contains(entry.getKey()) && count == map.size()) {
 				sb.append(entry.getKey()+" "+entry.getValue()+" primary key )");
@@ -176,10 +185,9 @@ public class MysqlUtil {
 				sb.append(entry.getKey()+" "+entry.getValue()+",");
 			}
 		}
-		return sb.toString().replace("varchar", "varchar(255)")
-				.replace("VARCHAR", "VARCHAR(255)");
+		return sb.toString().replace("varchar", "varchar(255)");
 	}
-	
+
 	/**
 	 * @param conn
 	 * @param createSql
@@ -189,7 +197,7 @@ public class MysqlUtil {
 		if(conn == null) { return false;}
 		Statement stmt;
 		try {
-			stmt = conn.createStatement(); 
+			stmt = conn.createStatement();
 			stmt.executeUpdate(createSql);
 			return true;
 		} catch (SQLException e) {
@@ -197,46 +205,29 @@ public class MysqlUtil {
 			e.printStackTrace();
 			return false;
 		}finally {
-            try {
-                conn.close();
-            } catch (Exception e) {
-                System.out.println(e.getMessage());
-            }
-        }
-	}
-	
-	public static Integer execute(Connection conn, String createSql) {
-		int count = 0;
-        PreparedStatement stmt;
-        try {
-            stmt = conn.prepareStatement(createSql);
-            ResultSet rs = stmt.executeQuery(createSql);
-            while (rs.next()) {
-                count++;
-            }
-        } catch (SQLException e) {
-            return 0;
-        }finally {
-        	return count;
-        }
+			try {
+				conn.close();
+			} catch (Exception e) {
+				System.out.println(e.getMessage());
+			}
+		}
 	}
 
-	
 	public static List<List<Object>> getTableData(Connection conn,String name){
 		if(conn == null) {return null;}
 		List<List<Object>> result = new ArrayList<>();
 		List<Object> list = new ArrayList<>();
-		for(String column:getColumn(getMetaDate(conn), name).keySet()) {
+		for(String column:getColumn(conn, name).keySet()) {
         	list.add(column);
         }
 		result.add(list);
 		list = new ArrayList<>();
 		PreparedStatement stmt;
         try {
-            stmt = conn.prepareStatement("select * from "+name+" limit 10");
+            stmt = conn.prepareStatement("select top 10 * from "+name);
             ResultSet rs = stmt.executeQuery();
             while (rs.next()) {
-                for(String col:getColumn(getMetaDate(conn), name).keySet()) {
+                for(String col:getColumn(conn, name).keySet()) {
                 	Object data = rs.getObject(col);
                 	list.add(data);
                 }
@@ -250,25 +241,29 @@ public class MysqlUtil {
         }
 	}
 	
-	public static void main(String[] args) throws SQLException {
-		Datasource ds = new Datasource("192.144.129.188","3306","test","root","FFei916#");
+	public static void main(String[] args) {
+		Datasource ds = new Datasource("192.144.129.188","1433","demo","sa","FFei916#");
 		System.out.println(isConn(ds));
 
+
 		Connection conn = getConn(ds);
-		Map<String,Integer> map = getTables(conn);
+
+
+		Map<String,Integer> map = getTables(conn,ds.getDbname());
 		for(Map.Entry<String,Integer> entry:map.entrySet()){
 			System.out.println(entry.getKey()+":"+entry.getValue());
 		}
 
-		Map<String,String> map1 = getColumn(getMetaDate(conn),"student");
+		Map<String,String> map1 = getColumn(conn,"student");
 		for(Map.Entry<String,String> entry:map1.entrySet()){
 			System.out.println(entry.getKey()+":"+entry.getValue());
 		}
 
-		List<String> list = getPrimaryKey(getMetaDate(conn),"student");
+		List<String> list = getPrimaryKey(conn,"student");
 		System.out.println(Arrays.toString(list.toArray()));
 
 		System.out.println(createTable(list,"student2",map1));
-	}
 
+		//executeSQL(conn,createTable(list,"user2",map1));
+	}
 }
