@@ -192,7 +192,39 @@ public class DatasourceController {
     	model.addAttribute("tableName", name);
     	return new ModelAndView("admin/show-table-desc","model",model);
     }
-    
+
+    @RequestMapping("/datasource/getTableColumn")
+    @ResponseBody
+    public String showTableColumn(String name,Integer id) {
+        Datasource datasource = datasourceService.getDatasource(id);
+        Connection conn = null;
+        Map<String, String> map = new HashMap<>();
+        if(datasource.getType().equalsIgnoreCase("mysql")){
+            conn = MysqlUtil.getConn(datasource);
+            map = MysqlUtil.getColumn(MysqlUtil.getMetaDate(conn), name);
+        }else if(datasource.getType().equalsIgnoreCase("oracle")){
+            conn = OracleUtil.getConn(datasource);
+            map = OracleUtil.getColumn(conn,name);
+        }else if(datasource.getType().equalsIgnoreCase("sqlserver")){
+            conn = SqlServerUtil.getConn(datasource);
+            map = SqlServerUtil.getColumn(conn,name);
+        }else if(datasource.getType().equalsIgnoreCase("postgresql")){
+            conn = PostgreSqlUtil.getConn(datasource);
+            map = PostgreSqlUtil.getColumn(conn, name);
+        }
+        StringBuilder sb = new StringBuilder();
+        int count = 0;
+        for(String key:map.keySet()){
+            count++;
+            if(count == map.keySet().size()){
+                sb.append(key);
+            }else{
+                sb.append(key+",");
+            }
+        }
+        return sb.toString();
+    }
+
     @RequestMapping("/datasource/copyTableForm")
     public ModelAndView copyTableForm(Model model,HttpSession session) {
         User user = (User)session.getAttribute("user");
