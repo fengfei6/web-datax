@@ -120,6 +120,8 @@ public class InstanceService {
         return instanceRepository.findAllByUserId(userId);
     }
 
+    public List<Instance> findAllByUserIdAndCronjobId(Integer userId,Integer cronjobId){ return instanceRepository.findAllByUserIdAndCronjobId(userId,cronjobId);}
+
     public Instance getOne(Integer id){
         return instanceRepository.getOne(id);
     }

@@ -61,9 +61,28 @@ public class InstanceController {
         return new ModelAndView("admin/instance-list","model",model);
     }
 
+    @RequestMapping("/instance/flush/{id}")
+    public ModelAndView flush(@PathVariable Integer id, Model model,HttpSession httpSession) throws UnsupportedEncodingException {
+        List<JSONObject> jobs = xxlJobService.getAllHandleInfo();
+        for(JSONObject jsonObject : jobs){
+            instanceService.saveIntoInstance(jsonObject);
+        }
+        User user = (User)httpSession.getAttribute("user");
+        List<Instance> list = new ArrayList<>();
+        if(user.getRole().equalsIgnoreCase("admin")){
+            list = instanceService.findAllByCronjobId(id);
+        }else{
+            list = instanceService.findAllByUserIdAndCronjobId(user.getId(),id);
+        }
+        model.addAttribute("list",list);
+        model.addAttribute("id",id);
+        return new ModelAndView("admin/one-instance-list","model",model);
+    }
+
     @RequestMapping("/instance/listByJobId/{id}")
-    public ModelAndView findListByTaskId(@PathVariable Integer id,Model model){
+    public ModelAndView findListByJobId(@PathVariable Integer id,Model model){
         model.addAttribute("list",instanceService.findAllByCronjobId(id));
-        return new ModelAndView("admin/instance-list","model",model);
+        model.addAttribute("id",id);
+        return new ModelAndView("admin/one-instance-list","model",model);
     }
 }

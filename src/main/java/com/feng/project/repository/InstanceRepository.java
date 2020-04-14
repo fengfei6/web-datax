@@ -20,4 +20,6 @@ public interface InstanceRepository extends JpaRepository<Instance,Integer> {
     List<Instance> findInstances();
 
     List<Instance> findAllByCronjobId(Integer cronjobId);
+
+    List<Instance> findAllByUserIdAndCronjobId(Integer userId,Integer cronjobId);
 }
