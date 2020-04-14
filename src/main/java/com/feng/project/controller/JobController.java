@@ -13,6 +13,7 @@ import javax.servlet.http.HttpSession;
 import com.feng.project.domain.Datasource;
 import com.feng.project.domain.User;
 import com.feng.project.service.JobService;
+import com.feng.project.service.XxlJobService;
 import com.feng.project.util.JsonUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -38,6 +39,8 @@ public class JobController {
     private JobService jobService;
     @Autowired
     private JobLogService jobLogService;
+    @Autowired
+    private XxlJobService xxlJobService;
 
     @RequestMapping("/job/jobList")
     public ModelAndView findAllJob(Model model,HttpSession session){
@@ -53,25 +56,37 @@ public class JobController {
     }
 
     @RequestMapping("/job/execJob/{id}")
-    public ModelAndView doJobOnce(@PathVariable Integer id,Model model) throws IOException {
+    public ModelAndView doJobOnce(@PathVariable Integer id,Model model,HttpSession session) throws IOException {
         Job job = jobService.getOne(id);
-        JobUtil.getJsonFileByContent(job);
-        Connection conn = DataxUtil.login("192.144.129.188", "root", "FFei916#");
-        DataxUtil.transferFile(conn, "src/main/resources/static/file/"+job.getName()+"_"+job.getUserId()+".json", "/root/datax/job");
-        String result = DataxUtil.execmd(conn, "python /root/datax/bin/datax.py /root/datax/job/"+job.getName()+"_"+job.getUserId()+".json");
-        JobLog jobLog = new JobLog(id,job.getName(),result,new Date());
-        jobLogService.save(jobLog);
-        model.addAttribute("jobLog",result);
-        return new ModelAndView("admin/job-log","model",model);
+//        Connection conn = DataxUtil.login("192.144.129.188", "root", "FFei916#");
+//        String result = DataxUtil.execmd(conn, "python /root/datax/bin/datax.py /root/datax/job/"+job.getName()+"_"+job.getUserId()+".json");
+//        JobLog jobLog = new JobLog(id,job.getName(),result,new Date());
+//        jobLogService.save(jobLog);
+//        model.addAttribute("jobLog",result);
+        xxlJobService.executeUnder(job.getTaskId(),"");
+        User user = (User)session.getAttribute("user");
+        List<Job> list = new ArrayList<>();
+        if(user.getRole().equalsIgnoreCase("admin")) {
+            list = jobService.findAll();
+        }else if(user.getRole().equalsIgnoreCase("user")){
+            list = jobService.findJobsByUserId(user.getId());
+        }
+        model.addAttribute("joblist",list);
+        return new ModelAndView("admin/job-list","model",model);
     }
 
     @RequestMapping("/job/addFileJob")
-    public ModelAndView addFileJob(Job job, Model model,HttpSession session){
+    public ModelAndView addFileJob(Job job, Model model,HttpSession session) throws IOException {
+        User user = (User)session.getAttribute("user");
+        job.setUserId(user.getId());
+        JobUtil.getJsonFileByContent(job);
+        Connection conn = DataxUtil.login("192.144.129.188", "root", "FFei916#");
+        DataxUtil.transferFile(conn, "src/main/resources/static/file/"+job.getName()+"_"+job.getUserId()+".json", "/root/datax/job");
         Map<String,String> map = JsonUtil.testComplexJSONStrToJSONObject(job.getJsonContent());
         job.setReaderDbType(map.get("reader").replace("reader", ""));
         job.setWriterDbType(map.get("writer").replace("writer", ""));
-        User user = (User)session.getAttribute("user");
-        job.setUserId(user.getId());
+        String taskId = xxlJobService.submitJob(job);
+        job.setTaskId(Integer.parseInt(taskId));
         jobService.save(job);
         List<Job> list = new ArrayList<>();
         if(user.getRole().equalsIgnoreCase("admin")) {

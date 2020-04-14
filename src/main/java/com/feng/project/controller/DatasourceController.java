@@ -190,7 +190,6 @@ public class DatasourceController {
         }
     	model.addAttribute("table", map);
     	model.addAttribute("tableName", name);
-    	//model.addAttribute("primaryKeys", MysqlUtil.getPrimaryKey(MysqlUtil.getMetaDate(conn), name));
     	return new ModelAndView("admin/show-table-desc","model",model);
     }
     

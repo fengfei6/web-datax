@@ -178,20 +178,36 @@
                     <div class="span10 pull-right">
                     </div>
                 </div>
+                <div class="row-fluid filter-block">
+                    <form action="" method="post">
+                        <div class="pull-right">
+                            <input type="text" class="search" name="name"/>
+                            <div class="ui-dropdown" data-toggle="tooltip" title="Click me!">
+                                <input type="submit" class="btn-flat" value="搜索">
+                            </div>
+                            <a class="btn-flat success new-product" th:href="@{'/joblog/joblogs/'+${model.jobId}}">刷新实例</a>
+                        </div>
+                    </form>
+                </div>
                 <!-- Users table -->
                 <div class="row-fluid table">
                     <table class="table table-hover">
                         <thead>
                             <tr>
                                 <th class="span4 sortable">
-                                    任务日志
+                                    任务编号
                                 </th>
                                 <th class="span3 sortable">
                                     <span class="line"></span>任务名称
                                 </th>
-                               
                                 <th class="span2 sortable">
-                                    <span class="line"></span>开始时间
+                                    <span class="line"></span>状态
+                                </th>
+                                <th class="span2 sortable">
+                                    <span class="line"></span>触发时间
+                                </th>
+                                <th class="span2 sortable">
+                                    <span class="line"></span>执行完时间
                                 </th>
                                 <th class="span3 sortable align-right">
                                     <span class="line"></span>操作
@@ -203,15 +219,16 @@
                         <tr class="first" th:each="joblog:${model.joblogs}">
                             <td th:text="${joblog.id} ? ${joblog.id}:''">
                             </td>
-                            <td th:text="${joblog.jobName} ?${joblog.jobName}:'' ">
+                            <td th:text="${joblog.name} ?${joblog.name}:'' ">
                             </td>
-                            
-                            <td th:text="${joblog.createTime}?${joblog.createTime}:''">
+                            <td th:text="${joblog.status}?${joblog.status}:''">
+                            </td>
+                            <td th:text="${joblog.triggerTime}?${joblog.triggerTime}:''">
+                            </td>
+                            <td th:text="${joblog.handleTime}?${joblog.handleTime}:''">
                             </td>
                             <td class="align-right" >
                                 <a th:href="@{'/joblog/getResult/'+${joblog.id}}">日志结果</a>
-                   
-                            	<a th:href="@{'/joblog/delete/'+${joblog.jobId}+'/'+${joblog.id}}">删除</a>
                             </td>
                         </tr>
                         <!-- row -->

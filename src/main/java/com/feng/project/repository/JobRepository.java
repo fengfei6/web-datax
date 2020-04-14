@@ -20,4 +20,6 @@ public interface JobRepository extends JpaRepository<Job,Integer> {
     List<Job> findJobsByUserId(Integer userId);
 
     Job getJobByNameAndUserId(String name,Integer userId);
+
+    Job findJobByTaskId(Integer taskId);
 }
