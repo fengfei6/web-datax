@@ -16,7 +16,7 @@ public class MysqlConnector extends Connector{
 	    String dbname = ds.getDbname();
 	    StringBuilder url = new StringBuilder();
 	    url.append(Constants.MYSQL_JDBC_NAME).append(ip.trim()).
-	         append(":").append(port.trim()).append("/").append(dbname);
+	         append(":").append(port.trim()).append("/").append(dbname).append("?useSSL=false");
 	    return url.toString();
 	 }
 
