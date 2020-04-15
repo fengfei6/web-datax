@@ -68,4 +68,12 @@ public class DatasourceService {
     public Datasource getDatasourceByDbnameAndUserId(String dbname,Integer userId){
         return datasourceRepository.getDatasourceByDbnameAndUserId(dbname,userId);
     }
+
+    public List<Datasource> getDatasourcesByTypeAndUserId(String type,Integer userId){
+        return datasourceRepository.getDatasourcesByTypeAndUserId(type,userId);
+    }
+
+    public List<Datasource> getDatasourcesByType(String type){
+        return datasourceRepository.getDatasourcesByType(type);
+    }
 }

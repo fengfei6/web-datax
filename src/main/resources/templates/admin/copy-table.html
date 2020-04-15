@@ -245,7 +245,7 @@
                                             <label>选择目的数据库:</label>
                                                 <select class="span8" name="ddatasource">
                                                 	<option selected = true>--请选择--</option>
-													<option  th:each="datasource:${model.datalist}"  th:value="${datasource.name}" th:text="${datasource.name}" ></option>
+													<option  th:each="datasource:${model.postgre}"  th:value="${datasource.name}" th:text="${datasource.name}" ></option>
 												</select> 
                                         
                                     </div>

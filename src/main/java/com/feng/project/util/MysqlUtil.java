@@ -183,8 +183,7 @@ public class MysqlUtil {
 			}
 			sb.append("primary key("+getPrimaryList(keys)+"))");
 		}
-		return sb.toString().replace("varchar", "varchar(255)")
-				.replace("VARCHAR", "VARCHAR(255)");
+		return sb.toString().replace("VARCHAR", "VARCHAR(255)");
 	}
 
 	private static String getPrimaryList(List<String> keys){
@@ -280,15 +279,15 @@ public class MysqlUtil {
 			System.out.println(entry.getKey()+":"+entry.getValue());
 		}
 
-		Map<String,String> map1 = getColumn(getMetaDate(conn),"test");
+		Map<String,String> map1 = getColumn(getMetaDate(conn),"order_detail");
 		for(Map.Entry<String,String> entry:map1.entrySet()){
 			System.out.println(entry.getKey()+":"+entry.getValue());
 		}
 
-		List<String> list = getPrimaryKey(getMetaDate(conn),"test");
+		List<String> list = getPrimaryKey(getMetaDate(conn),"order_detail");
 		System.out.println(Arrays.toString(list.toArray()));
 
-		System.out.println(createTable(list,"student2",map1));
+		System.out.println(createTable(list,"detail",map1));
 	}
 
 }

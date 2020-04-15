@@ -229,12 +229,19 @@ public class DatasourceController {
     public ModelAndView copyTableForm(Model model,HttpSession session) {
         User user = (User)session.getAttribute("user");
         List<Datasource> list = new ArrayList<>();
+        List<Datasource> list_part = new ArrayList<>();
         if(user.getRole().equalsIgnoreCase("admin")) {
             list = datasourceService.findAll();
         }else if(user.getRole().equalsIgnoreCase("user")){
             list = datasourceService.findDatasourcesByUserId(user.getId());
         }
+        if(user.getRole().equalsIgnoreCase("admin")) {
+            list_part = datasourceService.getDatasourcesByType("POSTGRESQL");
+        }else if(user.getRole().equalsIgnoreCase("user")){
+            list_part = datasourceService.getDatasourcesByTypeAndUserId("POSTGRESQL",user.getId());
+        }
         model.addAttribute("datalist", list);
+        model.addAttribute("postgre", list_part);
         return new ModelAndView("admin/copy-table","model",model);
     }
     
@@ -309,24 +316,15 @@ public class DatasourceController {
             		PostgreSqlUtil.getPrimaryKey(conn, sname),
                     dname, PostgreSqlUtil.getColumn(conn, sname));
         }
-        if(datasourced.getType().equalsIgnoreCase("mysql")) {
+        if(datasourced.getType().equalsIgnoreCase("postgresql")){
             if(datasources.getType().equalsIgnoreCase("oracle")){
                 createsql=createsql.replace("VARCHAR2(255)","varchar(255)").replace("NUMBER","int");
             }
-            conn = MysqlUtil.getConn(datasourced);
-            MysqlUtil.executeSQL(conn, createsql);
-        }else if(datasourced.getType().equalsIgnoreCase("oracle")){
-            conn = OracleUtil.getConn(datasourced);
-            OracleUtil.executeSQL(conn,createsql);
-        }else if(datasourced.getType().equalsIgnoreCase("sqlserver")) {
-            if(datasources.getType().equalsIgnoreCase("oracle")){
-                createsql=createsql.replace("VARCHAR2(255)","varchar(255)").replace("NUMBER","int");
+            if(datasources.getType().equalsIgnoreCase("mysql")){
+                createsql = createsql.replace("DATETIME","DATE").replace("LONGTEXT","TEXT");
             }
-            conn = SqlServerUtil.getConn(datasourced);
-            SqlServerUtil.executeSQL(conn, createsql);
-        }else if(datasourced.getType().equalsIgnoreCase("postgresql")){
-            if(datasources.getType().equalsIgnoreCase("oracle")){
-                createsql=createsql.replace("VARCHAR2(255)","varchar(255)").replace("NUMBER","int");
+            if(datasources.getType().equalsIgnoreCase("sqlserver")){
+                createsql = createsql.replace("datetime","date").replace("longtext","text");
             }
             conn = PostgreSqlUtil.getConn(datasourced);
             PostgreSqlUtil.executeSQL(conn, createsql);

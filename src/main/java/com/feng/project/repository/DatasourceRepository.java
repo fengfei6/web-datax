@@ -28,4 +28,8 @@ public interface DatasourceRepository extends JpaRepository<Datasource,Integer> 
 	List<Datasource> findDatasourcesByNameAndUserId(String name,Integer userId);
 	
 	Datasource getDatasourceByDbnameAndUserId(String dbname,Integer userId);
+
+	List<Datasource> getDatasourcesByTypeAndUserId(String type,Integer userId);
+
+	List<Datasource> getDatasourcesByType(String type);
 }
