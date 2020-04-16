@@ -246,28 +246,6 @@ public class DatasourceController {
     }
 
     @ResponseBody
-    @RequestMapping("/datasource/getTableList")
-    public Map<String,Integer> getTableList(String name,Integer id) {
-    	Datasource datasource = datasourceService.findDatasourceByNameAndUserId(name, id);
-        Connection conn = null;
-        Map<String, Integer> map = new HashMap<>();
-        if(datasource.getType().equalsIgnoreCase("mysql")){
-            conn = MysqlUtil.getConn(datasource);
-            map = MysqlUtil.getTables(conn);
-        }else if(datasource.getType().equalsIgnoreCase("oracle")){
-            conn = OracleUtil.getConn(datasource);
-            map = OracleUtil.getTables(conn,datasource.getUsername());
-        }else if(datasource.getType().equalsIgnoreCase("sqlserver")){
-            conn = SqlServerUtil.getConn(datasource);
-            map = SqlServerUtil.getTables(conn,datasource.getDbname());
-        }else if(datasource.getType().equalsIgnoreCase("postgresql")){
-            conn = PostgreSqlUtil.getConn(datasource);
-            map = PostgreSqlUtil.getTables(conn);
-        }
-        return map;
-    }
-
-    @ResponseBody
     @RequestMapping("/datasource/getTableList2")
     public Map<String,Integer> getTableList2(Integer id) {
     	Datasource datasource = datasourceService.getDatasource(id);
@@ -290,9 +268,9 @@ public class DatasourceController {
     }
     
     @RequestMapping("/datasource/copyTable")
-    public ModelAndView copyTable(Model model,String sdatasource,String sname,String ddatasource,String dname,HttpSession session) {
-    	Datasource datasources = datasourceService.findDatasourceByName(sdatasource);
-    	Datasource datasourced = datasourceService.findDatasourceByName(ddatasource);
+    public ModelAndView copyTable(Model model,Integer sdatasource,String sname,Integer ddatasource,String dname,HttpSession session) {
+    	Datasource datasources = datasourceService.getDatasource(sdatasource);
+    	Datasource datasourced = datasourceService.getDatasource(ddatasource);
         Connection conn = null;
         String createsql = "";
         if(datasources.getType().equalsIgnoreCase("mysql")) {

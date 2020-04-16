@@ -218,7 +218,7 @@
                                                 <label>选择源数据库:</label>
                                                 <select class="span8" id="start_select1" name="sdatasource">
                                                 	<option selected = true>--请选择--</option>
-													<option  th:each="datasource:${model.datalist}" th:value="${datasource.name}" th:text="${datasource.name}" ></option>
+													<option  th:each="datasource:${model.datalist}" th:value="${datasource.id}" th:text="${datasource.name}" ></option>
 												</select> 
                                             </div>
                                     </div>
@@ -245,7 +245,7 @@
                                             <label>选择目的数据库:</label>
                                                 <select class="span8" name="ddatasource">
                                                 	<option selected = true>--请选择--</option>
-													<option  th:each="datasource:${model.postgre}"  th:value="${datasource.name}" th:text="${datasource.name}" ></option>
+													<option  th:each="datasource:${model.postgre}"  th:value="${datasource.id}" th:text="${datasource.name}" ></option>
 												</select> 
                                         
                                     </div>
@@ -325,16 +325,15 @@
             $(document).ready(function(){ 
             $("#start_select1").change(function(){ 
                var t = $("#start_select1").val();
-                var id = $("#userId").val();
                 if(t ==''){
                    return; 
 				} 
 				
 				$.ajax({ 
-				url:"/datasource/getTableList",
+				url:"/datasource/getTableList2",
 				async:true, 
 				type:'post', 
-				data:{name:t,id:id},
+				data:{id:t},
 				success:function(data){ 
 				       var t2 = $("#start_select2").empty();
                         t2.append("<option >--请选择--</option>");
