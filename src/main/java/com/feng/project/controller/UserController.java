@@ -42,7 +42,7 @@ public class UserController {
     public ModelAndView register(User user){
         user.setRole("user");
         userService.save(user);
-        return new ModelAndView("register");
+        return new ModelAndView("login");
     }
 
     @PostMapping("/user/forgot_pass")
@@ -51,7 +51,7 @@ public class UserController {
         int pass = (int)((Math.random()*9+1)*100000);
         userService.updateUserPassByEmail(email,Integer.toString(pass));
         mailService.sendSimpleEmail(email,subject,Integer.toString(pass));
-        return new ModelAndView("index");
+        return new ModelAndView("login");
      }
     
     @RequestMapping("/user/findAll")
