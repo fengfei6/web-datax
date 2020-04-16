@@ -49,6 +49,9 @@ public class CronJobController {
         cronJob.setIsRunning(0);
         cronJob.setReaderDbType(datasources.getType());
         cronJob.setWriterDbType(datasourcet.getType());
+        if(cronJob.getReaderColumn() != null){
+            cronJob.setWriterColumn(cronJob.getReaderColumn());
+        }
         cronJobService.save(cronJob);
         JobUtil.getJsonfileForCronJob(datasourceService.getDatasource(cronJob.getReaderDbId()),datasourceService.getDatasource(cronJob.getWriterDbId()),cronJob);
         Connection conn = DataxUtil.login("192.144.129.188", "root", "FFei916#");

@@ -45,7 +45,7 @@ public class InstanceController {
     }
 
     @RequestMapping("/instance/flush")
-    public ModelAndView flush(Model model,HttpSession httpSession) throws UnsupportedEncodingException {
+    public ModelAndView flush(Model model,HttpSession httpSession) throws Exception {
         List<JSONObject> jobs = xxlJobService.getAllHandleInfo();
         for(JSONObject jsonObject : jobs){
             instanceService.saveIntoInstance(jsonObject);
@@ -62,7 +62,7 @@ public class InstanceController {
     }
 
     @RequestMapping("/instance/flush/{id}")
-    public ModelAndView flush(@PathVariable Integer id, Model model,HttpSession httpSession) throws UnsupportedEncodingException {
+    public ModelAndView flush(@PathVariable Integer id, Model model,HttpSession httpSession) throws Exception {
         List<JSONObject> jobs = xxlJobService.getAllHandleInfo();
         for(JSONObject jsonObject : jobs){
             instanceService.saveIntoInstance(jsonObject);

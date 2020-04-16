@@ -11,6 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.UnsupportedEncodingException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -22,7 +25,7 @@ public class InstanceService {
     @Autowired
     private XxlJobService xxlJobService;
 
-    public void saveIntoInstance(JSONObject content) throws UnsupportedEncodingException {
+    public void saveIntoInstance(JSONObject content) throws Exception {
         //joblog id
         String id = content.get("id").toString();
         List<Instance> instances = instanceRepository.findByExecid(id);
@@ -90,8 +93,14 @@ public class InstanceService {
         }
     }
 
-    private String getFormatTime(Object obj) {
-        return obj==null?"":obj.toString().replace("T"," ").replace(".000+0000","");
+    private String getFormatTime(Object obj) throws ParseException {
+        if(obj == null) {return "";}
+        obj = obj.toString().replace("T"," ").replace(".000+0000","");
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Date date =df.parse((String)obj);
+        long now = date.getTime() + 8 * 60 * 60 * 1000;
+        String time = df.format(now);
+        return time;
     }
 
     private Boolean isSame(Instance instance, String handleTime, int handleCode, String triggerTime, int triggerCode) {
