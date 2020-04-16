@@ -1,26 +1,38 @@
 package com.feng.project.service;
 
 import com.feng.project.domain.CronJob;
+import com.feng.project.domain.Datasource;
 import com.feng.project.repository.CronJobRepository;
+import com.feng.project.repository.DatasourceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
+import java.sql.Date;
 import java.util.List;
 
 @Service
 public class CronJobService {
     @Autowired
     private CronJobRepository cronJobRepository;
+    @Autowired
+    private DatasourceRepository datasourceRepository;
 
     public CronJob save(CronJob cronJob){
-        cronJob.setCreateTime(new Date());
-        cronJob.setUpdateTime(new Date());
+        Datasource datasources = datasourceRepository.getOne(cronJob.getReaderDbId());
+        Datasource datasourcet = datasourceRepository.getOne(cronJob.getWriterDbId());
+        cronJob.setIsRunning(0);
+        cronJob.setReaderDbType(datasources.getType());
+        cronJob.setWriterDbType(datasourcet.getType());
+        if(cronJob.getReaderColumn() != null){
+            cronJob.setWriterColumn(cronJob.getReaderColumn());
+        }
+        cronJob.setCreateTime(new Date(System.currentTimeMillis()));
+        cronJob.setUpdateTime(new Date(System.currentTimeMillis()));
         return cronJobRepository.save(cronJob);
     }
 
     public CronJob update(CronJob cronJob){
-        cronJob.setUpdateTime(new Date());
+        cronJob.setUpdateTime(new Date(System.currentTimeMillis()));
         return cronJobRepository.save(cronJob);
     }
 
@@ -35,8 +47,6 @@ public class CronJobService {
     public List<CronJob> finAll(){
         return cronJobRepository.findAll();
     }
-
-    public CronJob findJobByName(String name){ return cronJobRepository.findCronJobByName(name);}
 
     public List<CronJob> findJobsByName(String name){return cronJobRepository.findCronJobsByName(name);}
 

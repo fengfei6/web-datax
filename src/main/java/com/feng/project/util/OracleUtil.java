@@ -131,19 +131,40 @@ public class OracleUtil {
         int count = 0;
         StringBuilder sb = new StringBuilder();
         sb.append("create table "+name+" (");
-        for(Map.Entry<String, String> entry : map.entrySet()) {
-            count++;
-            if(keys.contains(entry.getKey()) && count == map.size()) {
-                sb.append(entry.getKey()+" "+entry.getValue()+" primary key )");
-            }else if(keys.contains(entry.getKey()) && count < map.size()) {
-                sb.append(entry.getKey()+" "+entry.getValue()+" primary key,");
-            }else if(!keys.contains(entry.getKey()) && count == map.size()) {
-                sb.append(entry.getKey()+" "+entry.getValue()+")");
-            }else{
-                sb.append(entry.getKey()+" "+entry.getValue()+",");
+        if(keys.size() <= 1) {
+            for (Map.Entry<String, String> entry : map.entrySet()) {
+                count++;
+                if (keys.contains(entry.getKey()) && count == map.size()) {
+                    sb.append(entry.getKey() + " " + entry.getValue() + " primary key )");
+                } else if (keys.contains(entry.getKey()) && count < map.size()) {
+                    sb.append(entry.getKey() + " " + entry.getValue() + " primary key,");
+                } else if (!keys.contains(entry.getKey()) && count == map.size()) {
+                    sb.append(entry.getKey() + " " + entry.getValue() + ")");
+                } else {
+                    sb.append(entry.getKey() + " " + entry.getValue() + ",");
+                }
             }
+        }else{
+            for (Map.Entry<String, String> entry : map.entrySet()) {
+                sb.append(entry.getKey() + " " + entry.getValue() + ",");
+            }
+            sb.append("primary key("+getPrimaryList(keys)+"))");
         }
         return sb.toString().replace("VARCHAR2","VARCHAR2(255)");
+    }
+
+    private static String getPrimaryList(List<String> keys){
+        StringBuilder sb = new StringBuilder();
+        int count = 0;
+        for(String str : keys){
+            count++;
+            if(count == keys.size()){
+                sb.append(str);
+            }else{
+                sb.append(str+",");
+            }
+        }
+        return sb.toString();
     }
 
     /**
@@ -214,16 +235,15 @@ public class OracleUtil {
             System.out.println(entry.getKey()+" "+entry.getValue());
         }
 
-//        Map<String,String> column = getColumn(conn);
-//
-//
-//        for(Map.Entry<String, String> entry : column.entrySet()) {
-//            System.out.println(entry.getKey()+" "+entry.getValue());
-//        }
+        Map<String,String> map1 = getColumn(conn,"test");
+        for(Map.Entry<String,String> entry:map1.entrySet()){
+            System.out.println(entry.getKey()+":"+entry.getValue());
+        }
 
-        List<String> list = getPrimaryKey(conn,"user");
+        List<String> list = getPrimaryKey(conn,"test");
         System.out.println(Arrays.toString(list.toArray()));
 
-        executeSQL(conn,"drop table user");
+
+        System.out.println(createTable(list,"student2",map1));
     }
 }

@@ -2,7 +2,6 @@ package com.feng.project.domain;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.List;
 
 @Entity(name = "user")
 public class User implements Serializable {

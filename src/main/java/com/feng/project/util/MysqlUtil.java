@@ -164,22 +164,41 @@ public class MysqlUtil {
 		int count = 0;
 		StringBuilder sb = new StringBuilder();
 		sb.append("create table "+name+" (");
-		for(Entry<String, String> entry : map.entrySet()) {
+		if(keys.size() <= 1) {
+			for (Entry<String, String> entry : map.entrySet()) {
+				count++;
+				if (keys.contains(entry.getKey()) && count == map.size()) {
+					sb.append(entry.getKey() + " " + entry.getValue() + " primary key )");
+				} else if (keys.contains(entry.getKey()) && count < map.size()) {
+					sb.append(entry.getKey() + " " + entry.getValue() + " primary key,");
+				} else if (!keys.contains(entry.getKey()) && count == map.size()) {
+					sb.append(entry.getKey() + " " + entry.getValue() + ")");
+				} else {
+					sb.append(entry.getKey() + " " + entry.getValue() + ",");
+				}
+			}
+		}else{
+			for (Entry<String, String> entry : map.entrySet()) {
+				sb.append(entry.getKey() + " " + entry.getValue() + ",");
+			}
+			sb.append("primary key("+getPrimaryList(keys)+"))");
+		}
+		return sb.toString().replace("VARCHAR", "VARCHAR(255)");
+	}
+
+	private static String getPrimaryList(List<String> keys){
+		StringBuilder sb = new StringBuilder();
+		int count = 0;
+		for(String str : keys){
 			count++;
-			if(keys.contains(entry.getKey()) && count == map.size()) {
-				sb.append(entry.getKey()+" "+entry.getValue()+" primary key )");
-			}else if(keys.contains(entry.getKey()) && count < map.size()) {
-				sb.append(entry.getKey()+" "+entry.getValue()+" primary key,");
-			}else if(!keys.contains(entry.getKey()) && count == map.size()) {
-				sb.append(entry.getKey()+" "+entry.getValue()+")");
+			if(count == keys.size()){
+				sb.append(str);
 			}else{
-				sb.append(entry.getKey()+" "+entry.getValue()+",");
+				sb.append(str+",");
 			}
 		}
-		return sb.toString().replace("varchar", "varchar(255)")
-				.replace("VARCHAR", "VARCHAR(255)");
+		return sb.toString();
 	}
-	
 	/**
 	 * @param conn
 	 * @param createSql
@@ -260,15 +279,15 @@ public class MysqlUtil {
 			System.out.println(entry.getKey()+":"+entry.getValue());
 		}
 
-		Map<String,String> map1 = getColumn(getMetaDate(conn),"student");
+		Map<String,String> map1 = getColumn(getMetaDate(conn),"order_detail");
 		for(Map.Entry<String,String> entry:map1.entrySet()){
 			System.out.println(entry.getKey()+":"+entry.getValue());
 		}
 
-		List<String> list = getPrimaryKey(getMetaDate(conn),"student");
+		List<String> list = getPrimaryKey(getMetaDate(conn),"order_detail");
 		System.out.println(Arrays.toString(list.toArray()));
 
-		System.out.println(createTable(list,"student2",map1));
+		System.out.println(createTable(list,"detail",map1));
 	}
 
 }

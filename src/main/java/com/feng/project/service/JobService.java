@@ -1,9 +1,11 @@
 package com.feng.project.service;
 
-import java.util.Date;
+import java.sql.Date;
 import java.util.List;
+import java.util.Map;
 
 import com.feng.project.repository.JobRepository;
+import com.feng.project.util.JsonUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,7 +17,10 @@ public class JobService {
     private JobRepository jobRepository;
     
     public void save(Job job) {
-    	job.setCreateTime(new Date());
+        Map<String,String> map = JsonUtil.testComplexJSONStrToJSONObject(job.getJsonContent());
+        job.setReaderDbType(map.get("reader").replace("reader", ""));
+        job.setWriterDbType(map.get("writer").replace("writer", ""));
+    	job.setCreateTime(new Date(System.currentTimeMillis()));
     	jobRepository.save(job);
     }
     

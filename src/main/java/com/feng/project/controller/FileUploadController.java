@@ -36,7 +36,8 @@ public class FileUploadController {
     	int ch = 0;  
     	while((ch = fr.read())!=-1 ){   
     		sb.append((char)ch);   
-    	} 
+    	}
+    	file.delete();
     	list.add(sb.toString());
     	return list;
     }

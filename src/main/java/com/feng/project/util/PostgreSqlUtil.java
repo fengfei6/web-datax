@@ -115,14 +115,31 @@ public class PostgreSqlUtil {
 	 */
 	public static List<String> getPrimaryKey(Connection conn,String tableName){
 		List<String> PrimaryKeysist = new ArrayList<String>();
-		String createSql = "select pg_attribute.attname as colname from \n" +
-				"pg_constraint  inner join pg_class \n" +
-				"on pg_constraint.conrelid = pg_class.oid \n" +
-				"inner join pg_attribute on pg_attribute.attrelid = pg_class.oid \n" +
-				"and  pg_attribute.attnum = pg_constraint.conkey[1]\n" +
-				"inner join pg_type on pg_type.oid = pg_attribute.atttypid\n" +
-				"where pg_constraint.contype='p'\n" +
-				"and pg_class.relname = '"+tableName+"'";
+		String createSql = "select z.column_name as colname from (SELECT\n" +
+				"   A.ordinal_position,\n" +
+				"   A.column_name,\n" +
+				"   CASE A.is_nullable WHEN 'NO' THEN 0 ELSE 1 END AS is_nullable,\n" +
+				"   A.data_type,\n" +
+				"   coalesce(A.character_maximum_length, A.numeric_precision, -1) as length,\n" +
+				"   A.numeric_scale,\n" +
+				"        CASE WHEN length(B.attname) > 0 THEN 1 ELSE 0 END AS is_pk\n" +
+				"FROM\n" +
+				"   information_schema.columns A\n" +
+				"LEFT JOIN (\n" +
+				"    SELECT\n" +
+				"        pg_attribute.attname\n" +
+				"    FROM\n" +
+				"        pg_index,\n" +
+				"        pg_class,\n" +
+				"        pg_attribute\n" +
+				"    WHERE\n" +
+				"        pg_class.oid = '"+tableName+"' :: regclass\n" +
+				"    AND pg_index.indrelid = pg_class.oid\n" +
+				"    AND pg_attribute.attrelid = pg_class.oid\n" +
+				"    AND pg_attribute.attnum = ANY (pg_index.indkey)\n" +
+				") B ON A.column_name = b.attname\n" +
+				"WHERE\n" +
+				"   A.table_schema = 'public' AND A.table_name = '"+tableName+"') z where z.is_pk=1";
 		PreparedStatement stmt;
 		try {
 			stmt = conn.prepareStatement(createSql);
@@ -148,20 +165,41 @@ public class PostgreSqlUtil {
 		int count = 0;
 		StringBuilder sb = new StringBuilder();
 		sb.append("create table "+name+" (");
-		for(Map.Entry<String, String> entry : map.entrySet()) {
-			count++;
-			if(keys.contains(entry.getKey()) && count == map.size()) {
-				sb.append(entry.getKey()+" "+entry.getValue()+" primary key )");
-			}else if(keys.contains(entry.getKey()) && count < map.size()) {
-				sb.append(entry.getKey()+" "+entry.getValue()+" primary key,");
-			}else if(!keys.contains(entry.getKey()) && count == map.size()) {
-				sb.append(entry.getKey()+" "+entry.getValue()+")");
-			}else{
-				sb.append(entry.getKey()+" "+entry.getValue()+",");
+		if(keys.size() <= 1) {
+			for (Map.Entry<String, String> entry : map.entrySet()) {
+				count++;
+				if (keys.contains(entry.getKey()) && count == map.size()) {
+					sb.append(entry.getKey() + " " + entry.getValue() + " primary key )");
+				} else if (keys.contains(entry.getKey()) && count < map.size()) {
+					sb.append(entry.getKey() + " " + entry.getValue() + " primary key,");
+				} else if (!keys.contains(entry.getKey()) && count == map.size()) {
+					sb.append(entry.getKey() + " " + entry.getValue() + ")");
+				} else {
+					sb.append(entry.getKey() + " " + entry.getValue() + ",");
+				}
 			}
+		}else{
+			for (Map.Entry<String, String> entry : map.entrySet()) {
+				sb.append(entry.getKey() + " " + entry.getValue() + ",");
+			}
+			sb.append("primary key("+getPrimaryList(keys)+"))");
 		}
 		return sb.toString().replace("varchar","varchar(255)")
 				.replace("int4","int");
+	}
+
+	private static String getPrimaryList(List<String> keys){
+		StringBuilder sb = new StringBuilder();
+		int count = 0;
+		for(String str : keys){
+			count++;
+			if(count == keys.size()){
+				sb.append(str);
+			}else{
+				sb.append(str+",");
+			}
+		}
+		return sb.toString();
 	}
 
 	/**
@@ -229,16 +267,16 @@ public class PostgreSqlUtil {
 			System.out.println(entry.getKey()+":"+entry.getValue());
 		}
 
-		Map<String,String> map1 = getColumn(conn,"user");
+		Map<String,String> map1 = getColumn(conn,"test");
 		for(Map.Entry<String,String> entry:map1.entrySet()){
 			System.out.println(entry.getKey()+":"+entry.getValue());
 		}
 
-		List<String> list = getPrimaryKey(conn,"user");
+		List<String> list = getPrimaryKey(conn,"test");
 		System.out.println(Arrays.toString(list.toArray()));
 
-		System.out.println(createTable(list,"user",map1));
+		System.out.println(createTable(list,"test2",map1));
 
-		executeSQL(conn,createTable(list,"user2",map1));
+
 	}
 }

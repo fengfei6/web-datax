@@ -226,7 +226,7 @@
                                             </div>
                                             <div class="field-box">
                                                 <label>列:</label>
-                                                <input class="span8" type="text" name="readerColumn"/>
+                                                <input class="span8" type="text" id="column" name="readerColumn"/>
                                             </div>
                                             <div class="field-box">
                                                 <h6>若需要筛选数据，可以不选择原表，下一步指出原表</h6>
@@ -420,6 +420,26 @@
         {
             var child=window.open("/admin/iframe.html","child","height=300,width=700,status=yes,toolbar=no,menubar=no,location=no");
         }
+
+        $(document).ready(function(){
+            $("#start_select2").change(function(){
+                var id = $("#start_select1").val();
+                var name = $("#start_select2").val();
+                if(id =='' || name == ''){
+                    return;
+                }
+
+                $.ajax({
+                    url:"/datasource/getTableColumn",
+                    async:true,
+                    type:'post',
+                    data:{id:id,name:name},
+                    success:function(data){
+                        $("#column").val(data);
+                    }
+                })
+            });
+        })
     </script>
 
 </body>

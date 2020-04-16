@@ -226,9 +226,6 @@
                         
                                 <tr class="first" th:each="job:${model.joblist}">
                                     <td>
-                                   		 <div class="img">
-                                            <img th:src="@{/img/logo.jpg}" />
-                                        </div>
                                         <a id="jobId" href="#" th:value="${job.id}" th:text="${job.id}?${job.id}:''"></a>
                                     </td>
                                     <td class="description" th:text="${job.name}?${job.name}:''">

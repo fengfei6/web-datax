@@ -87,18 +87,4 @@ public class JsonUtil {
 		String[] array = params.split(",");
 		return array;
 	}
-
-	public static void main(String[] args) throws IOException {
-		FileReader fr = new FileReader("D://test.json");
-	     StringBuilder sb = new StringBuilder();
-	    	int ch = 0;
-	    	while((ch = fr.read())!=-1 ){
-	    		sb.append((char)ch);
-	    	}
-		Map<String,String> map = JsonUtil.testComplexJSONStrToJSONObject(sb.toString());
-
-	    for(Map.Entry<String,String> entey:map.entrySet()){
-	    	System.out.println(entey.getKey()+" "+entey.getValue());
-		}
-	}
 }

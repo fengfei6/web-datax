@@ -4,7 +4,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import java.util.Date;
+import java.sql.Date;
 
 @Entity(name="job")
 public class Job {
@@ -18,6 +18,15 @@ public class Job {
     private String jsonContent;
     private Date createTime;
     private Integer userId;
+    private Integer taskId;
+
+    public Integer getTaskId() {
+        return taskId;
+    }
+
+    public void setTaskId(Integer taskId) {
+        this.taskId = taskId;
+    }
 
     public Integer getId() {
         return id;

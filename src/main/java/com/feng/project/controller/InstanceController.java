@@ -39,13 +39,21 @@ public class InstanceController {
 
     @RequestMapping("/instance/content/{id}")
     public ModelAndView getLogContent(@PathVariable Integer id, Model model) throws UnsupportedEncodingException {
-        Instance instance = instanceService.getOne(id);
         model.addAttribute("content",instanceService.getExecLog(id,1));
         return new ModelAndView("admin/instance-log","model",model);
     }
 
     @RequestMapping("/instance/flush")
-    public ModelAndView flush(Model model,HttpSession httpSession) throws UnsupportedEncodingException {
+    public ModelAndView flush(Model model,HttpSession httpSession) throws Exception {
+        List<JSONObject> jobs = xxlJobService.getAllHandleInfo();
+        for(JSONObject jsonObject : jobs){
+            instanceService.saveIntoInstance(jsonObject);
+        }
+        return findAll(model, httpSession);
+    }
+
+    @RequestMapping("/instance/flush/{id}")
+    public ModelAndView flush(@PathVariable Integer id, Model model,HttpSession httpSession) throws Exception {
         List<JSONObject> jobs = xxlJobService.getAllHandleInfo();
         for(JSONObject jsonObject : jobs){
             instanceService.saveIntoInstance(jsonObject);
@@ -53,17 +61,19 @@ public class InstanceController {
         User user = (User)httpSession.getAttribute("user");
         List<Instance> list = new ArrayList<>();
         if(user.getRole().equalsIgnoreCase("admin")){
-            list = instanceService.findAll();
+            list = instanceService.findAllByCronjobId(id);
         }else{
-            list = instanceService.findAllByUserId(user.getId());
+            list = instanceService.findAllByUserIdAndCronjobId(user.getId(),id);
         }
         model.addAttribute("list",list);
-        return new ModelAndView("admin/instance-list","model",model);
+        model.addAttribute("id",id);
+        return new ModelAndView("admin/one-instance-list","model",model);
     }
 
     @RequestMapping("/instance/listByJobId/{id}")
-    public ModelAndView findListByTaskId(@PathVariable Integer id,Model model){
+    public ModelAndView findListByJobId(@PathVariable Integer id,Model model){
         model.addAttribute("list",instanceService.findAllByCronjobId(id));
-        return new ModelAndView("admin/instance-list","model",model);
+        model.addAttribute("id",id);
+        return new ModelAndView("admin/one-instance-list","model",model);
     }
 }

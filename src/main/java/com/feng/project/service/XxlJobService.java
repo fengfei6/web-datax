@@ -2,11 +2,9 @@ package com.feng.project.service;
 
 import com.alibaba.fastjson.JSONObject;
 import com.feng.project.domain.CronJob;
+import com.feng.project.domain.Job;
 import com.feng.project.util.XxlUtil;
 import com.google.common.collect.Maps;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
@@ -24,7 +22,7 @@ public class XxlJobService {
             //定时任务
             linkedMultiValueMap.add("jobCron", cronJob.getCronExpress());
         }
-        linkedMultiValueMap.add("jobDesc", "CronJob");
+        linkedMultiValueMap.add("jobDesc", cronJob.getName());
         linkedMultiValueMap.add("author", "admin");
         //默认
         linkedMultiValueMap.add("alarmEmail", "fengfei4168@163.com");
@@ -65,6 +63,54 @@ public class XxlJobService {
         }
         return "0";
     }
+
+    public String submitJob(Job job) {
+        MultiValueMap<String, String> linkedMultiValueMap = new LinkedMultiValueMap<String, String>();
+
+        linkedMultiValueMap.add("JobGroup", "1");
+        linkedMultiValueMap.add("jobCron", "0 0 */1 * * ?");
+        linkedMultiValueMap.add("jobDesc", job.getName());
+        linkedMultiValueMap.add("author", "admin");
+        //默认
+        linkedMultiValueMap.add("alarmEmail", "fengfei4168@163.com");
+        //单机串行
+        linkedMultiValueMap.add("executorBlockStrategy", "SERIAL_EXECUTION");
+        //一致性HASH
+        linkedMultiValueMap.add("executorRouteStrategy", "CONSISTENT_HASH");
+
+        linkedMultiValueMap.add("glueType", "GLUE_SHELL");
+
+        linkedMultiValueMap.add("executorParam", "");
+
+        linkedMultiValueMap.add("glueSource",setGlueSource(job.getName(),job.getUserId()));
+        if(job.getTaskId() == null){
+            return JobinfoWithAdd(job,linkedMultiValueMap);
+        }else{
+            return JobinfoWithUpdate(job,linkedMultiValueMap);
+        }
+    }
+
+    private String JobinfoWithUpdate(Job job, MultiValueMap<String, String> linkedMultiValueMap) {
+        linkedMultiValueMap.add("id", String.valueOf(job.getTaskId()));
+        JSONObject jsonObject = XxlUtil.handleSubmitJobinfoWithUpdate(linkedMultiValueMap);
+        if(!jsonObject.get("code").toString().equals("200")){
+            System.out.println("submitJobFail");
+        }
+        return null;
+    }
+
+    private String JobinfoWithAdd(Job job, MultiValueMap<String, String> linkedMultiValueMap) {
+        JSONObject jsonObject = XxlUtil.handleSubmitJobinfoWithAdd(linkedMultiValueMap);
+        //save glueSource
+        if(jsonObject.get("code").toString().equals("200") ) {
+            String taskId = jsonObject.get("content").toString();
+            return taskId;
+        }else{
+            System.out.println("submitJobFail");
+        }
+        return "0";
+    }
+
 
     private String setGlueSource(String cronJobName,Integer userId){
         String source = "#!/bin/bash\n" +
@@ -126,15 +172,7 @@ public class XxlJobService {
         return (List<JSONObject>)jsonObject.get("content");
     }
 
-        public JSONObject getCronJobInfo (Integer taskId){
-        Map<String, String> map = Maps.newHashMap();
-        map.put("id", String.valueOf(taskId));
-        JSONObject jsonObject = XxlUtil.getJobInfo(map);
-        return jsonObject;
-    }
-
-
-        public JSONObject getExeclog(String triggerTime, String execid,int offset){
+    public JSONObject getExeclog(String triggerTime, String execid,int offset){
                 Map<String, String> map = Maps.newHashMap();
                 map.put("executorAddress", "172.21.0.8:9999");
                 map.put("triggerTime", triggerTime);
@@ -146,7 +184,8 @@ public class XxlJobService {
                 }
                 return (JSONObject) jsonObject.get("content");
          }
-        public JSONObject delete (Integer taskId){
+
+         public JSONObject delete (Integer taskId){
                 Map<String, String> map = Maps.newHashMap();
                 map.put("id", String.valueOf(taskId));
                 JSONObject jsonObject = XxlUtil.delete(map);

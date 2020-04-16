@@ -10,4 +10,8 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface JobLogRepository extends JpaRepository<JobLog,Integer> {
 	List<JobLog> findByJobId(Integer jobId);
+
+	List<JobLog> findAllByExecid(String execid);
+
+	void deleteByExecid(String execid);
 }

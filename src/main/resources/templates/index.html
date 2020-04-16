@@ -217,7 +217,32 @@
             <!-- end upper main stats -->
 
             <div id="pad-wrapper">
-               <img th:src="@{/img/show.jpg}" alt="步骤" class="display" style="width: 80%;height: 60%"/>
+                <h3>本平台功能模块如下</h3>
+                <br>
+                <div style="border:1px solid #a5b6c8;background:#eef3f7">
+                <h5>一、数据源管理</h5>
+                    <br>
+                <p>&nbsp;&nbsp;&nbsp;&nbsp;新增数据源之后，可以查看数据源连通性、数据源下的所有表以及表结构、查看表的前十条数据、删除表。支持从A数据源复制表到B数据源，其中A、B数据源支持Mysql、Oracle、SqlServer、PostgreSql等</p>
+                <br>
+                </div>
+                <div style="border:1px solid #a5b6c8;background:#eef3f7">
+                <h5>二、同步/调度任务管理</h5>
+                    <br>
+                <p>&nbsp;&nbsp;&nbsp;&nbsp;添加完数据源、创建完需要同步的表之后，开始新建同步任务，根据页面导引创建任务(任务创建完成后不可编辑)。可以执行一次任务，也可以根据创建任务时添加的cron表达式进行任务的调。任务执行后可以查看任务实例，默认是一小时刷新实例，也支持手动刷新</p>
+                <br>
+                </div>
+                <div style="  border:1px solid #a5b6c8;background:#eef3f7">
+                <h5>三、其他任务管理</h5>
+                    <br>
+                <p>&nbsp;&nbsp;&nbsp;&nbsp;同步任务的表单方式创建不需要用户编写json，但是平台暂时只支持Mysql、Oracle、SqlServer、PostgreSql，所以其他数据源，例如hive，mongodb等数据源，用户可以编写json文件上传执行，不支持调度</p>
+                <br>
+                </div>
+                <div style=" border:1px solid #a5b6c8;background:#eef3f7">
+                <h5>四、用户管理</h5>
+                    <br>
+                <p>&nbsp;&nbsp;&nbsp;&nbsp;用户注册时的邮箱可以找回密码，用户分为普通用户和管理员两种角色，普通用户可以向管理员申请修改角色。普通用户只能查看自己的数据源和任务，管理员可以查看所有用户的数据源和任务</p>
+                <br>
+                </div>
             </div>
         </div>
     </div>
