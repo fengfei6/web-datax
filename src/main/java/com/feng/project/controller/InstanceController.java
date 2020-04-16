@@ -39,7 +39,6 @@ public class InstanceController {
 
     @RequestMapping("/instance/content/{id}")
     public ModelAndView getLogContent(@PathVariable Integer id, Model model) throws UnsupportedEncodingException {
-        Instance instance = instanceService.getOne(id);
         model.addAttribute("content",instanceService.getExecLog(id,1));
         return new ModelAndView("admin/instance-log","model",model);
     }
@@ -50,15 +49,7 @@ public class InstanceController {
         for(JSONObject jsonObject : jobs){
             instanceService.saveIntoInstance(jsonObject);
         }
-        User user = (User)httpSession.getAttribute("user");
-        List<Instance> list = new ArrayList<>();
-        if(user.getRole().equalsIgnoreCase("admin")){
-            list = instanceService.findAll();
-        }else{
-            list = instanceService.findAllByUserId(user.getId());
-        }
-        model.addAttribute("list",list);
-        return new ModelAndView("admin/instance-list","model",model);
+        return findAll(model, httpSession);
     }
 
     @RequestMapping("/instance/flush/{id}")

@@ -1,8 +1,6 @@
 package com.feng.project.controller;
 
 import com.alibaba.fastjson.JSONObject;
-import com.feng.project.domain.JobLog;
-import com.feng.project.service.InstanceService;
 import com.feng.project.service.JobLogService;
 import com.feng.project.service.XxlJobService;
 import org.springframework.beans.factory.annotation.Autowired;
