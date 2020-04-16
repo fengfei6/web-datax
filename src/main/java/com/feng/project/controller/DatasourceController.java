@@ -244,11 +244,11 @@ public class DatasourceController {
         model.addAttribute("postgre", list_part);
         return new ModelAndView("admin/copy-table","model",model);
     }
-    
+
     @ResponseBody
     @RequestMapping("/datasource/getTableList")
-    public Map<String,Integer> getTableList(String name) {
-    	Datasource datasource = datasourceService.findDatasourceByName(name);
+    public Map<String,Integer> getTableList(String name,Integer id) {
+    	Datasource datasource = datasourceService.findDatasourceByNameAndUserId(name, id);
         Connection conn = null;
         Map<String, Integer> map = new HashMap<>();
         if(datasource.getType().equalsIgnoreCase("mysql")){
@@ -266,7 +266,7 @@ public class DatasourceController {
         }
         return map;
     }
-    
+
     @ResponseBody
     @RequestMapping("/datasource/getTableList2")
     public Map<String,Integer> getTableList2(Integer id) {

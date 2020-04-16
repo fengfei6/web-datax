@@ -76,4 +76,8 @@ public class DatasourceService {
     public List<Datasource> getDatasourcesByType(String type){
         return datasourceRepository.getDatasourcesByType(type);
     }
+
+    public Datasource findDatasourceByNameAndUserId(String name,Integer userId){
+        return datasourceRepository.findDatasourceByNameAndUserId(name,userId);
+    }
 }
