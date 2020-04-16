@@ -5,7 +5,7 @@ import com.feng.project.repository.CronJobRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
+import java.sql.Date;
 import java.util.List;
 
 @Service
@@ -14,13 +14,13 @@ public class CronJobService {
     private CronJobRepository cronJobRepository;
 
     public CronJob save(CronJob cronJob){
-        cronJob.setCreateTime(new Date());
-        cronJob.setUpdateTime(new Date());
+        cronJob.setCreateTime(new Date(System.currentTimeMillis()));
+        cronJob.setUpdateTime(new Date(System.currentTimeMillis()));
         return cronJobRepository.save(cronJob);
     }
 
     public CronJob update(CronJob cronJob){
-        cronJob.setUpdateTime(new Date());
+        cronJob.setUpdateTime(new Date(System.currentTimeMillis()));
         return cronJobRepository.save(cronJob);
     }
 

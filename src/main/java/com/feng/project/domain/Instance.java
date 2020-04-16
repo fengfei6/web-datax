@@ -4,8 +4,6 @@ package com.feng.project.domain;
 import javax.persistence.*;
 
 import java.io.Serializable;
-import java.time.ZonedDateTime;
-import java.util.Objects;
 
 /**
  * A Instance.

@@ -206,10 +206,7 @@
                             <thead>
                                 <tr>
                                     <th class="span3">
-                                       任务
-                                    </th>
-                                    <th class="span3">
-                                        <span class="line"></span>名称
+                                        名称
                                     </th>
                                     <th class="span3">
                                         <span class="line"></span>描述
@@ -222,6 +219,9 @@
                                     </th>
                                     <th class="span3">
                                         <span class="line"></span>创建时间
+                                    </th>
+                                    <th class="span3">
+                                        <span class="line"></span>调度周期
                                     </th>
                                     <th class="span3">
                                         <span class="line"></span>是否运行
@@ -238,9 +238,7 @@
                                         <div class="img">
                                             <img th:src="@{/img/logo.jpg}" />
                                         </div>
-                                        <a id="jobId" href="#" th:value="${job.id}" th:text="${job.id}?${job.id}:''"></a>
-                                    </td>
-                                    <td class="description" th:text="${job.name}?${job.name}:''">
+                                        <a id="jobId" href="#" th:value="${job.id}" th:text="${job.name}?${job.name}:''"></a>
                                     </td>
                                     <td class="description" th:text="${job.description}?${job.description}:''">
                                     </td>
@@ -249,6 +247,8 @@
                                     <td class="description" th:text="${job.writerTable}? ${job.writerDbType}+'['+${job.writerTable}+']':${job.writerDbType}">
                                     </td>
                                     <td class="description" th:text="${job.createTime}? ${job.createTime}:''">
+                                    </td>
+                                    <td class="description" th:text="${job.cronExpress}? ${job.cronExpress}:''">
                                     </td>
                                     <td class="description" th:text="${job.isRunning}==1? '已启动':'停止中'">
                                     </td>

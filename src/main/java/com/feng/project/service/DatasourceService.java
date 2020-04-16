@@ -5,7 +5,7 @@ import com.feng.project.repository.DatasourceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
+import java.sql.Date;
 import java.util.List;
 
 
@@ -15,7 +15,7 @@ public class DatasourceService {
     private DatasourceRepository datasourceRepository;
 
     public void save(Datasource datasource){
-        datasource.setUpdateTime(new Date());
+        datasource.setUpdateTime(new java.sql.Date(System.currentTimeMillis()));
         datasourceRepository.save(datasource);
     }
 
@@ -28,7 +28,7 @@ public class DatasourceService {
     }
     
     public void update(Datasource datasource) {
-    	datasource.setUpdateTime(new Date());
+    	datasource.setUpdateTime(new Date(System.currentTimeMillis()));
     	datasourceRepository.save(datasource);
     }
     

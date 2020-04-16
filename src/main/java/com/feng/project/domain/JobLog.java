@@ -1,7 +1,6 @@
 package com.feng.project.domain;
 
 import javax.persistence.*;
-import java.util.Date;
 
 @Entity(name="job_log")
 public class JobLog {

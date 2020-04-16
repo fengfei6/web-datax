@@ -1,6 +1,6 @@
 package com.feng.project.service;
 
-import java.util.Date;
+import java.sql.Date;
 import java.util.List;
 
 import com.feng.project.repository.JobRepository;
@@ -15,7 +15,7 @@ public class JobService {
     private JobRepository jobRepository;
     
     public void save(Job job) {
-    	job.setCreateTime(new Date());
+    	job.setCreateTime(new Date(System.currentTimeMillis()));
     	jobRepository.save(job);
     }
     
