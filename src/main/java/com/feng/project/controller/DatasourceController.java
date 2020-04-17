@@ -160,7 +160,7 @@ public class DatasourceController {
 	            return "";
 	        }
         }else {
-        	if(datasourceService.getDatasourceByDbnameAndUserId(name,user.getId()) != null){
+        	if(datasourceService.getDatasourceByNameAndUserId(name,user.getId()) != null){
 	            return "名称已存在，重新输入";
 	        }else{
 	            return "";

@@ -190,8 +190,8 @@ public class DatasourceService {
         return datasourceRepository.findDatasourcesByUserId(userId);
     }
     
-    public Datasource getDatasourceByDbnameAndUserId(String dbname,Integer userId){
-        return datasourceRepository.getDatasourceByDbnameAndUserId(dbname,userId);
+    public Datasource getDatasourceByNameAndUserId(String name,Integer userId){
+        return datasourceRepository.getDatasourceByNameAndUserId(name,userId);
     }
 
     public List<Datasource> getDatasourcesByTypeAndUserId(String type,Integer userId){
