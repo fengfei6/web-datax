@@ -6,6 +6,7 @@ import com.feng.project.domain.Datasource;
 import com.feng.project.domain.User;
 import com.feng.project.service.CronJobService;
 import com.feng.project.service.DatasourceService;
+import com.feng.project.service.InstanceService;
 import com.feng.project.service.XxlJobService;
 import com.feng.project.util.DataxUtil;
 import com.feng.project.util.JobUtil;
@@ -28,6 +29,8 @@ public class CronJobController {
     private CronJobService cronJobService;
     @Autowired
     private XxlJobService xxlJobService;
+    @Autowired
+    private InstanceService instanceService;
 
     @Autowired
     private DatasourceService datasourceService;
@@ -61,6 +64,7 @@ public class CronJobController {
     public ModelAndView delete(@PathVariable Integer id, Model model,HttpSession session){
         CronJob cronJob = cronJobService.getOne(id);
         xxlJobService.delete(cronJob.getTaskId());
+        instanceService.deleteAllByCronjobId(id);
         cronJobService.delete(cronJob);
        return findAll(model,session);
     }

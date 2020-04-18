@@ -67,11 +67,11 @@ public class JobUtil {
 				"\"content\": [{ \"reader\":{\"name\": \"").append(reader);
 		sb.append("\",\"parameter\":{\"username\":\"").append(sdatasource.getUsername());
 		sb.append("\",\"password\":\"").append(sdatasource.getPassword()).append("\",");
-		if(cronJob.getReaderTable() != null && !cronJob.getReaderTable().trim().equals("null")) {
+		if(cronJob.getReaderTable() != null && !cronJob.getReaderTable().trim().equals("null") && !cronJob.getReaderTable().trim().equals("")) {
 			sb.append("\"column\": [").append(splitColumns(cronJob.getReaderColumn())).append("],");
 		}
 		sb.append("\"connection\": [{");
-		if(cronJob.getReaderTable() != null && !cronJob.getReaderTable().trim().equals("null")) {
+		if(cronJob.getReaderTable() != null && !cronJob.getReaderTable().trim().equals("null") && !cronJob.getReaderTable().trim().equals("")) {
 			sb.append("\"table\": [\"").append(cronJob.getReaderTable()).append("\"],");
 		}
 		if(cronJob.getQuerySql() != null && cronJob.getQuerySql().trim() != ""){
@@ -82,7 +82,7 @@ public class JobUtil {
 		sb.append("\"writer\": {\"name\": \"").append(writer);
 		sb.append("\",\"parameter\":{\"username\":\"").append(tdatasource.getUsername());
 		sb.append("\",\"password\":\"").append(tdatasource.getPassword()).append("\",");
-		sb.append("\"column\": [").append(splitColumns(cronJob.getReaderColumn())).append("],");
+		sb.append("\"column\": [").append(splitColumns(cronJob.getWriterColumn())).append("],");
 		if(cronJob.getWriterPresql() != null) {
 			sb.append("\"preSql\": [\"").append(cronJob.getWriterPresql()).append("\"],");
 		}

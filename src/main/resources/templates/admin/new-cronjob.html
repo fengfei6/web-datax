@@ -214,7 +214,7 @@
                                             <div class="field-box">
                                                 <label>选择源数据库:</label>
                                                 <select class="span8" id="start_select1" name="readerDbId">
-                                                    <option selected = true>--请选择--</option>
+                                                    <option selected = true value="">--请选择--</option>
                                                     <option  th:each="datasource:${model.datalist}" th:value="${datasource.id}" th:text="${datasource.name}" ></option>
                                                 </select>
                                             </div>
@@ -250,7 +250,7 @@
                                             <div class="field-box">
                                                 <label>选择目标数据库:</label>
                                                 <select class="span8" id="start_select3" name="writerDbId">
-                                                    <option selected = true>--请选择--</option>
+                                                    <option selected = true value="">--请选择--</option>
                                                     <option  th:each="datasource:${model.datalist}" th:value="${datasource.id}" th:text="${datasource.name}" ></option>
                                                 </select>
                                             </div>
@@ -261,12 +261,12 @@
                                                 </select>
                                             </div>
                                             <div class="field-box">
-                                                <label>Presql:</label>
-                                                <input class="span8" type="text" name="writerPresql"/>
+                                                <label>列:</label>
+                                                <input class="span8" type="text" name="writerColumn" id="column_writer"/>
                                             </div>
                                             <div class="field-box">
-                                                <label>Postsql:</label>
-                                                <input class="span8" type="text" name="writerPostsql"/>
+                                                <label>preSql:</label>
+                                                <input class="span8" type="text" name="writerPresql"/>
                                             </div>
 
                                         </div>
@@ -436,6 +436,26 @@
                     data:{id:id,name:name},
                     success:function(data){
                         $("#column").val(data);
+                    }
+                })
+            });
+        })
+
+        $(document).ready(function(){
+            $("#start_select4").change(function(){
+                var id = $("#start_select3").val();
+                var name = $("#start_select4").val();
+                if(id =='' || name == ''){
+                    return;
+                }
+
+                $.ajax({
+                    url:"/datasource/getTableColumn",
+                    async:true,
+                    type:'post',
+                    data:{id:id,name:name},
+                    success:function(data){
+                        $("#column_writer").val(data);
                     }
                 })
             });

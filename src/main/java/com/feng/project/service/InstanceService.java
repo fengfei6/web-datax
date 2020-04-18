@@ -136,4 +136,7 @@ public class InstanceService {
     }
 
     public List<Instance> findAllByCronjobId(Integer cronjobId){return instanceRepository.findAllByCronjobId(cronjobId);}
+
+
+    public void deleteAllByCronjobId(Integer cronjobId){ instanceRepository.deleteInstancesByCronjobId(cronjobId);}
 }

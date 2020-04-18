@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 @Repository
@@ -22,4 +23,7 @@ public interface InstanceRepository extends JpaRepository<Instance,Integer> {
     List<Instance> findAllByCronjobId(Integer cronjobId);
 
     List<Instance> findAllByUserIdAndCronjobId(Integer userId,Integer cronjobId);
+
+    @Transactional
+    void deleteInstancesByCronjobId(Integer cronjobId);
 }

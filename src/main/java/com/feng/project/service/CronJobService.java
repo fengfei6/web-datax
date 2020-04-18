@@ -23,9 +23,6 @@ public class CronJobService {
         cronJob.setIsRunning(0);
         cronJob.setReaderDbType(datasources.getType());
         cronJob.setWriterDbType(datasourcet.getType());
-        if(cronJob.getReaderColumn() != null){
-            cronJob.setWriterColumn(cronJob.getReaderColumn());
-        }
         cronJob.setCreateTime(new Date(System.currentTimeMillis()));
         cronJob.setUpdateTime(new Date(System.currentTimeMillis()));
         return cronJobRepository.save(cronJob);
