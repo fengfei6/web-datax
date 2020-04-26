@@ -12,9 +12,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.util.List;
-
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 
@@ -59,17 +56,6 @@ public class UserController {
     	model.addAttribute("userlist", userService.findAll());
     	return new ModelAndView("admin/user-list","model",model);
     }
-    
-    @RequestMapping("/user/modifyRole/{id}")
-    public ModelAndView modifyRole(@PathVariable Integer id,Model model) throws InterruptedException {
-    	User user = userService.getOne(id);
-    	String role = "admin";
-    	if("admin".equals(user.getRole())) {
-    		role = "user";
-    	}
-    	userService.modifyRole(id, role);
-    	return findAll(model);
-    }
 
     @PostMapping("/user/add")
     public ModelAndView addUser(User user,Model model){
@@ -77,12 +63,7 @@ public class UserController {
         model.addAttribute("userlist",userService.findAll());
         return new ModelAndView("admin/user-list","model",model);
     }
-    
-    @RequestMapping("/user/modifyPass/{id}/{password}")
-    public ModelAndView modifyPass(@PathVariable Integer id,@PathVariable String password,Model model) throws InterruptedException {
-    	userService.modifyPass(id, password);
-    	return findAll(model);
-    }
+
     
     @RequestMapping("/user/edit/{id}")
     public ModelAndView updateUser(@PathVariable Integer id,Model model){

@@ -38,25 +38,37 @@ public class InstanceController {
     }
 
     @RequestMapping("/instance/content/{id}")
-    public ModelAndView getLogContent(@PathVariable Integer id, Model model) throws UnsupportedEncodingException {
-        model.addAttribute("content",instanceService.getExecLog(id,1));
+    public ModelAndView getLogContent(@PathVariable Integer id, Model model){
+        try{
+            model.addAttribute("content",instanceService.getExecLog(id,1));
+        }catch (Exception e){
+            return new ModelAndView("error","model",model.addAttribute("error","日志解析失败"));
+        }
         return new ModelAndView("admin/instance-log","model",model);
     }
 
     @RequestMapping("/instance/flush")
-    public ModelAndView flush(Model model,HttpSession httpSession) throws Exception {
-        List<JSONObject> jobs = xxlJobService.getAllHandleInfo();
-        for(JSONObject jsonObject : jobs){
-            instanceService.saveIntoInstance(jsonObject);
+    public ModelAndView flush(Model model,HttpSession httpSession){
+        try {
+            List<JSONObject> jobs = xxlJobService.getAllHandleInfo();
+            for (JSONObject jsonObject : jobs) {
+                instanceService.saveIntoInstance(jsonObject);
+            }
+        }catch (Exception e){
+            return new ModelAndView("error","model",model.addAttribute("error","实例刷新失败"));
         }
         return findAll(model, httpSession);
     }
 
     @RequestMapping("/instance/flush/{id}")
-    public ModelAndView flush(@PathVariable Integer id, Model model,HttpSession httpSession) throws Exception {
-        List<JSONObject> jobs = xxlJobService.getAllHandleInfo();
-        for(JSONObject jsonObject : jobs){
-            instanceService.saveIntoInstance(jsonObject);
+    public ModelAndView flush(@PathVariable Integer id, Model model,HttpSession httpSession){
+        try {
+            List<JSONObject> jobs = xxlJobService.getAllHandleInfo();
+            for (JSONObject jsonObject : jobs) {
+                instanceService.saveIntoInstance(jsonObject);
+            }
+        }catch (Exception e){
+            return new ModelAndView("error","model",model.addAttribute("error","实例刷新失败"));
         }
         User user = (User)httpSession.getAttribute("user");
         List<Instance> list = new ArrayList<>();

@@ -14,7 +14,6 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
-    //@Cacheable(value = "user",unless = "#result==null")
     public User findUserByNameAndPass(String name,String pass){
        Optional<User> optionalUser = userRepository.findUserByNameAndPassword(name,pass);
        if(optionalUser.isPresent()){
@@ -45,14 +44,6 @@ public class UserService {
     
     public List<User> findAll(){
     	return userRepository.findAll();
-    }
-    
-    public Integer modifyRole(Integer id,String role) {
-    	return userRepository.modifyRole(id, role);
-    }
-    
-    public Integer modifyPass(Integer id,String password) {
-    	return userRepository.modifyPass(id, password);
     }
     
     public List<User> searchUsersByName(String name){

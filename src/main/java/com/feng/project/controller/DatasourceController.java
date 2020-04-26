@@ -62,7 +62,7 @@ public class DatasourceController {
     }
     
     @RequestMapping("/datasource/edit/{id}")
-    public ModelAndView getOneDatesource(@PathVariable Integer id,Model model) {
+    public ModelAndView getOneDatesource(@PathVariable Integer id) {
     	Datasource datasource = datasourceService.getDatasource(id);
     	return new ModelAndView("admin/edit-database","datasource",datasource);
     }

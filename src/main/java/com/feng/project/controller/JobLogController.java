@@ -21,10 +21,14 @@ public class JobLogController {
     private XxlJobService xxlJobService;
     
     @RequestMapping("/joblog/joblogs/{jobId}")
-    public ModelAndView findAll(@PathVariable Integer jobId,Model model)throws UnsupportedEncodingException {
-        List<JSONObject> jobs = xxlJobService.getAllHandleInfo();
-        for(JSONObject jsonObject : jobs){
-            jobLogService.saveIntoLog(jsonObject);
+    public ModelAndView findAll(@PathVariable Integer jobId,Model model){
+        try{
+            List<JSONObject> jobs = xxlJobService.getAllHandleInfo();
+            for(JSONObject jsonObject : jobs){
+                jobLogService.saveIntoLog(jsonObject);
+            }
+        }catch (Exception e){
+            return new ModelAndView("error","model",model.addAttribute("error","日志刷新失败"));
         }
     	model.addAttribute("joblogs",jobLogService.findByJobId(jobId));
         model.addAttribute("jobId",jobId);
@@ -32,8 +36,12 @@ public class JobLogController {
     }
     
     @RequestMapping("/joblog/getResult/{id}")
-    public ModelAndView getResult(@PathVariable Integer id,Model model)throws UnsupportedEncodingException {
-    	model.addAttribute("jobLog",jobLogService.getExecLog(id,1));
+    public ModelAndView getResult(@PathVariable Integer id,Model model){
+        try {
+            model.addAttribute("jobLog", jobLogService.getExecLog(id, 1));
+        }catch (Exception e){
+            return new ModelAndView("error","model",model.addAttribute("error","日志刷新失败"));
+        }
     	return new ModelAndView("admin/job-log","model",model);
     }
 

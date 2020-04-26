@@ -35,15 +35,19 @@ public class CronJobController {
     @Autowired
     private DatasourceService datasourceService;
     @RequestMapping("/cron/add")
-    public ModelAndView save(CronJob cronJob, Model model, HttpSession session) throws IOException {
-        User user = (User) session.getAttribute("user");
-        cronJob.setUserId(user.getId());
-        String taskId = xxlJobService.submitCronJob(cronJob);
-        cronJob.setTaskId(Integer.parseInt(taskId));
-        cronJobService.save(cronJob);
-        JobUtil.getJsonfileForCronJob(datasourceService.getDatasource(cronJob.getReaderDbId()),datasourceService.getDatasource(cronJob.getWriterDbId()),cronJob);
-        Connection conn = DataxUtil.login("192.144.129.188", "root", "FFei916#");
-        DataxUtil.transferFile(conn, "src/main/resources/static/file/"+cronJob.getName()+"_"+cronJob.getUserId()+".json", "/root/datax/job");
+    public ModelAndView save(CronJob cronJob, Model model, HttpSession session){
+        try {
+            User user = (User) session.getAttribute("user");
+            cronJob.setUserId(user.getId());
+            String taskId = xxlJobService.submitCronJob(cronJob);
+            cronJob.setTaskId(Integer.parseInt(taskId));
+            cronJobService.save(cronJob);
+            JobUtil.getJsonfileForCronJob(datasourceService.getDatasource(cronJob.getReaderDbId()), datasourceService.getDatasource(cronJob.getWriterDbId()), cronJob);
+            Connection conn = DataxUtil.login("192.144.129.188", "root", "FFei916#");
+            DataxUtil.transferFile(conn, "src/main/resources/static/file/" + cronJob.getName() + "_" + cronJob.getUserId() + ".json", "/root/datax/job");
+        }catch (Exception e){
+            return new ModelAndView("error","model",model.addAttribute("error","任务创建失败"));
+        }
         return findAll(model, session);
     }
 
@@ -83,7 +87,7 @@ public class CronJobController {
     }
 
     @RequestMapping("/cron/status/{id}")
-    public ModelAndView changeStatus(@PathVariable Integer id,Model model,HttpSession session) throws IOException {
+    public ModelAndView changeStatus(@PathVariable Integer id,Model model,HttpSession session){
         CronJob cronJob = cronJobService.getOne(id);
         if(cronJob.getIsRunning() == 0){
             xxlJobService.onScheduling(cronJob);

@@ -51,24 +51,28 @@ public class JobController {
     }
 
     @RequestMapping("/job/execJob/{id}")
-    public ModelAndView doJobOnce(@PathVariable Integer id,Model model,HttpSession session) throws IOException {
+    public ModelAndView doJobOnce(@PathVariable Integer id,Model model,HttpSession session){
         Job job = jobService.getOne(id);
         xxlJobService.executeUnder(job.getTaskId(),"");
         return findAllJob(model, session);
     }
 
     @RequestMapping("/job/addFileJob")
-    public ModelAndView addFileJob(Job job, Model model,HttpSession session) throws IOException {
-        User user = (User)session.getAttribute("user");
-        job.setUserId(user.getId());
-        //上传json到服务器
-        JobUtil.getJsonFileByContent(job);
-        Connection conn = DataxUtil.login("192.144.129.188", "root", "FFei916#");
-        DataxUtil.transferFile(conn, "src/main/resources/static/file/"+job.getName()+"_"+job.getUserId()+".json", "/root/datax/job");
-        //提交到xxl-job
-        String taskId = xxlJobService.submitJob(job);
-        job.setTaskId(Integer.parseInt(taskId));
-        jobService.save(job);
+    public ModelAndView addFileJob(Job job, Model model,HttpSession session){
+        try {
+            User user = (User) session.getAttribute("user");
+            job.setUserId(user.getId());
+            //上传json到服务器
+            JobUtil.getJsonFileByContent(job);
+            Connection conn = DataxUtil.login("192.144.129.188", "root", "FFei916#");
+            DataxUtil.transferFile(conn, "src/main/resources/static/file/" + job.getName() + "_" + job.getUserId() + ".json", "/root/datax/job");
+            //提交到xxl-job
+            String taskId = xxlJobService.submitJob(job);
+            job.setTaskId(Integer.parseInt(taskId));
+            jobService.save(job);
+        }catch (Exception e){
+            return new ModelAndView("error","model",model.addAttribute("error","任务创建失败"));
+        }
         return findAllJob(model, session);
     }
 
