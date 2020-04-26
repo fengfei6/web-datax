@@ -212,14 +212,14 @@
                                     <div class="row-fluid form-wrapper">
                                         <div class="span8">
                                             <div class="field-box">
-                                                <label>选择源数据库:</label>
+                                                <label>选择源数据库(*):</label>
                                                 <select class="span8" id="start_select1" name="readerDbId">
                                                     <option selected = true value="">--请选择--</option>
                                                     <option  th:each="datasource:${model.datalist}" th:value="${datasource.id}" th:text="${datasource.name}" ></option>
                                                 </select>
                                             </div>
                                             <div class="field-box">
-                                                <label>选择源表:</label>
+                                                <label>选择源表(*):</label>
                                                 <select class="span8"  id="start_select2" name="readerTable">
 
                                                 </select>
@@ -227,8 +227,6 @@
                                             <div class="field-box">
                                                 <label>列:</label>
                                                 <input class="span8" type="text" id="column" name="readerColumn"/>
-                                            </div>
-                                            <div class="field-box">
                                                 <h6>若需要筛选数据，可以不选择原表，下一步指出原表</h6>
                                             </div>
                                         </div>
@@ -239,7 +237,7 @@
                                         <div class="span8">
                                             <div class="field-box">
                                                 <label>同步前语句:</label>
-                                                <input class="span8" type="text" name="querySql"/>
+                                                <textarea class="span9" type="text" name="querySql"></textarea>
                                             </div>
                                         </div>
                                     </div>
@@ -248,20 +246,20 @@
                                     <div class="row-fluid form-wrapper">
                                         <div class="span8">
                                             <div class="field-box">
-                                                <label>选择目标数据库:</label>
+                                                <label>选择目标数据库(*):</label>
                                                 <select class="span8" id="start_select3" name="writerDbId">
                                                     <option selected = true value="">--请选择--</option>
                                                     <option  th:each="datasource:${model.datalist}" th:value="${datasource.id}" th:text="${datasource.name}" ></option>
                                                 </select>
                                             </div>
                                             <div class="field-box">
-                                                <label>选择目标表:</label>
+                                                <label>选择目标表(*):</label>
                                                 <select class="span8"  id="start_select4" name="writerTable">
 
                                                 </select>
                                             </div>
                                             <div class="field-box">
-                                                <label>列:</label>
+                                                <label>列(*):</label>
                                                 <input class="span8" type="text" name="writerColumn" id="column_writer"/>
                                             </div>
                                             <div class="field-box">
@@ -276,15 +274,15 @@
                                     <div class="row-fluid form-wrapper payment-info">
                                         <div class="span8">
                                             <div class="field-box">
-                                                <label id="show">同步任务名:</label>
+                                                <label id="show">同步任务名(*):</label>
                                                 <input class="span8" type="text" name="name" id="name"/>
                                             </div>
                                             <div class="field-box">
-                                                <label>同步任务描述:</label>
+                                                <label>同步任务描述(*):</label>
                                                 <input class="span8" type="text" name="description"/>
                                             </div>
                                             <div class="field-box">
-                                                <label>调度周期:</label>
+                                                <label>调度周期(*):</label>
                                                 <input class="span8" type="text" name="cronExpress" id="cron"/>
                                                 <a href="javascript:show_child();">cron表达式生成</a>
                                             </div>
