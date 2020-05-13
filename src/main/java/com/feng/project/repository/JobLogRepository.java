@@ -3,15 +3,14 @@ package com.feng.project.repository;
 import com.feng.project.domain.JobLog;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
 public interface JobLogRepository extends JpaRepository<JobLog,Integer> {
-	List<JobLog> findByJobId(Integer jobId);
+	JobLog findByJobId(Integer jobId);
 
-	List<JobLog> findAllByExecid(String execid);
-
-	void deleteByExecid(String execid);
+	Optional<JobLog> findJobLogByJobId(Integer jobId);
 }

@@ -15,6 +15,7 @@ import com.feng.project.service.JobService;
 import com.feng.project.service.XxlJobService;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -52,8 +53,11 @@ public class JobController {
 
     @RequestMapping("/job/execJob/{id}")
     public ModelAndView doJobOnce(@PathVariable Integer id,Model model,HttpSession session){
-        Job job = jobService.getOne(id);
-        xxlJobService.executeUnder(job.getTaskId(),"");
+        try {
+            jobService.doJobAndSaveLog(id);
+        }catch (Exception e){
+            return new ModelAndView("error","model",model.addAttribute("error","任务创建失败"));
+        }
         return findAllJob(model, session);
     }
 
@@ -66,9 +70,9 @@ public class JobController {
             JobUtil.getJsonFileByContent(job);
             Connection conn = DataxUtil.login("192.144.129.188", "root", "FFei916#");
             DataxUtil.transferFile(conn, "src/main/resources/static/file/" + job.getName() + "_" + job.getUserId() + ".json", "/root/datax/job");
-            //提交到xxl-job
-            String taskId = xxlJobService.submitJob(job);
-            job.setTaskId(Integer.parseInt(taskId));
+//            //提交到xxl-job
+//            String taskId = xxlJobService.submitJob(job);
+//            job.setTaskId(Integer.parseInt(taskId));
             jobService.save(job);
         }catch (Exception e){
             return new ModelAndView("error","model",model.addAttribute("error","任务创建失败"));

@@ -243,7 +243,7 @@
                                        
                                             <li><a th:href="@{'/job/execJob/'+${job.id}}">开始执行</a></li>
                                          
-                                            <li class="last"><a target="_blank"  th:href="@{'http://192.144.129.188:8081/xxl-job-admin/joblog?jobId='+${job.taskId}}">日志列表</a></li>
+                                            <li class="last"><a th:href="@{'/joblog/getResult/'+${job.id}}">查看日志</a></li>
                                             <li class="last"><a th:href="@{'/job/delete/'+${job.id}}">删除任务</a></li>
                                         </ul>
                                     </td>

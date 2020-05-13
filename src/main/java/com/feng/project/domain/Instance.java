@@ -1,6 +1,8 @@
 package com.feng.project.domain;
 
 
+import org.hibernate.annotations.Proxy;
+
 import javax.persistence.*;
 
 import java.io.Serializable;
@@ -8,6 +10,7 @@ import java.io.Serializable;
 /**
  * A Instance.
  */
+@Proxy(lazy = false)
 @Entity
 @Table(name = "instance")
 public class Instance implements Serializable {

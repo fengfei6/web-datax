@@ -1,8 +1,10 @@
 package com.feng.project.domain;
 
+import org.hibernate.annotations.Proxy;
+
 import javax.persistence.*;
 import java.io.Serializable;
-
+@Proxy(lazy = false)
 @Entity(name = "user")
 public class User implements Serializable {
     /**

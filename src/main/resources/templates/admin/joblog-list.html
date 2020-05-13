@@ -200,7 +200,10 @@
                         <thead>
                         <tr>
                             <th class="span4 sortable">
-                                任务编号
+                                日志编号
+                            </th>
+                            <th class="span3 sortable">
+                                <span class="line"></span>任务id
                             </th>
                             <th class="span3 sortable">
                                 <span class="line"></span>任务名称
@@ -210,9 +213,6 @@
                             </th>
                             <th class="span2 sortable">
                                 <span class="line"></span>触发时间
-                            </th>
-                            <th class="span2 sortable">
-                                <span class="line"></span>执行完时间
                             </th>
                             <th class="span3 sortable align-right">
                                 <span class="line"></span>操作
@@ -224,13 +224,13 @@
                         <tr class="first" th:each="joblog:${model.joblogs}">
                             <td class="description" th:text="${joblog.id} ? ${joblog.id}:''">
                             </td>
-                            <td  class="description" th:text="${joblog.name} ?${joblog.name}:'' ">
+                            <td  class="description" th:text="${joblog.jobId} ?${joblog.jobId}:'' ">
+                            </td>
+                            <td  class="description" th:text="${joblog.jobName} ?${joblog.jobName}:'' ">
                             </td>
                             <td class="description" th:text="${joblog.status}?${joblog.status}:''">
                             </td>
-                            <td class="description" th:text="${joblog.triggerTime}?${joblog.triggerTime}:''">
-                            </td>
-                            <td class="description" th:text="${joblog.handleTime}?${joblog.handleTime}:''">
+                            <td class="description" th:text="${joblog.createTime}?${joblog.createTime}:''">
                             </td>
                             <td class="description" class="align-right" >
                                 <a th:href="@{'/joblog/getResult/'+${joblog.id}}">日志结果</a>

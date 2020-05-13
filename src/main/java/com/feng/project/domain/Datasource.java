@@ -1,5 +1,7 @@
 package com.feng.project.domain;
 
+import org.hibernate.annotations.Proxy;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -9,6 +11,7 @@ import java.sql.Date;
 /**
  * @author 小可爱
  */
+@Proxy(lazy = false)
 @Entity(name="datasource")
 public class Datasource {
     @Id
