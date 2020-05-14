@@ -1,7 +1,6 @@
 package com.feng.project.controller;
 
 
-import java.io.IOException;
 import java.util.ArrayList;
 
 import java.util.List;
@@ -15,7 +14,7 @@ import com.feng.project.service.JobService;
 import com.feng.project.service.XxlJobService;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.EnableAsync;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -35,8 +34,18 @@ import ch.ethz.ssh2.Connection;
 public class JobController {
     @Autowired
     private JobService jobService;
-    @Autowired
-    private XxlJobService xxlJobService;
+
+    @Value("${datax.ip}")
+    private String ip;
+
+    @Value("${datax.username}")
+    private String username;
+
+    @Value("${datax.password}")
+    private String password;
+
+    @Value("${datax.job.path}")
+    private String path;
 
     @RequestMapping("/job/jobList")
     public ModelAndView findAllJob(Model model,HttpSession session){
@@ -68,8 +77,8 @@ public class JobController {
             job.setUserId(user.getId());
             //上传json到服务器
             JobUtil.getJsonFileByContent(job);
-            Connection conn = DataxUtil.login("192.144.129.188", "root", "FFei916#");
-            DataxUtil.transferFile(conn, "src/main/resources/static/file/" + job.getName() + "_" + job.getUserId() + ".json", "/root/datax/job");
+            Connection conn = DataxUtil.login(ip, username, password);
+            DataxUtil.transferFile(conn, "src/main/resources/static/file/" + job.getName() + "_" + job.getUserId() + ".json", path);
 //            //提交到xxl-job
 //            String taskId = xxlJobService.submitJob(job);
 //            job.setTaskId(Integer.parseInt(taskId));
@@ -82,8 +91,6 @@ public class JobController {
 
     @RequestMapping("/job/delete/{id}")
     public ModelAndView deleteJob(@PathVariable Integer id, Model model,HttpSession session){
-        Job job = jobService.getOne(id);
-        xxlJobService.delete(job.getTaskId());
         jobService.delete(id);
         return findAllJob(model, session);
     }

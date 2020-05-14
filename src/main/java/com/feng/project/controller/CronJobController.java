@@ -11,6 +11,7 @@ import com.feng.project.service.XxlJobService;
 import com.feng.project.util.DataxUtil;
 import com.feng.project.util.JobUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,7 +20,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpSession;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,6 +34,19 @@ public class CronJobController {
 
     @Autowired
     private DatasourceService datasourceService;
+
+    @Value("${datax.ip}")
+    private String ip;
+
+    @Value("${datax.username}")
+    private String username;
+
+    @Value("${datax.password}")
+    private String password;
+
+    @Value("${datax.job.path}")
+    private String path;
+
     @RequestMapping("/cron/add")
     public ModelAndView save(CronJob cronJob, Model model, HttpSession session){
         try {
@@ -43,8 +56,8 @@ public class CronJobController {
             cronJob.setTaskId(Integer.parseInt(taskId));
             cronJobService.save(cronJob);
             JobUtil.getJsonfileForCronJob(datasourceService.getDatasource(cronJob.getReaderDbId()), datasourceService.getDatasource(cronJob.getWriterDbId()), cronJob);
-            Connection conn = DataxUtil.login("192.144.129.188", "root", "FFei916#");
-            DataxUtil.transferFile(conn, "src/main/resources/static/file/" + cronJob.getName() + "_" + cronJob.getUserId() + ".json", "/root/datax/job");
+            Connection conn = DataxUtil.login(ip, username, password);
+            DataxUtil.transferFile(conn, "src/main/resources/static/file/" + cronJob.getName() + "_" + cronJob.getUserId() + ".json", path);
         }catch (Exception e){
             return new ModelAndView("error","model",model.addAttribute("error","任务创建失败"));
         }
