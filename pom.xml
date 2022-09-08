@@ -134,7 +134,7 @@
         <dependency>
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
-            <version>42.2.0</version>
+            <version>42.4.1</version>
             <scope>system</scope>
             <systemPath>${project.basedir}/src/main/resources/lib/postgresql-42.2.0.jre6.jar</systemPath>
         </dependency>
